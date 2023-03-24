@@ -240,9 +240,22 @@ UISlider *slider;
     [self.view addSubview:topNotchCover];*/
     // Do any additional setup after loading the view.
     //BUGFIX: (Fixed in Badger 1.2.2) Sometimes with French translations, label can get too big, we *do* resize the label but the thing is that's before we replace the label with the translation, so it's resized for the english translation and not the current actual translation :P. This has been fixed by the line below and now we resize after translation.
+    [_label setAdjustsFontSizeToFitWidth:YES];
+    if (_label.frame.size.width > [self.view frame].size.width) {
+        [_label setFrame:CGRectMake(_label.frame.origin.x, _label.frame.origin.y, [self.view frame].size.width - (_label.frame.origin.x * 2), _label.frame.size.height)];
+    }
+    if (_label.bounds.size.width > [self.view frame].size.width) {
+        [_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view frame].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
+    }
+    //resize and then size again idfk but this causes less bugs. fuck storyboards.
     [_label sizeToFit];
     [_label layoutIfNeeded];
-    NSLog(@"centerXAnchor: %@",[_label centerXAnchor]);
+    if (_label.frame.size.width > [self.view frame].size.width) {
+        [_label setFrame:CGRectMake(_label.frame.origin.x, _label.frame.origin.y, [self.view frame].size.width - (_label.frame.origin.x * 2), _label.frame.size.height)];
+    }
+    if (_label.bounds.size.width > [self.view frame].size.width) {
+        [_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view frame].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
+    }
 }
 
 /*
