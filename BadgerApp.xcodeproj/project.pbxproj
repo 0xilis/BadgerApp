@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B00B7E7F28E799BB00C84D6B /* BadgerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B00B7E7E28E799BB00C84D6B /* BadgerTableViewCell.m */; };
+		B018644A28CBA20400D7C2EA /* BadgerPrefHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B018644928CBA20400D7C2EA /* BadgerPrefHandler.m */; };
+		B018644C28CE4C8C00D7C2EA /* TestBadgerPrefs.plist in Resources */ = {isa = PBXBuildFile; fileRef = B018644B28CE4C8C00D7C2EA /* TestBadgerPrefs.plist */; };
+		B02465EC293319280029B850 /* BadgerCreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B02465EB293319280029B850 /* BadgerCreditsViewController.m */; };
+		B0453D40292B01BE00188C80 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0453D3E292B01BE00188C80 /* Localizable.strings */; };
+		B0453D45292B0DE000188C80 /* BadgerEasyTranslations.m in Sources */ = {isa = PBXBuildFile; fileRef = B0453D44292B0DE000188C80 /* BadgerEasyTranslations.m */; };
+		B0A4395E28C666F5006D5D92 /* BadgeCountMinimumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A4395D28C666F5006D5D92 /* BadgeCountMinimumViewController.m */; };
+		B0A4396428C7AFA5006D5D92 /* BadgerAppSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A4396328C7AFA5006D5D92 /* BadgerAppSelectionViewController.m */; };
+		B0A4396728C84B1A006D5D92 /* BadgeColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A4396628C84B19006D5D92 /* BadgeColorViewController.m */; };
+		B0AC91C328D516E100BDF59F /* BadgerCustomImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AC91C228D516E100BDF59F /* BadgerCustomImageViewController.m */; };
+		B0AF596728E384A30069395E /* BadgerVersionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AF596628E384A30069395E /* BadgerVersionInfo.m */; };
+		B0B27D2A28F9910A00A1C3F0 /* BadgerApplySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B27D2828F9910A00A1C3F0 /* BadgerApplySettingsViewController.m */; };
+		B0BF585F28D01D560017AA0B /* BadgerCountConfigItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B0BF585E28D01D560017AA0B /* BadgerCountConfigItem.m */; };
+		B0EDB7F228CFF4230005DF84 /* BadgerCountConfigManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0EDB7F128CFF4230005DF84 /* BadgerCountConfigManagerViewController.m */; };
+		B0F5FCBA28B9310A00EA8AEA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F5FCB928B9310A00EA8AEA /* AppDelegate.m */; };
+		B0F5FCBD28B9310A00EA8AEA /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F5FCBC28B9310A00EA8AEA /* SceneDelegate.m */; };
+		B0F5FCC028B9310A00EA8AEA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F5FCBF28B9310A00EA8AEA /* ViewController.m */; };
+		B0F5FCC328B9310A00EA8AEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0F5FCC128B9310A00EA8AEA /* Main.storyboard */; };
+		B0F5FCC528B9310E00EA8AEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0F5FCC428B9310E00EA8AEA /* Assets.xcassets */; };
+		B0F5FCC828B9310E00EA8AEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0F5FCC628B9310E00EA8AEA /* LaunchScreen.storyboard */; };
+		B0F5FCCB28B9310E00EA8AEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F5FCCA28B9310E00EA8AEA /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B00B7E7D28E799BB00C84D6B /* BadgerTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerTableViewCell.h; sourceTree = "<group>"; };
+		B00B7E7E28E799BB00C84D6B /* BadgerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerTableViewCell.m; sourceTree = "<group>"; };
+		B016B30B28F9E6B9003A27D8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		B018644828CBA20400D7C2EA /* BadgerPrefHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerPrefHandler.h; sourceTree = "<group>"; };
+		B018644928CBA20400D7C2EA /* BadgerPrefHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerPrefHandler.m; sourceTree = "<group>"; };
+		B018644B28CE4C8C00D7C2EA /* TestBadgerPrefs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TestBadgerPrefs.plist; sourceTree = "<group>"; };
+		B02465EA293319280029B850 /* BadgerCreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgerCreditsViewController.h; sourceTree = "<group>"; };
+		B02465EB293319280029B850 /* BadgerCreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgerCreditsViewController.m; sourceTree = "<group>"; };
+		B0453D3F292B01BE00188C80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B0453D41292B01D300188C80 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Main.strings"; sourceTree = "<group>"; };
+		B0453D42292B01D300188C80 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		B0453D43292B0DD500188C80 /* BadgerEasyTranslations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerEasyTranslations.h; sourceTree = "<group>"; };
+		B0453D44292B0DE000188C80 /* BadgerEasyTranslations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgerEasyTranslations.m; sourceTree = "<group>"; };
+		B0453D46292B253E00188C80 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Main.strings"; sourceTree = "<group>"; };
+		B0453D47292B253E00188C80 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		B091B445294CFBB000B13F6E /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Main.strings; sourceTree = "<group>"; };
+		B091B446294CFBB000B13F6E /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B0A4395C28C666F5006D5D92 /* BadgeCountMinimumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeCountMinimumViewController.h; sourceTree = "<group>"; };
+		B0A4395D28C666F5006D5D92 /* BadgeCountMinimumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeCountMinimumViewController.m; sourceTree = "<group>"; };
+		B0A4396228C7AFA5006D5D92 /* BadgerAppSelectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerAppSelectionViewController.h; sourceTree = "<group>"; };
+		B0A4396328C7AFA5006D5D92 /* BadgerAppSelectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerAppSelectionViewController.m; sourceTree = "<group>"; };
+		B0A4396528C84B19006D5D92 /* BadgeColorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgeColorViewController.h; sourceTree = "<group>"; };
+		B0A4396628C84B19006D5D92 /* BadgeColorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeColorViewController.m; sourceTree = "<group>"; };
+		B0AC91C128D516E100BDF59F /* BadgerCustomImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerCustomImageViewController.h; sourceTree = "<group>"; };
+		B0AC91C228D516E100BDF59F /* BadgerCustomImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerCustomImageViewController.m; sourceTree = "<group>"; };
+		B0AF596528E384A30069395E /* BadgerVersionInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerVersionInfo.h; sourceTree = "<group>"; };
+		B0AF596628E384A30069395E /* BadgerVersionInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerVersionInfo.m; sourceTree = "<group>"; };
+		B0B27D2828F9910A00A1C3F0 /* BadgerApplySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgerApplySettingsViewController.m; sourceTree = "<group>"; };
+		B0B27D2928F9910A00A1C3F0 /* BadgerApplySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgerApplySettingsViewController.h; sourceTree = "<group>"; };
+		B0BEC3D1292E918500C94D1F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		B0BEC3D2292E918500C94D1F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		B0BEC3D32931DF8800C94D1F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		B0BEC3D42931DF8800C94D1F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		B0BF585D28D01D550017AA0B /* BadgerCountConfigItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerCountConfigItem.h; sourceTree = "<group>"; };
+		B0BF585E28D01D560017AA0B /* BadgerCountConfigItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerCountConfigItem.m; sourceTree = "<group>"; };
+		B0DCAE6129B9550F008D0172 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B0DCAE6229B9550F008D0172 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		B0DCAE6329B9550F008D0172 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B0EDB7F028CFF4230005DF84 /* BadgerCountConfigManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerCountConfigManagerViewController.h; sourceTree = "<group>"; };
+		B0EDB7F128CFF4230005DF84 /* BadgerCountConfigManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerCountConfigManagerViewController.m; sourceTree = "<group>"; };
+		B0F5FCB528B9310A00EA8AEA /* BadgerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadgerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0F5FCB828B9310A00EA8AEA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B0F5FCB928B9310A00EA8AEA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B0F5FCBB28B9310A00EA8AEA /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		B0F5FCBC28B9310A00EA8AEA /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		B0F5FCBE28B9310A00EA8AEA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		B0F5FCBF28B9310A00EA8AEA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B0F5FCC228B9310A00EA8AEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B0F5FCC428B9310E00EA8AEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B0F5FCC728B9310E00EA8AEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B0F5FCC928B9310E00EA8AEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0F5FCCA28B9310E00EA8AEA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B0F5FCB228B9310A00EA8AEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B016B30A28F9E6B8003A27D8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B016B30B28F9E6B9003A27D8 /* MobileCoreServices.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B0F5FCAC28B9310900EA8AEA = {
+			isa = PBXGroup;
+			children = (
+				B0F5FCB728B9310A00EA8AEA /* BadgerApp */,
+				B0F5FCB628B9310A00EA8AEA /* Products */,
+				B016B30A28F9E6B8003A27D8 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B0F5FCB628B9310A00EA8AEA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B0F5FCB528B9310A00EA8AEA /* BadgerApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B0F5FCB728B9310A00EA8AEA /* BadgerApp */ = {
+			isa = PBXGroup;
+			children = (
+				B02465EA293319280029B850 /* BadgerCreditsViewController.h */,
+				B02465EB293319280029B850 /* BadgerCreditsViewController.m */,
+				B0B27D2928F9910A00A1C3F0 /* BadgerApplySettingsViewController.h */,
+				B0B27D2828F9910A00A1C3F0 /* BadgerApplySettingsViewController.m */,
+				B00B7E7D28E799BB00C84D6B /* BadgerTableViewCell.h */,
+				B00B7E7E28E799BB00C84D6B /* BadgerTableViewCell.m */,
+				B0F5FCB828B9310A00EA8AEA /* AppDelegate.h */,
+				B0F5FCB928B9310A00EA8AEA /* AppDelegate.m */,
+				B0F5FCBB28B9310A00EA8AEA /* SceneDelegate.h */,
+				B0F5FCBC28B9310A00EA8AEA /* SceneDelegate.m */,
+				B0F5FCBE28B9310A00EA8AEA /* ViewController.h */,
+				B0F5FCBF28B9310A00EA8AEA /* ViewController.m */,
+				B0453D43292B0DD500188C80 /* BadgerEasyTranslations.h */,
+				B0453D44292B0DE000188C80 /* BadgerEasyTranslations.m */,
+				B0F5FCC128B9310A00EA8AEA /* Main.storyboard */,
+				B0F5FCC428B9310E00EA8AEA /* Assets.xcassets */,
+				B0453D3E292B01BE00188C80 /* Localizable.strings */,
+				B0F5FCC628B9310E00EA8AEA /* LaunchScreen.storyboard */,
+				B0F5FCC928B9310E00EA8AEA /* Info.plist */,
+				B0F5FCCA28B9310E00EA8AEA /* main.m */,
+				B0A4395C28C666F5006D5D92 /* BadgeCountMinimumViewController.h */,
+				B0A4395D28C666F5006D5D92 /* BadgeCountMinimumViewController.m */,
+				B0A4396228C7AFA5006D5D92 /* BadgerAppSelectionViewController.h */,
+				B0A4396328C7AFA5006D5D92 /* BadgerAppSelectionViewController.m */,
+				B0A4396528C84B19006D5D92 /* BadgeColorViewController.h */,
+				B0A4396628C84B19006D5D92 /* BadgeColorViewController.m */,
+				B018644828CBA20400D7C2EA /* BadgerPrefHandler.h */,
+				B018644928CBA20400D7C2EA /* BadgerPrefHandler.m */,
+				B018644B28CE4C8C00D7C2EA /* TestBadgerPrefs.plist */,
+				B0EDB7F028CFF4230005DF84 /* BadgerCountConfigManagerViewController.h */,
+				B0EDB7F128CFF4230005DF84 /* BadgerCountConfigManagerViewController.m */,
+				B0BF585D28D01D550017AA0B /* BadgerCountConfigItem.h */,
+				B0BF585E28D01D560017AA0B /* BadgerCountConfigItem.m */,
+				B0AC91C128D516E100BDF59F /* BadgerCustomImageViewController.h */,
+				B0AC91C228D516E100BDF59F /* BadgerCustomImageViewController.m */,
+				B0AF596528E384A30069395E /* BadgerVersionInfo.h */,
+				B0AF596628E384A30069395E /* BadgerVersionInfo.m */,
+			);
+			path = BadgerApp;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B0F5FCB428B9310A00EA8AEA /* BadgerApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0F5FCCE28B9310E00EA8AEA /* Build configuration list for PBXNativeTarget "BadgerApp" */;
+			buildPhases = (
+				B0F5FCB128B9310A00EA8AEA /* Sources */,
+				B0F5FCB228B9310A00EA8AEA /* Frameworks */,
+				B0F5FCB328B9310A00EA8AEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BadgerApp;
+			productName = BadgerApp;
+			productReference = B0F5FCB528B9310A00EA8AEA /* BadgerApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B0F5FCAD28B9310900EA8AEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					B0F5FCB428B9310A00EA8AEA = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+				};
+			};
+			buildConfigurationList = B0F5FCB028B9310900EA8AEA /* Build configuration list for PBXProject "BadgerApp" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"en-GB",
+				"en-AU",
+				"zh-Hant",
+				"zh-Hans",
+				hu,
+				fr,
+			);
+			mainGroup = B0F5FCAC28B9310900EA8AEA;
+			productRefGroup = B0F5FCB628B9310A00EA8AEA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B0F5FCB428B9310A00EA8AEA /* BadgerApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B0F5FCB328B9310A00EA8AEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0453D40292B01BE00188C80 /* Localizable.strings in Resources */,
+				B018644C28CE4C8C00D7C2EA /* TestBadgerPrefs.plist in Resources */,
+				B0F5FCC828B9310E00EA8AEA /* LaunchScreen.storyboard in Resources */,
+				B0F5FCC528B9310E00EA8AEA /* Assets.xcassets in Resources */,
+				B0F5FCC328B9310A00EA8AEA /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B0F5FCB128B9310A00EA8AEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0A4396428C7AFA5006D5D92 /* BadgerAppSelectionViewController.m in Sources */,
+				B0EDB7F228CFF4230005DF84 /* BadgerCountConfigManagerViewController.m in Sources */,
+				B00B7E7F28E799BB00C84D6B /* BadgerTableViewCell.m in Sources */,
+				B0AC91C328D516E100BDF59F /* BadgerCustomImageViewController.m in Sources */,
+				B0F5FCC028B9310A00EA8AEA /* ViewController.m in Sources */,
+				B0A4396728C84B1A006D5D92 /* BadgeColorViewController.m in Sources */,
+				B0AF596728E384A30069395E /* BadgerVersionInfo.m in Sources */,
+				B0F5FCBA28B9310A00EA8AEA /* AppDelegate.m in Sources */,
+				B018644A28CBA20400D7C2EA /* BadgerPrefHandler.m in Sources */,
+				B0F5FCCB28B9310E00EA8AEA /* main.m in Sources */,
+				B02465EC293319280029B850 /* BadgerCreditsViewController.m in Sources */,
+				B0453D45292B0DE000188C80 /* BadgerEasyTranslations.m in Sources */,
+				B0BF585F28D01D560017AA0B /* BadgerCountConfigItem.m in Sources */,
+				B0B27D2A28F9910A00A1C3F0 /* BadgerApplySettingsViewController.m in Sources */,
+				B0A4395E28C666F5006D5D92 /* BadgeCountMinimumViewController.m in Sources */,
+				B0F5FCBD28B9310A00EA8AEA /* SceneDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B0453D3E292B01BE00188C80 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0453D3F292B01BE00188C80 /* Base */,
+				B0453D42292B01D300188C80 /* en-GB */,
+				B0453D47292B253E00188C80 /* en-AU */,
+				B0BEC3D2292E918500C94D1F /* zh-Hant */,
+				B0BEC3D42931DF8800C94D1F /* zh-Hans */,
+				B091B446294CFBB000B13F6E /* hu */,
+				B0DCAE6129B9550F008D0172 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		B0F5FCC128B9310A00EA8AEA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0F5FCC228B9310A00EA8AEA /* Base */,
+				B0453D41292B01D300188C80 /* en-GB */,
+				B0453D46292B253E00188C80 /* en-AU */,
+				B0BEC3D1292E918500C94D1F /* zh-Hant */,
+				B0BEC3D32931DF8800C94D1F /* zh-Hans */,
+				B091B445294CFBB000B13F6E /* hu */,
+				B0DCAE6229B9550F008D0172 /* fr */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B0F5FCC628B9310E00EA8AEA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0F5FCC728B9310E00EA8AEA /* Base */,
+				B0DCAE6329B9550F008D0172 /* fr */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B0F5FCCC28B9310E00EA8AEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B0F5FCCD28B9310E00EA8AEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B0F5FCCF28B9310E00EA8AEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = RR5WP5NG77;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BadgerApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Badger;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access set a custom image.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.2.2;
+				PRODUCT_BUNDLE_IDENTIFIER = cum.0xilis.BadgerApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B0F5FCD028B9310E00EA8AEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = RR5WP5NG77;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BadgerApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Badger;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please allow access set a custom image.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.2.2;
+				PRODUCT_BUNDLE_IDENTIFIER = cum.0xilis.BadgerApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B0F5FCB028B9310900EA8AEA /* Build configuration list for PBXProject "BadgerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0F5FCCC28B9310E00EA8AEA /* Debug */,
+				B0F5FCCD28B9310E00EA8AEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B0F5FCCE28B9310E00EA8AEA /* Build configuration list for PBXNativeTarget "BadgerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0F5FCCF28B9310E00EA8AEA /* Debug */,
+				B0F5FCD028B9310E00EA8AEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B0F5FCAD28B9310900EA8AEA /* Project object */;
+}
