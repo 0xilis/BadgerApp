@@ -1,0 +1,246 @@
+
+"coom" = "awesome";
+/*
+ Enter a setting...
+ Badge Count Minimum
+ Badge Count Minimum for App
+ Badge Count Limit
+ Badge Color
+ Badge Color for App
+ Badge Opacity
+ Badge Opacity for App
+ Badge Position
+ Badge Shape
+ Badge Shape for App
+ Badge Image
+ Badge Image for App
+ Custom Badge Label
+ Badge Size
+ Badge Size for App
+ Badge Label Color
+ Badge Label Color for App
+ Badge Font
+ Badge Font for App
+ Apply Settings
+ Credits
+ Configs
+ Universal (No Count Minimum)
+ Invalid Count Configuration
+ Input the minimum number of notifications you want your setting to appear.
+ Please input a number.
+ You need to set your badge count configuration to 2 or more. Use default instead, count
+ configs will overrule it if you have any, and when a count config is not in use it will default to
+ your default configuration.
+ Okay
+ Reset
+ Delete
+ Minimum Badge Count
+ This affects the minimum badge count for all applications, universally throughout the system,
+ with the exception if you set a custom amount for a specific app/apps.
+ Minimum Badge Count
+ This affects the minimum badge count for all applications, universally throughout the system,
+ with the exception if you set a custom amount for a specific app/apps.
+ This affects the minimum badge count for \”%@\".
+ Default
+ Red
+ Pink
+ Orange
+ Yellow
+ Green
+ Blue
+ Purple
+ Magenta
+ Teal
+ Brown
+ White
+ Gray
+ Custom
+ Random
+ Triangle
+ Square
+ Round Square
+ Hexagon
+ Default (Top Right)
+ Top Left
+ Bottom Right
+ Bottom Left
+ Center
+ Random
+ Choose Image
+ Respring
+ With ♡ from Snoolie. Reach out to me by email at
+ QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on
+ reddit.
+ Enter the hex code of your color.
+ This affects the badge count limit for all applications, universally throughout the system, with
+ the exception if you set a custom limit for a specific app/apps.
+ This affects the badge count limit for \”%@\".
+ This affects the badge opacity for notification badges.
+ This affects the badge opacity for \”%@\”.
+ Set a custom label for notification badges.
+ This affects the badge color for notification badges.
+ This affects the badge color for \"%@\".
+ This affects the badge position for notification badges.
+ This affects the badge position for \”%@\”.
+ This affects the badge size for notification badges.
+ This affects the badge size for \”%@\”.
+ This affects the label color for badges.
+ This affects the label color for \”%@\".
+ This affects the font for badge labels.
+ This affects the image for notification badges.
+ This affects the badge image for \"%@\".
+ Apps
+ Search for an app...
+ Invalid Badge Count
+ Please input a number.
+ Okay
+ Invalid opacity
+ Your %@ has to be equal to or greater than 0%.
+ Your %@ has to be 100% or less.
+ Okay
+ Invalid size
+ Your %@ has to be equal to or greater than 50%.
+ Your %@ has to be 200% or less.
+ Okay
+ Invalid minimum Count
+ Your minimum has to be greater than 0.
+ Invalid maximum Count
+ Your maximum has to be greater than 0.
+ Okay
+ Developer
+ Translators
+ */
+/*"Enter a setting..." = "請輸入設定值...";
+"Badge Count Minimum" = "標記數最小值";
+"Badge Count Minimum for App" = "應用程式標記數最小值";
+"Badge Count Limit" = "標記數上限";
+"Badge Color" = "標記顏色";
+"Badge Color for App" = "應用程式標記顏色";
+"Badge Opacity" = "標記透明度";
+Badge Opacity for App
+Badge Position
+Badge Shape
+Badge Shape for App
+Badge Image
+Badge Image for App
+Custom Badge Label
+Badge Size
+Badge Size for App
+Badge Label Color
+Badge Label Color for App
+Badge Font
+Badge Font for App
+Apply Settings*/
+"Enter a setting..." = "請輸入設定值...";
+"Badge Count Minimum" = "標記數最小值";
+"Badge Count Minimum for App" = "應用程式標記數最小值";
+"Badge Count Limit" = "標記數上限";
+"Badge Color" = "標記顏色";
+"Badge Color for App" = "應用程式標記顏色";
+"Badge Opacity" = "標記透明度";
+"Badge Opacity for App" = "應用程式標記透明度";
+"Badge Position" = "標記位置";
+"Badge Shape" = "標記形狀";
+"Badge Shape for App" = "應用程式標記形狀";
+"Badge Image" = "標記圖片";
+"Badge Image for App" = "應用程式標記圖片";
+"Custom Badge Label" = "自訂標記文字";
+"Badge Size" = "標記大小";
+"Badge Size for App" = "應用程式標記大小";
+"Badge Label Color" = "標記文字顏色";
+"Badge Label Color for App" = "應用程式標記文字顏色";
+"Badge Font" = "標記字體";
+"Badge Font for App" = "應用程式標記字體";
+"Apply Settings" = "套用設定";
+
+"Configs" = "配置";
+"Universal (No Count Minimum)" = "全域(無標記數最小值)";
+"Invalid Count Configuration" = "無效的標記數設定值";
+"Input the minimum number of notifications you want your setting to appear." = "請輸入想設定的標記數最小值";
+"Please input a number." = "請輸入一個數值";
+"You need to set your badge count configuration to 2 or more. Use default instead, count
+configs will overrule it if you have any, and when a count config is not in use it will default to
+your default configuration." = "您的標記數至少需要設定成 2 以上。當您有自行設定標記數時，將會覆蓋預設的標記數";
+"Okay" = "好";
+"Reset" = "重設";
+"Delete" = "刪除";
+/*Minimum Badge Count = "UNUSED AS OF BADGER 1.2"*/
+"This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps." = "這將會覆蓋標記數最小值的預設值，若您有特別設定應用程式的標記數最小值值將不會受";
+"This affects the minimum badge count for (APPNAME)." = "這將會改變(APPNAME)的標記數最小值";
+
+"Default" = "預設";
+"Default (Red)" = "預設";
+"Default (White)" = "預設";
+"Red" = "紅色";
+"Pink" = "粉紅色";
+"Orange" = "橘色";
+"Yellow" = "黃色";
+"Green" = "綠色";
+"Blue" = "藍色";
+"Purple" = "紫色";
+"Magenta" = "洋紅色";
+"Teal" = "藍綠色";
+"Brown" = "棕色";
+"Black" = "黑色"; /*MACHINE*/
+"White" = "白色";
+"Gray" = "灰色";
+"Custom" = "自訂";
+"Random" = "隨機";
+"Triangle" = "三角形";
+"Square" = "正方形";
+"Round Square" = "圓角正方形";
+"Hexagon" = "六邊型";
+"Default (Top Right)" = "預設(右上角)";
+"Top Left" = "左上角";
+"Bottom Right" = "右下角";
+"Bottom Left" = "左下角";
+"Center" = "中間";
+"Choose Image" = "選擇圖片";
+"Respring" = "重新載入主畫面";
+
+"Enter the hex code of your color." = "請輸入您想設定的顏色的十六進位色碼";
+"This affects the badge count limit for all applications, universally throughout the system, with the exception if you set a custom limit for a specific app/apps." = "這將會覆蓋標記數上限的預設值，若您有為應用程式設定標記數則不受影響";
+"This affects the badge count limit for (APPNAME)." = "這將會改變(APPNAME)的標記數上限";
+"This affects the badge opacity for notification badges." = "這將會改變標記透明度";
+"This affects the badge opacity for (APPNAME)." = "這將會改變(APPNAME)的標記透明度";
+"Set a custom label for notification badges." = "自訂標記文字";
+"This affects the badge color for notification badges." = "這將會改變標記顏色";
+"This affects the badge color for (APPNAME)." = "這將會改變(APPNAME)的標記顏色";
+"This affects the badge position for notification badges." = "這將會改變標記位置";
+"This affects the badge position for (APPNAME)." = "這將會改變(APPNAME)的標記位置";
+"This affects the badge size for notification badges." = "這將會改變標記大小";
+"This affects the badge size for (APPNAME)." = "這將會改變(APPNAME)的標記大小";
+"This affects the label color for badges." = "這將會改變標記字體顏色";
+"This affects the label color for (APPNAME)." = "這將會改變(APPNAME)的標記字體顏色";
+"This affects the font for badge labels." = "這將會改變標記字體";
+"This affects the font for (APPNAME)." = "這將會改變(APPNAME)的標記字體";
+"This affects the image for notification badges." = "這將會改變標記的圖片";
+"This affects the badge image for (APPNAME)." = "這將會改變(APPNAME)的標記圖片";
+
+"Apps" = "應用程式";
+"Search for an app..." = "尋找您的程式...";
+"Invalid Badge Count" = "無效的標記數";
+"Please input a number." = "請輸入一個數字";
+"Invalid opacity" = "無效的透明度";
+"Your (BADGESETTING) has to be equal to or greater than 0%." = "你的(BADGESETTING)必須大於等於 0%";
+"Your (BADGESETTING) has to be 100% or less." = "你的(BADGESETTING)最多不可超過 100%";
+"Your opacity has to be equal to or greater than 0%." = "你的透明度必須大於等於 0%";
+"Your opacity has to be 100% or less." = "你的透明度最多不可超過 100%";
+"Invalid size" = "無效的大小"; //大小
+"Your size has to be equal to or greater than 50%." = "你的大小必須大於等於 50%";
+"Your size has to be 200% or less." = "你的大小最多不可超過 200%";
+"Invalid minimum Count" = "無效的標記數最小值";
+"Your minimum has to be greater than 0." = "你的標記數最小值必須大於等於 0";
+"Invalid maximum Count" = "無效的標記數最大值";
+"Your maximum has to be greater than 0." = "你的標記數最大值必須大於等於 0";
+"Developer" = "開發者";
+"Translators" = "譯者";
+
+"This affects the shape for notification badges." = "這將會改變形狀"; /*MACHINE*/
+"This affects the shape for (APPNAME)." = "這將會改變(APPNAME)的形狀"; /*MACHINE*/
+"Enter label..." = "...";
+
+/* INCOMPLETE */
+
+"With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit." = "With ♡ from Snoolie. 可以透過 email QuickUpdateShortcutSupport@protonmail.com, 推特 @QuickUpdate5, 以及 reddit u/0xilis 等方式聯繫我";
+"Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nGerman - lost\nChinese - u/vincent0408" = "Credits:\n開發者\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\n譯者\nChinese - u/vincent0408\nFrench - bibi_fire#0987";

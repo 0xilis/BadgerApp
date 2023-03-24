@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AppConfiguration</key>
+	<dict/>
+	<key>UniversalConfiguration</key>
+	<dict>
+		<key>DefaultConfig</key>
+		<dict>
+			<key>BadgeColor</key>
+			<dict>
+				<key>Blue</key>
+				<string>0.333333</string>
+				<key>ColorName</key>
+				<string>Pink</string>
+				<key>Green</key>
+				<string>0.176471</string>
+				<key>Red</key>
+				<string>1.000000</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

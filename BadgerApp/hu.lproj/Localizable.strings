@@ -1,0 +1,245 @@
+
+"coom" = "awesome";
+
+/*
+ Enter a setting...
+ Badge Count Minimum
+ Badge Count Minimum for App
+ Badge Count Limit
+ Badge Color
+ Badge Color for App
+ Badge Opacity
+ Badge Opacity for App
+ Badge Position
+ Badge Shape
+ Badge Shape for App
+ Badge Image
+ Badge Image for App
+ Custom Badge Label
+ Badge Size
+ Badge Size for App
+ Badge Label Color
+ Badge Label Color for App
+ Badge Font
+ Badge Font for App
+ Apply Settings
+ Credits
+ Configs
+ Universal (No Count Minimum)
+ Invalid Count Configuration
+ Input the minimum number of notifications you want your setting to appear.
+ Please input a number.
+ You need to set your badge count configuration to 2 or more. Use default instead, count
+ configs will overrule it if you have any, and when a count config is not in use it will default to
+ your default configuration.
+ Okay
+ Reset
+ Delete
+ Minimum Badge Count
+ This affects the minimum badge count for all applications, universally throughout the system,
+ with the exception if you set a custom amount for a specific app/apps.
+ Minimum Badge Count
+ This affects the minimum badge count for all applications, universally throughout the system,
+ with the exception if you set a custom amount for a specific app/apps.
+ This affects the minimum badge count for \”%@\".
+ Default
+ Red
+ Pink
+ Orange
+ Yellow
+ Green
+ Blue
+ Purple
+ Magenta
+ Teal
+ Brown
+ White
+ Gray
+ Custom
+ Random
+ Triangle
+ Square
+ Round Square
+ Hexagon
+ Default (Top Right)
+ Top Left
+ Bottom Right
+ Bottom Left
+ Center
+ Random
+ Choose Image
+ Respring
+ With ♡ from Snoolie. Reach out to me by email at
+ QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on
+ reddit.
+ Enter the hex code of your color.
+ This affects the badge count limit for all applications, universally throughout the system, with
+ the exception if you set a custom limit for a specific app/apps.
+ This affects the badge count limit for \”%@\".
+ This affects the badge opacity for notification badges.
+ This affects the badge opacity for \”%@\”.
+ Set a custom label for notification badges.
+ This affects the badge color for notification badges.
+ This affects the badge color for \"%@\".
+ This affects the badge position for notification badges.
+ This affects the badge position for \”%@\”.
+ This affects the badge size for notification badges.
+ This affects the badge size for \”%@\”.
+ This affects the label color for badges.
+ This affects the label color for \”%@\".
+ This affects the font for badge labels.
+ This affects the image for notification badges.
+ This affects the badge image for \"%@\".
+ Apps
+ Search for an app...
+ Invalid Badge Count
+ Please input a number.
+ Okay
+ Invalid opacity
+ Your %@ has to be equal to or greater than 0%.
+ Your %@ has to be 100% or less.
+ Okay
+ Invalid size
+ Your %@ has to be equal to or greater than 50%.
+ Your %@ has to be 200% or less.
+ Okay
+ Invalid minimum Count
+ Your minimum has to be greater than 0.
+ Invalid maximum Count
+ Your maximum has to be greater than 0.
+ Okay
+ Developer
+ Translators
+ */
+/*"Enter a setting..." = "請輸入設定值...";
+"Badge Count Minimum" = "標記數最小值";
+"Badge Count Minimum for App" = "應用程式標記數最小值";
+"Badge Count Limit" = "標記數上限";
+"Badge Color" = "標記顏色";
+"Badge Color for App" = "應用程式標記顏色";
+"Badge Opacity" = "標記透明度";
+Badge Opacity for App
+Badge Position
+Badge Shape
+Badge Shape for App
+Badge Image
+Badge Image for App
+Custom Badge Label
+Badge Size
+Badge Size for App
+Badge Label Color
+Badge Label Color for App
+Badge Font
+Badge Font for App
+Apply Settings*/
+
+"Enter a setting..." = "Beállítás…";
+"Badge Count Minimum" = "Minimum jelvényszám";
+"Badge Count Minimum for App" = "Alk. Minimum jelvényszám";
+"Badge Count Limit" = "Jelvényszám Limit";
+"Badge Color" = "Jelvényszín";
+"Badge Color for App" = "Alk. Jelvényszín";
+"Badge Opacity" = "Jelvényátlátszóság";
+"Badge Opacity for App" = "Alk. Jelvényátlátszóság";
+"Badge Position" = "Jelvénypozíció";
+"Badge Shape" = "Jelvényforma";
+"Badge Shape for App" = "Alk. Jelvényforma";
+"Badge Image" = "Jelvénykép";
+"Badge Image for App" = "Alk. Jelvénykép";
+"Custom Badge Label" = "Egyéni Jelvényszöveg";
+"Badge Size" = "Jelvényméret";
+"Badge Size for App" = "Alk. Jelvényméret";
+"Badge Label Color" = "Jelvényszöveg Szín";
+"Badge Label Color for App" = "Alk. Jelvényszöveg Szín";
+"Badge Font" = "Jelvénybetűtípus";
+"Badge Font for App" = "Alk. Jelvénybetűtípus";
+"Apply Settings" = "Beállítások alkalmazása";
+"Credits" = "Készítők";
+"Configs" = "Profilok";
+"Universal (No Count Minimum)" = "Általános (Nincs Minimum Szám)";
+"Invalid Count Configuration" = "Hibás Szám Beállítás";
+"Input the minimum number of notifications you want your setting to appear." = "Határozd meg hány értesítés után jelenjen meg a beállításod.";
+"Please input a number." = "Kérlek számot írj be.";
+"You need to set your badge count configuration to 2 or more. Use default instead, count
+configs will overrule it if you have any, and when a count config is not in use it will default to
+your default configuration." = "A jelvényszám legyen legalább 2. Használd inkább az alapértelmezett beállítást. Amennyiben van egyéni szám meghatározva, az majd felülírja az alapértelmezett beállítást.";
+"Okay" = "Rendben";
+"Reset" = "Visszaállítás";
+"Delete" = "Törlés";
+/*Minimum Badge Count = "UNUSED AS OF BADGER 1.2"*/
+"This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps." = "Ez határozza meg a minimum jelvényszámot minden alkalmazás számára, kivéve ha egyes alkalmazásoknak külön be van állítva.";
+"This affects the minimum badge count for (APPNAME)." = "A(z) (APPNAME) minimum jelvényszáma.";
+"Default" = "Alapértelmezett";
+"Red" = "Piros";
+"Pink" = "Rózsaszín";
+"Orange" = "Narancssárga";
+"Yellow" = "Sárga";
+"Green" = "Zöld";
+"Blue" = "Kék";
+"Purple" = "Lila";
+"Magenta" = "Magenta";
+"Teal" = "Kékeszöld";
+"Brown" = "Barna";
+"White" = "Fehér";
+"Gray" = "Szürke";
+"Custom" = "Egyéni";
+"Random" = "Véletlenszerű";
+"Triangle" = "Háromszög";
+"Square" = "Négyzet";
+"Round Square" = "Kör Négyzet";
+"Hexagon" = "Hexagon";
+
+"Default (Top Right)" = "Alapértelmezett (Jobb Felül)";
+"Top Left" = "Bal Felül";
+"Bottom Right" = "Jobb Alul";
+"Bottom Left" = "Bal Alul";
+"Center" = "Középen";
+"Choose Image" = "Válassz képet";
+"Respring" = "Respring";
+/*With ♡ from Snoolie. Reach out to me by email at
+QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on
+reddit.*/
+"Enter the hex code of your color." = "Add meg a szín HEX kódját.";
+"This affects the badge count limit for all applications, universally throughout the system, with the exception if you set a custom limit for a specific app/apps." = "Ez határozza meg a maximum jelvényszámot minden alkalmazás számára, kivéve ha egyes alkalmazásoknak külön be van állítva.";
+"This affects the badge count limit for (APPNAME)." = "A(z) (APPNAME) minimum jelvényszáma. ";
+"This affects the badge opacity for notification badges." = "Ez határozza meg a jelvényének átlátszóságát. ";
+"This affects the badge opacity for (APPNAME)." = "A(z) (APPNAME) jelvényátlátszósága. ";
+"Set a custom label for notification badges." = "Állíts be egyéni szöveget a jelvényeknek. ";
+"This affects the badge color for notification badges." = "Jelvényszínek meghatározása. ";
+"This affects the badge color for (APPNAME)." = "A(z) (APPNAME) jelvényszíne. ";
+"This affects the badge position for notification badges." = "Jelvénypozíció meghatározása. ";
+"This affects the badge position for (APPNAME)." = "A(z) (APPNAME) jelvényszíne. ";
+"This affects the badge size for notification badges." = "Jelvénypozíció meghatározása. ";
+"This affects the badge size for (APPNAME)." = "A(z) (APPNAME) jelvénymérete. ";
+"This affects the label color for badges." = "Címke színét meghatározása";
+"This affects the label color for (APPNAME)." = "A(z) (APPNAME) címke színét.";
+"This affects the font for badge labels." = "Jelvénybetűtípus meghatározása.";
+/*"This affects the font for (APPNAME)." = "這將會改變(APPNAME)的標記字體"; UNUSED IN BADGER 1.2.1*/
+"This affects the image for notification badges." = "Jelvénykép meghatározása.";
+"This affects the badge image for (APPNAME)." = "A(z) (APPNAME) jelvényképének meghatározása.";
+
+"Apps" = "Alkalmazások";
+"Search for an app..." = "Alkalmazás keresése... ";
+"Invalid Badge Count" = "Hibás Jelvényszám";
+"Please input a number." = "Kérlek számot írj be.";
+"Invalid opacity" = "Hibás Átlátszóság";
+"Your (BADGESETTING) has to be equal to or greater than 0%." = "A(z) (BADGESETTING) legyen legalább 0%. ";
+"Your (BADGESETTING) has to be 100% or less." = "A(z) (BADGESETTING) legyen legfeljebb 100%. ";
+"Your opacity has to be equal to or greater than 0%." = "A(z) opacitásodnak legalább 0%.";
+"Your opacity has to be 100% or less." = "A(z) opacitásodnak legfeljebb 100%.";
+"Invalid size" = "Hibás Méret";
+"Your size has to be equal to or greater than 50%." = "A(z) méretének legyen legalább 50%. ";
+"Your size has to be 200% or less." = "A(z) méretének legyen maximum 200%.";
+"Invalid minimum Count" = "Hibás Minimum Jelvényszám";
+"Your minimum has to be greater than 0." = "A minimum jelvényszám legalább 0. ";
+"Invalid maximum Count" = "Hibás Maximum Jelvényszám";
+"Your maximum has to be greater than 0." = "A maximum jelvényszám legalább 0.";
+"Developer" = "Fejlesztő";
+"Translators" = "Fordítók";
+
+"This affects the shape for notification badges." = "A(z) értesítési jelvények alakját."; /*MACHINE*/
+"This affects the shape for (APPNAME)." = "A(z) (APPNAME) alakját."; /*MACHINE*/
+"Enter label..." = "...";
+
+/*"With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit." = "With ♡ from Snoolie. 可以通过 email QuickUpdateShortcutSupport@protonmail.com， 推特 @QuickUpdate5， 以及 reddit u/0xilis 等方式联系我";*/
+"Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nGerman - lost\nChinese - u/vincent0408" = "Credits:\nFejlesztő\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nFordítók\nChinese - u/vincent0408\nFrench - bibi_fire#0987";

@@ -1,0 +1,45 @@
+
+/* Class = "UIButton"; configuration.title = "Respring"; ObjectID = "4IC-pB-Sx6"; */
+"4IC-pB-Sx6.configuration.title" = "Respring";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "4IC-pB-Sx6"; */
+"4IC-pB-Sx6.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "Enter number here..."; ObjectID = "Bz9-B8-E7x"; */
+"Bz9-B8-E7x.placeholder" = "Enter number here...";
+
+/* Class = "UITextField"; text = "1"; ObjectID = "Bz9-B8-E7x"; */
+"Bz9-B8-E7x.text" = "1";
+
+/* Class = "UITextView"; text = "This affects the image for notification badges."; ObjectID = "D0h-aP-Y5J"; */
+"D0h-aP-Y5J.text" = "This affects the image for notification badges.";
+
+/* Class = "UILabel"; text = "Badge Image"; ObjectID = "KWJ-3e-w1u"; */
+"KWJ-3e-w1u.text" = "Badge Image";
+
+/* Class = "UITextView"; text = "With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit."; ObjectID = "NQJ-Ec-5nu"; */
+"NQJ-Ec-5nu.text" = "With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit.";
+
+/* Class = "UITextView"; text = "This affects the badge color for notification badges."; ObjectID = "RS1-5O-pvi"; */
+"RS1-5O-pvi.text" = "This affects the badge colour for notification badges.";
+
+/* Class = "UILabel"; text = "App"; ObjectID = "ZfW-rr-dYy"; */
+"ZfW-rr-dYy.text" = "App";
+
+/* Class = "UILabel"; text = "Badge Color"; ObjectID = "apJ-VI-BSR"; */
+"apJ-VI-BSR.text" = "Badge Colour";
+
+/* Class = "UITextView"; text = "This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps."; ObjectID = "iIK-tm-CnQ"; */
+"iIK-tm-CnQ.text" = "This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps.";
+
+/* Class = "UILabel"; text = "Minimum Badge Count"; ObjectID = "qPn-nj-frR"; */
+"qPn-nj-frR.text" = "Minimum Badge Count";
+
+/* Class = "UIButton"; configuration.title = "Choose Image"; ObjectID = "r9w-yG-HoO"; */
+"r9w-yG-HoO.configuration.title" = "Choose Image";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "r9w-yG-HoO"; */
+"r9w-yG-HoO.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Apply Settings"; ObjectID = "vka-W1-eFR"; */
+"vka-W1-eFR.text" = "Apply Settings";

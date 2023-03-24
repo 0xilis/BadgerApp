@@ -1,0 +1,45 @@
+
+/* Class = "UIButton"; configuration.title = "Respring"; ObjectID = "4IC-pB-Sx6"; */
+"4IC-pB-Sx6.configuration.title" = "重新載入主畫面";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "4IC-pB-Sx6"; */
+"4IC-pB-Sx6.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "Enter number here..."; ObjectID = "Bz9-B8-E7x"; */
+"Bz9-B8-E7x.placeholder" = "...";
+
+/* Class = "UITextField"; text = "1"; ObjectID = "Bz9-B8-E7x"; */
+"Bz9-B8-E7x.text" = "1";
+
+/* Class = "UITextView"; text = "This affects the image for notification badges."; ObjectID = "D0h-aP-Y5J"; */
+"D0h-aP-Y5J.text" = "這將會改變標記的圖片";
+
+/* Class = "UILabel"; text = "Badge Image"; ObjectID = "KWJ-3e-w1u"; */
+"KWJ-3e-w1u.text" = "標記圖片";
+
+/* Class = "UITextView"; text = "With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit."; ObjectID = "NQJ-Ec-5nu"; */
+"NQJ-Ec-5nu.text" = "With ♡ from Snoolie. 可以透過 email QuickUpdateShortcutSupport@protonmail.com, 推特 @QuickUpdate5, 以及 reddit u/0xilis 等方式聯繫我";
+
+/* Class = "UITextView"; text = "This affects the badge color for notification badges."; ObjectID = "RS1-5O-pvi"; */
+"RS1-5O-pvi.text" = "這將會改變標記顏色";
+
+/* Class = "UILabel"; text = "App"; ObjectID = "ZfW-rr-dYy"; */
+"ZfW-rr-dYy.text" = "應用程式";
+
+/* Class = "UILabel"; text = "Badge Color"; ObjectID = "apJ-VI-BSR"; */
+"apJ-VI-BSR.text" = "標記顏色";
+
+/* Class = "UITextView"; text = "This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps."; ObjectID = "iIK-tm-CnQ"; */
+"iIK-tm-CnQ.text" = "這將會覆蓋標記數最小值的預設值，若您有特別設定應用程式的標記數最小值值將不會受";
+
+/* Class = "UILabel"; text = "Minimum Badge Count"; ObjectID = "qPn-nj-frR"; */
+"qPn-nj-frR.text" = "標記數最小值";
+
+/* Class = "UIButton"; configuration.title = "Choose Image"; ObjectID = "r9w-yG-HoO"; */
+"r9w-yG-HoO.configuration.title" = "選擇圖片";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "r9w-yG-HoO"; */
+"r9w-yG-HoO.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Apply Settings"; ObjectID = "vka-W1-eFR"; */
+"vka-W1-eFR.text" = "套用設定";

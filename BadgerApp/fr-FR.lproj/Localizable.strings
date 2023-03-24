@@ -1,0 +1,15 @@
+
+"coom" = "awesome";
+"Badge Color" = "Badge Colour";
+"Badge Color for App" = "Badge Colour for App";
+"Badge Label Color" = "Badge Label Colour";
+"Badge Label Color for App" = "Badge Label Colour for App";
+"Gray" = "Grey";
+"Enter the hex code of your color." = "Enter the hex code of your colour.";
+"This affects the badge color for notification badges." = "This affects the badge colour for notification badges.";
+"This affects the badge color for " = "This affects the badge colour for ";
+"This affects the label color for badges." = "This affects the label colour for badges.";
+"This affects the label color for (APPNAME)." = "This affects the label colour for (APPNAME).";
+"This affects the badge color for (APPNAME)." = "This affects the badge colour for (APPNAME)";
+
+"Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nGerman - lost\nChinese - u/vincent0408" = "Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nChinese - u/vincent0408";

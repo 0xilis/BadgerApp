@@ -1,0 +1,147 @@
+"Enter a setting..." = "Rechercher un paramètre...";
+"Badge Count Minimum" = "Nombre minimum de la pastille";
+"Badge Count Minimum for App" = "Nombre minimum de la pastille par app";
+"Badge Count Limit" = "Limite du nombre de la pastille";
+"Badge Color" = "Couleur de la pastille";
+"Badge Color for App" = "Couleur de la pastille par app";
+"Badge Opacity" = "Opacitée de la pastille";
+"Badge Opacity for App" = "Opacitée de la pastille par app";
+"Badge Position" = "Position de la pastille";
+"Badge Shape" = "Forme de la pastille";
+"Badge Shape for App" = "Forme de la pastille par app";
+"Badge Image" = "Image de la pastille";
+"Badge Image for App" = "Image de la pastille par app";
+"Custom Badge Label" = "Texte personalisé";
+"Badge Size" = "Taille de la pastille";
+"Badge Size for App" = "Taille de la pastille par app";
+"Badge Label Color" = "Couleur du texte de la pastille";
+"Badge Label Color for App" = "Couleur du texte de la pastille par app";
+"Badge Font" = "Police de la pastille";
+"Badge Font for App" = "Police de la pastille par app";
+"Apply Settings" = "Appliquer les paramètres";
+
+"Configs" = "Configurations";
+"Universal (No Count Minimum)" = "Universel (pas de minimum)";
+"Invalid Count Configuration" = "Nombre invalide";
+"Input the minimum number of notifications you want your setting to appear." = "Entre le nombre de notifications minimum que vous voulez afficher.";
+"Please input a number." = "Entrer un nombre.";
+"You need to set your badge count configuration to 2 or more. Use default instead, count
+configs will overrule it if you have any, and when a count config is not in use it will default to
+your default configuration." = "Vous devez entrer un nombre supérieur ou égal à 2. Sinon, utilisez le nombre par défaut, car cette étape est inutile.";
+"Okay" = "Valider";
+"Reset" = "Réinistialliser";
+"Delete" = "Supprimer";
+/*Minimum Badge Count = "NO LONGER USED AS OF BADGER 1.2"*/
+"This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps." = "Cela affecte le nombre minimum de la pastille pour toutes les applications de votre appareil, sauf si vous avez défini quelque chose de special pour une application.";
+"This affects the minimum badge count for (APPNAME)." = "Cela affecte le nombre de la pastille minimum pour (APPNAME).";
+
+"Default" = "Par défaut";
+"Default (Red)" = "Par défaut (Rouge)";
+"Default (White)" = "Par défaut (Blanc)";
+"Red" = "Rouge";
+"Pink" = "Rose";
+"Orange" = "Orange";
+"Yellow" = "Jaune";
+"Green" = "Vert";
+"Blue" = "Bleu";
+"Purple" = "Violet";
+"Magenta" = "Magenta";
+"Teal" = "Bleu canard";
+"Brown" = "Marron";
+"Black" = "Noir";
+"White" = "Blanc";
+"Gray" = "Gris";
+"Custom" = "Personalisé";
+"Random" = "Aléatoire";
+"Triangle" = "Triangle";
+"Square" = "Carré";
+"Round Square" = "Carré a bords arrondis";
+"Hexagon" = "Héxagone";
+"Default (Top Right)" = "Par défaut (En haut à droite)";
+"Top Left" = "En haut à gauche";
+"Bottom Right" = "En bas à droite";
+"Bottom Left" = "En bas à gauche";
+"Center" = "Au centre";
+"Choose Image" = "Choisir une image";
+"Respring" = "Respring";
+
+"Enter the hex code of your color." = "Entrer le code couleur en héxadécimal.";
+"This affects the badge count limit for all applications, universally throughout the system, with the exception if you set a custom limit for a specific app/apps." = "Cela affecte le nombre maximum de la pastille pour toutes les applications de votre appareil, sauf si vous avez défini quelque chose de special pour une application.";
+"This affects the badge opacity for notification badges." = "Cela affecte l'opacitée de la pastille.";
+"This affects the badge opacity for (APPNAME)." = "Cela affecte l'opacitée de la pastille pour (APPNAME).";
+"Set a custom label for notification badges." = "Mettre un texte personalisé pour la pastille.";
+"This affects the badge color for notification badges." = "Cela affecte la couleur de la pastille.";
+"This affects the badge color for (APPNAME)." = "Cela affecte la couleur de la pastille pour (APPNAME).";
+"This affects the badge position for notification badges." = "Cela affecte la position de la pastille.";
+"This affects the badge position for (APPNAME)." = "Cela affecte la position de la pastille pour (APPNAME).";
+"This affects the badge size for notification badges." = "Cela affecte la taille de la pastille.";
+"This affects the badge size for (APPNAME)." = "Cela affecte la taille de la pastille pour (APPNAME).";
+"This affects the label color for badges." = "Cela affecte la couleur du texte de la pastille.";
+"This affects the label color for (APPNAME)." = "Cela affecte la couleur du texte pour (APPNAME).";
+"This affects the font for badge labels." = "Cela affecte la police du texte.";
+"This affects the font for (APPNAME)." = "Cela affecte la police du texte pour (APPNAME).";
+"This affects the image for notification badges." = "Cela affecte l'image de la pastille.";
+"This affects the badge image for (APPNAME)." = "Cela affecte l'image de la pastille pour (APPNAME).";
+
+"Apps" = "Applications";
+"Search for an app..." = "Rechercher une application...";
+"Invalid Badge Count" = "Nombre invalide";
+"Please input a number." = "Veuillez entrer un nombre.";
+"Invalid opacity" = "Opacitée invalide";
+"Your (BADGESETTING) has to be equal to or greater than 0%." = "Votre (BADGESETTING) doit être supérieur ou égal à 0%.";
+"Your (BADGESETTING) has to be 100% or less." = "Votre (BADGESETTING) doit être inférieur ou égal à 100%.";
+"Your opacity has to be equal to or greater than 0%." = "Votre opacitée doit être supérieure à 0%.";
+"Your opacity has to be 100% or less." = "Votre opacitée doit être au maximum 100%.";
+"Invalid size" = "Taille invalide"; //
+"Your size has to be equal to or greater than 50%." = "La taille doit être supérieure ou égale à 50%.";
+"Your size has to be 200% or less." = "La taille doit être inférieure ou égale à 200%.";
+"Invalid minimum Count" = "Nombre minimum invalide.";
+"Your minimum has to be greater than 0." = "Le minimum doit être supérieur à 0.";
+"Invalid maximum Count" = "Nombre maximum Invalide.";
+"Your maximum has to be greater than 0." = "Le maximum doit être supérieur à 0.";
+"Developer" = "Développeur";
+"Translators" = "Traducteurs";
+
+"This affects the shape for notification badges." = "Cela affecte la forme de la pastille."; /*MACHINE because I fucked up and forgot to add these to pdf but thankfully I *think* this is right, and these two strings shouldn't be that important*/
+"This affects the shape for (APPNAME)." = "Cela affecte la forme pour (APPNAME)."; /*MACHINE because I fucked up and forgot to add these to pdf but thankfully I *think* this is right, and these two strings shouldn't be that important*/
+"Enter label..." = "Entrer un texte...";
+
+"With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit." = "Fait avec le ♡ par Snoolie. Me contacter par email QuickUpdateShortcutSupport@protonmail.com, ou @QuickUpdate5 sur twitter, ou encore reddit u/0xilis.";
+"Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nGerman - lost\nChinese - u/vincent0408" = "Credits:\nDéveloppeur\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTraducteurs\nChinois - u/vincent0408 \nFrançais - bibi_fire#0987";
+
+/* The following strings are not in Badger 1.2, but I'm leaving them here because they're planned for future updates. Because of this context may be a little harder to understand without a proper build to see so I'll try explaining them through comments. Fyi, I'll probably miss some stuff or have new ideas and need to request to translate more anyways ;3; but imo adding these anyway so when that time comes, you should be able to translate less. */
+
+"Freeform" = "Forme personalisée"; /*This is an option planned for Badger 1.3. Basically, allows Badge position to be anywhere. I'm considering in 1.3 to add previews of how a badge option would affect things - imagine if with Badge Size, instead of just showing a percent in the app, it shows you an app icon (which if not app specific, will be a generic icon to represent a badge icon on an app), and as you scale and increase the size, there is a "preview" badge on that icon that increases as you up the percent, and shrinks as you decrease. Wouldn't that be awesome?!?!?! This would be for every badge option though in the app, so I would need to redo each option's option page to add the preview - which may be a bit annoying and take up some time for me to do :3. Which is why I've always wanted to implement this since Badger 1.1 but never had the time to since I was working on other things ex stability and other features. But with 1.3 (or some other future update) I'll finally implement it.
+
+
+Okay, so you might be thinking, cool, but dipshit, what the fuck does that have to do with freeform? Well, what I'm planning is that you select this option, and then - you can hold on the badge preview, and drag the badge to a position on the badge icon. This is not only giving previews the benefit of better showing an option, but allow interactivity to "boost" the feel of the app - if that makes any sense, idk. But yeah, you get it, badge position, select freeform, then drag the preview badge to wherever you want badge position to be -w-. */
+
+"Badge Outline" = "Contour de la pastille";
+"Badge Border" = "Bordure de la pastille"; /*This is a feature I REALLY want to implement into Badger 1.3, since imo it can make stuff look REALLY nice. Basically, add a border around the notification badge, of the users choice of color/width, ex it can be red, green, gray, 1px, 2px, etc. I'm not sure to call it Badge Outline or Badge Border yet so I added both here. */
+
+"Badge Outline Color" = "Couleur du contour de la pastille";
+"Badge Border Color" = "Couleur de la bordure de la pastille";
+
+"Badge Outline Size" = "Taille du contour de la pastille.";
+"Badge Border Size" = "Taille de la bordure de la pastille";
+
+"Clear" = "Mettre à zéro"; /* Clear a setting */
+"Reset" = "Réinistialliser"; /* Reset a setting */
+"Delete" = "Supprimer"; /* Delete a setting */
+"Remove" = "Enlever"; /* Remove a setting */
+
+"App Color" = "Couleur de l'application"; /* Some people have been suggesting an option for badge color for it to be the color of the app. So - I'm adding that option, it's selectable in the badge color picker */
+
+/* providing app-exclusive options for more options. ive planned to do badge count limit for app actually before 1.0 even released buttttt i had this really annoying bug regarding shaping of labels that i could never figure out so i scrapped it. if i ever do figure out how to fix it though im adding it here anyways so I can use it ez. also, custom badge label, similar situation, which im looking much more into. */
+"Badge Count Limit for App" = "Nombre maximum de notifications par App";
+"Custom Badge Label for App" = "Texte personalisé par App";
+"This affects the maximum badge count for (APPNAME)." = "Cela affecte le nombre maximum de notifications pour (APPNAME).";
+"This affects the badge count limit for (APPNAME)." = "Cela affecte pour (APPNAME).";
+"Set a custom label for (APPNAME)." = "Changer le texte affiché pour (APPNAME).";
+
+
+/* Okay, so no regular users will see this, but just in case: Badger has a class, BadgerVersionInfo, for dealing with betas. Back when betas were distributed, this class was used. Betas have a versionExpireDate that determine a date they will expire at. If a beta has expired, it will show an alert. On commercial, release builds of badger, while the BadgerVersionInfo class remains the code for checking if the version expired in the view controller's viewDidLoad is completely commented out. Nonetheless, for beta testers, it is kept. I've also considered using this for Badger trial versions as well. */
+"Badger Beta Build Expired" = "Cette version béta a expirée";
+"Beta (badger_beta_version_number, ex if badger 1.2 beta, shows 1.2 here) (badger_beta_build_number, ex copies of badger have diff build numbers, ex 1F is 1.2.2's and 1E is 1.2.1's. it will show that build number here) has expired. Please install the latest non-beta build from Havoc, or ask for a new beta." = "La version béta (badger_beta_version_number) (badger_beta_build_number) a expiré. Veuillez installer la dernière version de Badger sur Havoc ou bien demander pour une nouvelle version béta.";
+"Badger Trial Expired" = "L'essai de Badger a expiré";
+"Your trial has expired. Please purchase the tweak if you wish to continue use. You'll still be able to change options in the app, but none of them will be active until purchase of official version. You may be able to restart the trial when a new major version of Badger releases for trial, but be aware this is not a guarantee." = "Votre essai de l'application a éxpiré. Merci d'acheter ce tweak si vous voulez continuer a l'utiliser. Vous pouvez toujours changer les paramètres disponibles, mais cela ne fera rien. Vous devriez pouvoir recommencer l'essai de ce tweak si une mise à jour majeure sort, cele n'est pas garenti.";
