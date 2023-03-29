@@ -24,7 +24,7 @@
 
 #define ROWS 20
 
-#define TRIAL 1
+#define TRIAL 0
 
 #define TRANS 0
 
@@ -76,7 +76,7 @@ NSMutableArray *filteredCells;
     filteredCells = [cellTitles mutableCopy];
     
 #if TRIAL
-    //TODO: Note, this is dumb. Why am I protecting against hooking, these checks are not obfuscated at all and can easily be patched out
+    //TODO: Note, this is dumb. Why am I protecting against hooking, these checks are not obfuscated at all and can easily be patched out. Oh wait yeah I decided to not burn myself into obfuscation and DRM to just be used for betas (well ig this will be used for the trial system as well but anyway), and instead just focus on the good tweak. Still leaving this here though since ig it does prevent simple flex patches from forcing no expire
     BadgerVersionInfo *versionInfo = [[BadgerVersionInfo alloc]init];
     [versionInfo populateSelfWithInfo];
     [versionInfo checkIsExpired];
@@ -173,6 +173,7 @@ NSMutableArray *filteredCells;
     } else {
         badgerSetUpPrefPlistAtSpecificLocation(@"/var/mobile/Library/Badger/Prefs/BadgerPrefs.plist");
     }
+    //I read that apparently this was needed on Electra but I am no longer needing iOS 11 support so commented this out for now, if Havoc payment ever supports iOS 11 look into this again.
     /*setuid(0);
     setuid(0);
     setgid(0);
@@ -222,6 +223,7 @@ NSMutableArray *filteredCells;
     //self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:0 green:181 blue:226 alpha:1.0];
     self.navigationController.navigationBar.userInteractionEnabled = NO;
     //if (@available(iOS 13.0, *)) {
+    //TODO: Provide an option for iOS 12- users to have dark mode rather than defaulting them to light mode with no option to switch.
     if (@available(iOS 13.0, *)) {
         self.view.backgroundColor = [UIColor systemBackgroundColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
@@ -235,6 +237,8 @@ NSMutableArray *filteredCells;
         self.view.backgroundColor = [UIColor whiteColor];
         
     }*/
+    //Beware! dumb broken shit for iOS 10- prefersLargeTitles emulation that was buggy so I commented out
+    //We don't even need to use iOS 10- at this point in time lolz
     //if (@available(iOS 11.0, *)) {
         self.navigationItem.title = @"Badger";
         //self.navigationController.navigationBar.prefersLargeTitles = YES;
@@ -302,6 +306,7 @@ NSMutableArray *filteredCells;
     }
 }
 
+//TODO: Shit method - read the comment above viewDidAppear for more explanation.
 - (void)viewWillAppear:(BOOL)animated {
     //if (@available(iOS 13.0, *)) {
     if (@available(iOS 13.0, *)) {
@@ -317,6 +322,7 @@ NSMutableArray *filteredCells;
         
     }*/
 }
+//TODO: On iOS 12+ this is fine, but on iOS 13+ we change the color of the one navigation bars (different view controllers don't have different navbar bgs, they should) so it looks a little weird when moving. I thought, ok, small issue, but you only really notice it if you look close, so I'll fix this later but no need to fix it for now, but the swipe gesture makes this issue much more noticable to a terrible degree so now I actually need to fucking fix it in Badger 1.3 or Badger 1.2.2.
 - (void)viewDidAppear:(BOOL)animated {
     if (@available(iOS 13.0, *)) {
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
@@ -395,6 +401,7 @@ NSMutableArray *filteredCells;
     cell.textLabel.text = cellTitleFromRow(indexPath.row);
     cell.imageView.image = cellImageFromTitle(cellTitleFromRow(indexPath.row));
     [cell.textLabel setAdjustsFontSizeToFitWidth:1];
+    //If we got a row that for whatever fucking reason appears even if we already have all the rows we need, hide it. Actually the better solution is to just probably return nil or something because this might look the scrolling look weird but whatever, this was really only needed back in the September builds.
     if (indexPath.row > (ROWS-1)) {
         [cell setHidden:1];
     }
@@ -417,7 +424,7 @@ NSMutableArray *filteredCells;
     [cell.imageView setClipsToBounds:YES];
     return cell;
 }
-
+//TODO: Ugly method, improve later in Badger 1.3 when we switch to no storyboards (i suck at them)
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellTitle = cellTitleFromRow(indexPath.row);
     Class cellInfo = NSClassFromString(@"cellInfo");
@@ -606,6 +613,7 @@ NSMutableArray *filteredCells;
     //[cell setBackgroundColor:cellColorFromRow(indexPath.row)];
     return indexPath;
 }
+//Serena told me that big cells look ugly so commenting this shit out
 /*-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     return 50;//return 66; //orig 44.0
 }*/
@@ -628,7 +636,7 @@ NSMutableArray *filteredCells;
 }
 @end
 NSString *cellTitleFromRow(long row) {
-    //in future *maybe*
+    //yes this function is used
     /*switch(row) {
         case 0:
             return @"Badge Count Minimum";
@@ -675,7 +683,7 @@ NSString *cellTitleFromRow(long row) {
     return [cellTitles objectAtIndex:row];
 }
 
-UIImage *cellImageFromRow(long row) {
+UIImage *cellImageFromRow(long row) { //UNUSED: cellImageFromTitle is now used instead
     switch(row) {
         case 0:
             return [UIImage imageNamed:@"MinimumBadge.png"];
@@ -719,11 +727,11 @@ UIImage *cellImageFromRow(long row) {
     }
 }
 
-NSArray *dylibPossiblePaths(void){
-    return [[NSArray alloc]initWithObjects:@"/usr/lib/TweakInject/Badger.dylib",@"/var/jb/Library/TweakInject/Badger.dylib", nil];
+NSArray *dylibPossiblePaths(void){ //UNUSED: This function goes unused
+    return [[NSArray alloc]initWithObjects:@"/usr/lib/TweakInject/Badger.dylib",@"/var/jb/usr/lib/TweakInject/Badger.dylib", nil];
 }
 
-UIColor *cellColorFromRow(long row) {
+UIColor *cellColorFromRow(long row) { //UNUSED: back in the old badger ui days this was used but with redesigned badger ui this is no longer used
     int colorId = row % 6;
     CGFloat red, green, blue, alpha;
     UIColor* cellColor;
@@ -796,7 +804,7 @@ UIImage* cellImageFromTitle(NSString* cellTitle) {
     return NULL;
 }
 
-UIColor *basedCellColorFromRow(long row) {
+UIColor *basedCellColorFromRow(long row) { //UNUSED: i compile Badger app with #TRANS on to make it 100% more epic. in the final release version, this function is not ever used.
     int colorId = row % 4;
     CGFloat red, green, blue, alpha;
     UIColor* cellColor;
@@ -821,7 +829,7 @@ UIColor *basedCellColorFromRow(long row) {
     return [UIColor colorWithRed:red green:green blue:blue alpha:0.5];
 }
 
-UIColor *frenchCellColorFromRow(long row) {
+UIColor *frenchCellColorFromRow(long row) { //UNUSED: i was thinking of doing a cool thing where translators have special colors in home screen but thought it looked bad so translators just get normal builds and this function goes unused
     int colorId = row % 3;
     CGFloat red, green, blue, alpha;
     UIColor* cellColor;
