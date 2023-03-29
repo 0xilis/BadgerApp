@@ -76,6 +76,7 @@ NSMutableArray *filteredCells;
     filteredCells = [cellTitles mutableCopy];
     
 #if TRIAL
+    //TODO: Note, this is dumb. Why am I protecting against hooking, these checks are not obfuscated at all and can easily be patched out
     BadgerVersionInfo *versionInfo = [[BadgerVersionInfo alloc]init];
     [versionInfo populateSelfWithInfo];
     [versionInfo checkIsExpired];
