@@ -47,7 +47,7 @@
 -(void)populateSelfWithInfo {
     [self setIsBeta:NO];
     [self setBadgerBuild:@"1F"];
-    [self setBadgerVersion:@"1.2.2"];
+    [self setBadgerVersion:@"1.2.1"]; //Badger 1.2.1-1
     [self setBuildCanExpire:NO];
     [self setVersionExpireDate:"20230429"];
     [self setDaysSinceExpire:0];
