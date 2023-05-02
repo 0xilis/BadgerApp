@@ -48,6 +48,8 @@ NSMutableArray *filteredCells;
     ptr(getpid());
 }*/
 
+UIView *topNotchCover;
+
 @interface ViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
@@ -281,7 +283,7 @@ NSMutableArray *filteredCells;
     [self.view addSubview:self.myTableView];
     
     //for ios 11+, since navigation bar may be below status bar, creating some funky looks with the table view
-    UIView *topNotchCover;
+    //    UIView *topNotchCover;
     //if (@available(iOS 11.0, *)) {
     topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height)]; //height 96 on 852, 91 on 548
     //
@@ -306,6 +308,7 @@ NSMutableArray *filteredCells;
     }
 }
 
+#if 0
 //TODO: Shit method - read the comment above viewDidAppear for more explanation.
 - (void)viewWillAppear:(BOOL)animated {
     //if (@available(iOS 13.0, *)) {
@@ -322,6 +325,26 @@ NSMutableArray *filteredCells;
         
     }*/
 }
+#endif
+
+//TODO: Hacky workaround for the infamous navbar bug. It's hacky but I have had no idea how to fix this since 1.0 and I'm so happy to finally find a workaround in 1.2.2 even if it's not how to properly fix.
+- (void)viewWillAppear:(BOOL)animated {
+    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
+            [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    }
+        //NSLog(@"navBar y: %f",self.navigationController.navigationBar.frame.origin.y);
+        //NSLog(@"searchBar y: %f",self.navigationItem.searchController.searchBar.frame.origin.y);
+        //NSLog(@"navbar height: %f",self.navigationController.navigationBar.frame.size.height);
+        //NSLog(@"searchBar height: %f",self.navigationItem.searchController.searchBar.frame.size.height);
+    //}
+    //NSLog(@"navbar: %f",self.navigationController.navigationBar.frame.origin.y);
+    //NSLog(@"navbar: %f",self.navigationItem.searchController.searchBar.frame.origin.y);
+    //NSLog(@"navbar: %f",self.navigationController.navigationBar.frame.size.height);
+    //on create: 20 0 143
+}
+
 //TODO: On iOS 12+ this is fine, but on iOS 13+ we change the color of the one navigation bars (different view controllers don't have different navbar bgs, they should) so it looks a little weird when moving. I thought, ok, small issue, but you only really notice it if you look close, so I'll fix this later but no need to fix it for now, but the swipe gesture makes this issue much more noticable to a terrible degree so now I actually need to fucking fix it in Badger 1.3 or Badger 1.2.2.
 - (void)viewDidAppear:(BOOL)animated {
     if (@available(iOS 13.0, *)) {
@@ -347,6 +370,11 @@ NSMutableArray *filteredCells;
     /*if (@available(iOS 11.0, *)) {
         _myTableView.contentInset = UIEdgeInsetsMake(1, 0, 0, 0);
     }*/
+    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
