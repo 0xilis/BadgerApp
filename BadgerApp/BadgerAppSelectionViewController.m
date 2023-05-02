@@ -20,6 +20,7 @@ NSMutableArray *appBundleIDs;
 NSMutableArray *filteredAppImages;
 NSMutableArray *filteredAppNames;
 NSMutableArray *filteredAppBundleIDs;
+UIView *topNotchCoverAppSelection;
 
 @interface UIImage (UIApplicationIconPrivate)
 + (instancetype)_applicationIconImageForBundleIdentifier:(NSString*)bundleIdentifier format:(int)format scale:(CGFloat)scale;
@@ -325,11 +326,10 @@ NSMutableArray *filteredAppBundleIDs;
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
         
     }
-    UIView *topNotchCover;
-    topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height / 1.5)]; //height 96 on 852, 91 on 548
-    topNotchCover.hidden = NO;
-    topNotchCover.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-    [self.view addSubview:topNotchCover];
+    topNotchCoverAppSelection = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height / 1.5)]; //height 96 on 852, 91 on 548
+    topNotchCoverAppSelection.hidden = NO;
+    topNotchCoverAppSelection.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+    [self.view addSubview:topNotchCoverAppSelection];
     self.view.backgroundColor = self.navigationController.navigationBar.backgroundColor;
     UISearchController *searchController = [[UISearchController alloc] init];
     searchController.searchBar.delegate = self;
@@ -342,7 +342,7 @@ NSMutableArray *filteredAppBundleIDs;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (@available(iOS 13.0, *)) {
+    /*if (@available(iOS 13.0, *)) {
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
         self.view.backgroundColor = [UIColor systemBackgroundColor];
         self.navigationController.navigationBar.tintColor = [UIColor labelColor];
@@ -352,6 +352,11 @@ NSMutableArray *filteredAppBundleIDs;
         self.view.backgroundColor = [UIColor whiteColor];
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
         
+    }*/
+    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
+            [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     }
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -361,6 +366,11 @@ NSMutableArray *filteredAppBundleIDs;
         self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
     }
     self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
+            [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
