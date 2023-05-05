@@ -353,11 +353,12 @@ UIView *topNotchCoverAppSelection;
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
         
     }*/
-    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+    /*if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
         [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
             [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
-    }
+    }*/
+    [self updateTopNotchCoverSize];
 }
 - (void)viewDidAppear:(BOOL)animated {
     if (@available(iOS 13.0, *)) {
@@ -490,6 +491,7 @@ UIView *topNotchCoverAppSelection;
         }
     }
     [_myTableView reloadData];
+    [self updateTopNotchCoverSize];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
@@ -497,6 +499,23 @@ UIView *topNotchCoverAppSelection;
     filteredAppBundleIDs = appBundleIDs;
     filteredAppImages = appImages;
     [_myTableView reloadData];
+    [self updateTopNotchCoverSize];
+}
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    if (self.navigationItem.searchController.searchBar.frame.origin.y > 0) {
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.origin.y)];
+    }
+}
+
+-(void)updateTopNotchCoverSize {
+    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationItem.searchController.searchBar.frame.origin.y != 0) {
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.origin.y + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y + self.navigationItem.searchController.searchBar.frame.size.height)];
+    }
 }
 
 @end

@@ -20,7 +20,6 @@
 #import "BadgerTableViewCell.h"
 #import "BadgerApplySettingsViewController.h"
 #import "BadgerCreditsViewController.h"
-#import <CloudKit/CloudKit.h>
 
 #define ROWS 20
 
@@ -76,6 +75,13 @@ UIView *topNotchCover;
         cellTitles = [[NSArray alloc]initWithArray:mutableCellTitles];
     }
     filteredCells = [cellTitles mutableCopy];
+    self.navigationController.navigationBar.prefersLargeTitles = YES;
+    // https://stackoverflow.com/questions/65330737/uinavigationcontroller-and-large-titles-when-popping-viewcontroller
+    [[self navigationItem]setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeAlways];
+    
+    //https://stackoverflow.com/questions/64005273/ios14-navigationitem-largetitledisplaymode-always-not-work
+    //*maybe* this is needed on iOS 14+?
+    [[[self navigationController]navigationBar]sizeToFit];
     
 #if TRIAL
     //TODO: Note, this is dumb. Why am I protecting against hooking, these checks are not obfuscated at all and can easily be patched out. Oh wait yeah I decided to not burn myself into obfuscation and DRM to just be used for betas (well ig this will be used for the trial system as well but anyway), and instead just focus on the good tweak. Still leaving this here though since ig it does prevent simple flex patches from forcing no expire
@@ -293,7 +299,17 @@ UIView *topNotchCover;
         topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.applicationFrame.size.width, self.navigationController.navigationBar.frame.size.height)];
     }*/
     topNotchCover.hidden = NO;
-    topNotchCover.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+    if ([self isDebuggingTopNotch]) {
+        [topNotchCover setBackgroundColor:[UIColor blueColor]];
+    } else {
+        [topNotchCover setBackgroundColor:[UIColor systemBackgroundColor]];
+        /*CGFloat backRed;
+        CGFloat backGreen;
+        CGFloat backBlue;
+        [[UIColor systemBackgroundColor]getRed:&backRed green:&backGreen blue:&backBlue alpha:NULL];
+        [topNotchCover setTintColor:[UIColor colorWithRed:backRed green:backGreen blue:backBlue alpha:1.0]];*/
+        //topNotchCover.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+    }
     [self.view addSubview:topNotchCover];
     // make the VC conform to UISearchBarDelegate and update the contents like that
     UISearchController *searchController = [[UISearchController alloc] init];
@@ -306,6 +322,62 @@ UIView *topNotchCover;
     if (@available(iOS 13.0, *)) { } else {
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     }
+    BOOL didPresentNoPlistAlert = NO;
+    if (badgerDoesHaveCompatibilitySafetyFlags() == NO) {
+        //Does not have the compatibility safety flags that were added in 1.2.2 - add them
+        if (badgerAddMinimumCompatibilityVersion() == NO) {
+            //This function only returns NO when badgerPlist cannot be found. Show an alert.
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Badger" message:trans(@"BadgerApp cannot seem to load preferences. This may cause unexpected behavior.") preferredStyle:UIAlertControllerStyleActionSheet];
+
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                //action when pressed button
+            }];
+            
+            [alertController addAction:okAction];
+            
+            //UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Badger" message:trans(@"BadgerApp cannot seem to load preferences. This may cause unexpected behavior.") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Okay", nil];
+            //UIActionSheet *alertView = [[UIActionSheet alloc]initWithTitle:@"Badger" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Okay", nil];
+            //[alertView showInView:self.view];
+            
+            [[alertController popoverPresentationController]setSourceRect:CGRectMake(0, 0, 0, 0)];
+            [[alertController popoverPresentationController]setSourceView:[self view]];
+            
+            [self.parentViewController presentViewController:alertController animated:YES completion:nil];
+            didPresentNoPlistAlert = YES;
+        }
+    }
+    if (badgerIsCompatibleWithConfiguration() == NO && !didPresentNoPlistAlert) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Badger" message:[trans(@"Your Badger configuration is not compatible with this version. Please upgrade to Badger (BADGER_MINIMUM_COMPATIBILITY_VERSION) or higher. You can optionally choose to reset your configuration file to use this outdated version.") stringByReplacingOccurrencesOfString:@"(BADGER_MINIMUM_COMPATIBILITY_VERSION)" withString:badgerGetMinimumCompatibilityVersion()] preferredStyle:UIAlertControllerStyleActionSheet];
+
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            //action when pressed button
+        }];
+        
+        UIAlertAction *resetAction = [UIAlertAction actionWithTitle:trans(@"Reset") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+            //action when pressed button
+        }];
+        
+        [alertController addAction:okAction];
+        [alertController addAction:resetAction];
+        
+        //thank u to https://stackoverflow.com/questions/60516848/swift-set-uibarbuttonitem-as-source-for-popover-without-tap for letting me know how to have my app not crash on iOS 12
+        [[alertController popoverPresentationController]setSourceRect:CGRectMake(0, 0, 0, 0)];
+        [[alertController popoverPresentationController]setSourceView:[self view]];
+        //[alertController setModalPresentationStyle:UIModalPresentationOverFullScreen];
+        
+        [self.parentViewController presentViewController:alertController animated:YES completion: nil];
+    }
+    //NSLog(@"subviews: %@",[self.view subviews]);
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"For some strange, inexplicable reason, the prefersLargeTitles navbar condenses if we show an alert. After toying around with it for a day I found that calling sendSubviewToBack somehow fixes it???? So we workaround this behavior by creating a useless view and send it to the back. If you know *why* this happens, please get in contact with me (Snoolie K) because words cannot describe my confusion.");
+    }
+    UIView *genericView = [[UIView alloc]init];
+    [self.view addSubview:genericView];
+    [self.view sendSubviewToBack:genericView];
+    UIView *topTopNotchCoverView = [[UIView alloc]init];
+    [topTopNotchCoverView setBackgroundColor:[UIColor systemBackgroundColor]];
+    [topTopNotchCoverView setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[[self navigationController]navigationBar]frame].origin.y)];
+    [self.navigationController.view addSubview:topTopNotchCoverView];
 }
 
 #if 0
@@ -329,11 +401,17 @@ UIView *topNotchCover;
 
 //TODO: Hacky workaround for the infamous navbar bug. It's hacky but I have had no idea how to fix this since 1.0 and I'm so happy to finally find a workaround in 1.2.2 even if it's not how to properly fix.
 - (void)viewWillAppear:(BOOL)animated {
-    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+    /*if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
         [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    } else if (self.navigationItem.searchController.searchBar.frame.origin.y != 0) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.origin.y + self.navigationController.navigationBar.frame.origin.y)];
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
             [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    }*/
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"called viewWillAppear()");
     }
+    [self updateTopNotchCoverSize];
         //NSLog(@"navBar y: %f",self.navigationController.navigationBar.frame.origin.y);
         //NSLog(@"searchBar y: %f",self.navigationItem.searchController.searchBar.frame.origin.y);
         //NSLog(@"navbar height: %f",self.navigationController.navigationBar.frame.size.height);
@@ -347,6 +425,10 @@ UIView *topNotchCover;
 
 //TODO: On iOS 12+ this is fine, but on iOS 13+ we change the color of the one navigation bars (different view controllers don't have different navbar bgs, they should) so it looks a little weird when moving. I thought, ok, small issue, but you only really notice it if you look close, so I'll fix this later but no need to fix it for now, but the swipe gesture makes this issue much more noticable to a terrible degree so now I actually need to fucking fix it in Badger 1.3 or Badger 1.2.2.
 - (void)viewDidAppear:(BOOL)animated {
+    BOOL isDebugging = [self isDebuggingTopNotch];
+    if (isDebugging) {
+        NSLog(@"called viewDidAppear()");
+    }
     if (@available(iOS 13.0, *)) {
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
     } else {
@@ -372,8 +454,16 @@ UIView *topNotchCover;
     }*/
     if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
         [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+        if (isDebugging) {
+            NSLog(@"viewDidAppear path 1");
+            [self nslogFrameInfo];
+        }
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
         [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+        if (isDebugging) {
+            NSLog(@"viewDidAppear path 2");
+            [self nslogFrameInfo];
+        }
     }
 }
 
@@ -454,6 +544,10 @@ UIView *topNotchCover;
 }
 //TODO: Ugly method, improve later in Badger 1.3 when we switch to no storyboards (i suck at them)
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"selected a row");
+    }
+    [self updateTopNotchCoverSize];
     NSString *cellTitle = cellTitleFromRow(indexPath.row);
     Class cellInfo = NSClassFromString(@"cellInfo");
     id cellInfoInstance = [cellInfo sharedInstance];
@@ -646,6 +740,9 @@ UIView *topNotchCover;
     return 50;//return 66; //orig 44.0
 }*/
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"called searchBar:textDidChange:");
+    }
     filteredCells = [[NSMutableArray alloc]init];
     if ([searchText isEqualToString:@""]) {
         filteredCells = [cellTitles mutableCopy];
@@ -657,10 +754,89 @@ UIView *topNotchCover;
         }
     }
     [_myTableView reloadData];
+    [self updateTopNotchCoverSize];
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"called searchBarCancelButtonClicked");
+    }
     filteredCells = [cellTitles mutableCopy];
     [_myTableView reloadData];
+    [self updateTopNotchCoverSize];
+}
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"called searchBarSearchButtonClicked");
+    }
+    [self updateTopNotchCoverSize];
+}
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    //[topNotchCover setHidden:YES];
+    //[self updateTopNotchCoverSize];
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"called searchBarTextDidBeginEditing()");
+    }
+    if (self.navigationItem.searchController.searchBar.frame.origin.y > 0) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.origin.y)];
+    }
+    [self nslogFrameInfo];
+}
+-(void)updateTopNotchCoverSize {
+    BOOL isDebugging = [self isDebuggingTopNotch];
+    if (isDebugging) {
+        NSLog(@"called updateTopNotchCoverSize()");
+    }
+    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+        if (isDebugging) {
+            NSLog(@"path 1");
+        }
+    } else if (self.navigationItem.searchController.searchBar.frame.origin.y != 0) {
+        //this was originally useful for something, dont remove if i run into it
+        //OOOOH I think its for pressing badge color / something with count prefs
+        /*
+         2023-05-04 09:22:09.628889-0400 BadgerApp[69809:3946982] navBar y: 47.000000
+         2023-05-04 09:22:09.629168-0400 BadgerApp[69809:3946982] searchBar y: 96.000000
+         2023-05-04 09:22:09.629452-0400 BadgerApp[69809:3946982] navbar height: 96.000000
+         2023-05-04 09:22:09.629740-0400 BadgerApp[69809:3946982] searchBar height: 52.000000
+         */
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.origin.y + self.navigationController.navigationBar.frame.origin.y)];
+        
+        //viewWillAppear calls this while search bar still editing
+        /*
+         2023-05-04 09:21:09.984342-0400 BadgerApp[69809:3946982] navBar y: 47.000000
+         2023-05-04 09:21:09.984626-0400 BadgerApp[69809:3946982] searchBar y: 96.000000
+         2023-05-04 09:21:09.984892-0400 BadgerApp[69809:3946982] navbar height: 96.000000
+         2023-05-04 09:21:09.985171-0400 BadgerApp[69809:3946982] searchBar height: 52.000000
+         */
+        //NSLog(@"isEditing: %d",self.navigationItem.searchController.editing);
+        //[topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.origin.y)];
+        //update no it fucking doesn't you moron that is the next else if
+        if (isDebugging) {
+            NSLog(@"path 2");
+        }
+    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
+        //NSLog(@"isEditing: %d",self.navigationItem.searchController.editing);
+        //look into whenever tf this is called
+        //UPDATE: its upon the first initial viewWillAppear when the app launches.
+            //[topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+        if (isDebugging) {
+            NSLog(@"path 3");
+        }
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y + self.navigationItem.searchController.searchBar.frame.size.height)];
+    }
+    [self nslogFrameInfo];
+}
+-(void)nslogFrameInfo {
+    if ([self isDebuggingTopNotch]) {
+        NSLog(@"navBar y: %f",self.navigationController.navigationBar.frame.origin.y);
+        NSLog(@"searchBar y: %f",self.navigationItem.searchController.searchBar.frame.origin.y);
+        NSLog(@"navbar height: %f",self.navigationController.navigationBar.frame.size.height);
+        NSLog(@"searchBar height: %f",self.navigationItem.searchController.searchBar.frame.size.height);
+    }
+}
+-(BOOL)isDebuggingTopNotch {
+    return NO;
 }
 @end
 NSString *cellTitleFromRow(long row) {

@@ -7,6 +7,7 @@
 
 #import "BadgerApplySettingsViewController.h"
 #import "BadgerEasyTranslations.h"
+#import "BadgeColorViewController.h"
 
 @interface BadgerApplySettingsViewController ()
 
@@ -22,6 +23,14 @@
     [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor]; //if dark mode this looks weird in app selection
     [_explainingBox setText:trans(@"With ♡ from Snoolie. Reach out to me by email at QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 on Twitter, and u/0xilis on reddit.")];
+    CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
+    //RRedGrad.png
+    [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
+    [betterBackGd setStartPoint:CGPointMake(0, 0)];
+    [betterBackGd setEndPoint:CGPointMake(1, 1)];
+    [betterBackGd setFrame:[[self view] bounds]]; //CGRectMake(0, 0, [[self view]frame].size.width, [[self view]frame].size.height)
+    [betterBackGd setType:kCAGradientLayerAxial];
+    [[[self view]layer]insertSublayer:betterBackGd atIndex:0];
 }
 
 - (IBAction)respringButtonPressed:(id)sender {

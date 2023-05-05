@@ -16,6 +16,7 @@
 //NSArray *configs;
 NSMutableArray *configs;
 id _param;
+UIView *topNotchCoverCount;
 
 @interface BadgerCountConfigManagerViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *configsTableView;
@@ -89,14 +90,20 @@ id _param;
         self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     }
-    UIView *topNotchCover;
-    topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height / 1.5)];
-    topNotchCover.hidden = NO;
-    topNotchCover.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-    [self.view addSubview:topNotchCover];
+    topNotchCoverCount = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height / 1.5)];
+    topNotchCoverCount.hidden = NO;
+    topNotchCoverCount.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+    [self.view addSubview:topNotchCoverCount];
     self.view.backgroundColor = self.navigationController.navigationBar.backgroundColor;
     // Do any additional setup after loading the view.
 }
+
+//i hope to god i dont need this
+#if 0
+-(void)viewWillAppear:(BOOL)animated {
+    //[topNotchCoverCount setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+}
+#endif
 
 - (void)viewDidAppear:(BOOL)animated {
     if (@available(iOS 13.0, *)) {
@@ -106,6 +113,7 @@ id _param;
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
     }
+    [topNotchCoverCount setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

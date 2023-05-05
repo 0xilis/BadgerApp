@@ -28,6 +28,8 @@ NSArray *colorsToPick;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
+    [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
     [_label setFont:[UIFont fontWithName:@"Helvetica-Bold" size:25.0f]];
     [_explainingBox setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f]];
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
@@ -39,20 +41,33 @@ NSArray *colorsToPick;
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default (Red)",@"Pink",@"Orange",@"Yellow",@"Green",@"Blue",@"Purple",@"Magenta",@"Teal",@"Brown",@"Black",@"White",@"Gray",@"Custom",@"Random", nil];
         NSString *badgeColor;
         if ([self appBundleID]) {
-            [_backgd setImage:[UIImage imageNamed:@"RPurpleGrad.png"]];
+            //RBlueGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"ABDCFF").CGColor, (id)colorFromHexString(@"0396FF").CGColor, nil]];
             if ([self badgeCount]) {
-                badgeColor = [badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             } else {
-                badgeColor = [badgerRetriveAppPref([self appBundleID],@"BadgeColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveAppPref([self appBundleID],@"BadgeColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             }
         } else {
             if ([self badgeCount]) {
-                badgeColor = [badgerRetriveUniversalCountPref([self badgeCount],@"BadgeColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             } else {
-                badgeColor = [badgerRetriveUniversalPref(@"BadgeColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveUniversalPref(@"BadgeColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             }
         }
-        if (badgeColor == nil) {
+        if (!badgeColor) {
             badgeColor = @"Default (Red)";
         }
         [_explainingBox setTextColor:[self matchingLabelColor:badgeColor]];
@@ -65,8 +80,11 @@ NSArray *colorsToPick;
         }
     } else if ([[self cellTitle]isEqualToString:trans(@"Badge Position")]) {
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default (Top Right)",@"Top Left",@"Bottom Right",@"Bottom Left",@"Center",@"Random", nil];
-        if ([badgerRetriveUniversalPref(@"BadgePosition")objectForKey:@"PositionName"]) {
-        [_colorPicker selectRow:[colorsToPick indexOfObject:[badgerRetriveUniversalPref(@"BadgePosition")objectForKey:@"PositionName"]] inComponent:0 animated:NO];
+        id temp = badgerRetriveUniversalPref(@"BadgePosition");
+        if (temp) {
+            if ([temp objectForKey:@"PositionName"]) {
+                [_colorPicker selectRow:[colorsToPick indexOfObject:[badgerRetriveUniversalPref(@"BadgePosition")objectForKey:@"PositionName"]] inComponent:0 animated:NO];
+            }
         }
         [_label setText:trans(@"Badge Position")];
         if ([self appBundleID]) {
@@ -74,7 +92,8 @@ NSArray *colorsToPick;
         } else {
             [_explainingBox setText:trans(@"This affects the badge position for notification badges.")];
         }
-        [_backgd setImage:[UIImage imageNamed:@"RYellowGrad.png"]];
+        //ROrangeGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFA959").CGColor, (id)colorFromHexString(@"FF5B51").CGColor, nil]];
         [_label setAlpha:0.5];
         [_explainingBox setAlpha:0.5];
         [_colorPicker setAlpha:0.5];
@@ -104,10 +123,12 @@ NSArray *colorsToPick;
             [_label setText:trans(@"Badge Shape")];
         if ([self appBundleID]) {
             [_explainingBox setText:[trans(@"This affects the shape for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
-            [_backgd setImage:[UIImage imageNamed:@"RBlueGrad.png"]];
+            //RGreenGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
         } else {
             [_explainingBox setText:trans(@"This affects the shape for notification badges.")];
-            [_backgd setImage:[UIImage imageNamed:@"RGreenGrad.png"]];
+            //RYellowGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFE259").CGColor, (id)colorFromHexString(@"FFA751").CGColor, nil]];
         }
         [_label setAlpha:0.5];
         [_explainingBox setAlpha:0.5];
@@ -117,21 +138,35 @@ NSArray *colorsToPick;
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default (White)",@"Red",@"Pink",@"Orange",@"Yellow",@"Green",@"Blue",@"Purple",@"Magenta",@"Teal",@"Brown",@"Black",@"Gray",@"Custom",@"Random", nil];
         NSString *badgeColor;
         if ([self appBundleID]) {
-            [_backgd setImage:[UIImage imageNamed:@"RPurpleGrad.png"]];
+            //RBlueGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"ABDCFF").CGColor, (id)colorFromHexString(@"0396FF").CGColor, nil]];
             if ([self badgeCount]) {
-                badgeColor = [badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeLabelColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeLabelColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             } else {
-                badgeColor = [badgerRetriveAppPref([self appBundleID],@"BadgeLabelColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveAppPref([self appBundleID],@"BadgeLabelColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             }
         } else {
-            [_backgd setImage:[UIImage imageNamed:@"RBlueGrad.png"]];
+            //RGreenGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
             if ([self badgeCount]) {
-                badgeColor = [badgerRetriveUniversalCountPref([self badgeCount],@"BadgeLabelColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeLabelColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             } else {
-                badgeColor = [badgerRetriveUniversalPref(@"BadgeLabelColor")objectForKey:@"ColorName"];
+                id temp = badgerRetriveUniversalPref(@"BadgeLabelColor");
+                if (temp) {
+                    badgeColor = [temp objectForKey:@"ColorName"];
+                }
             }
         }
-        if (badgeColor == nil) {
+        if (!badgeColor) {
             badgeColor = @"Default (White)";
         }
         [_explainingBox setTextColor:[self matchingLabelColor:badgeColor]];
@@ -147,7 +182,8 @@ NSArray *colorsToPick;
         [_explainingBox setText:trans(@"This affects the font for badge labels.")];
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default",@"Chalkduster",@"Didot",@"Copperplate",@"Papyrus",@"Zapfino",@"Baskerville",@"Courier",@"Custom", nil];
         NSString *badgeColor;
-        [_backgd setImage:[UIImage imageNamed:@"RPurpleGrad.png"]];
+        //RPurpleGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
         if ([self badgeCount]) {
             badgeColor = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeFont");
         } else {
@@ -198,6 +234,13 @@ NSArray *colorsToPick;
             }
         }
     }
+    
+    //set up gradient
+    [betterBackGd setStartPoint:CGPointMake(0, 0)];
+    [betterBackGd setEndPoint:CGPointMake(1, 1)];
+    [betterBackGd setFrame:[[self view] bounds]]; //CGRectMake(0, 0, [[self view]frame].size.width, [[self view]frame].size.height)
+    [betterBackGd setType:kCAGradientLayerAxial];
+    [[[self view]layer]insertSublayer:betterBackGd atIndex:0];
     
     // Do any additional setup after loading the view.
 }

@@ -63,9 +63,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RRedGrad" translatesAutoresizingMaskIntoConstraints="NO" id="WIB-nF-aXN">
-                                <rect key="frame" x="0.0" y="-50" width="414" height="946"/>
-                            </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" placeholder="Enter number here..." textAlignment="center" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="Bz9-B8-E7x">
                                 <rect key="frame" x="100" y="361" width="215" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -87,28 +84,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Badge Count Minimum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qPn-nj-frR">
-                                <rect key="frame" x="20" y="295" width="374" height="59"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <rect key="frame" x="20" y="295" width="359" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="WIB-nF-aXN" firstAttribute="top" secondItem="qiv-t9-nIG" secondAttribute="top" constant="-50" id="1Na-je-Wqr"/>
-                            <constraint firstAttribute="bottom" secondItem="WIB-nF-aXN" secondAttribute="bottom" id="29a-rH-6Ew"/>
-                            <constraint firstItem="WIB-nF-aXN" firstAttribute="leading" secondItem="qiv-t9-nIG" secondAttribute="leading" id="AoX-vK-E93"/>
-                            <constraint firstAttribute="trailing" secondItem="WIB-nF-aXN" secondAttribute="trailing" id="HfJ-VM-uuG"/>
                             <constraint firstItem="ZfW-rr-dYy" firstAttribute="centerX" secondItem="qiv-t9-nIG" secondAttribute="centerX" id="kX9-cj-tVv"/>
                             <constraint firstItem="ZfW-rr-dYy" firstAttribute="centerY" secondItem="qiv-t9-nIG" secondAttribute="centerY" id="ygR-Au-JeJ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="appLabel" destination="ZfW-rr-dYy" id="Zkc-hK-tWM"/>
-                        <outlet property="backgd" destination="WIB-nF-aXN" id="bqb-rN-2OE"/>
                         <outlet property="explainingBox" destination="iIK-tm-CnQ" id="ZJf-fN-oJp"/>
-                        <outlet property="iconView" destination="WIB-nF-aXN" id="zAw-Ed-fLf"/>
                         <outlet property="label" destination="qPn-nj-frR" id="okE-gj-eWU"/>
                         <outlet property="numberField" destination="Bz9-B8-E7x" id="H4C-Y6-0yE"/>
                     </connections>
@@ -190,9 +181,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RBlueGrad" translatesAutoresizingMaskIntoConstraints="NO" id="khk-eE-ATA">
-                                <rect key="frame" x="0.0" y="-50" width="414" height="946"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Badge Color" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="apJ-VI-BSR">
                                 <rect key="frame" x="20" y="295" width="374" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -217,15 +205,8 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="khk-eE-ATA" secondAttribute="trailing" id="3y2-TS-EhE"/>
-                            <constraint firstItem="khk-eE-ATA" firstAttribute="top" secondItem="1Zj-Za-MaV" secondAttribute="top" constant="-50" id="EGs-JG-MgB"/>
-                            <constraint firstItem="khk-eE-ATA" firstAttribute="leading" secondItem="1Zj-Za-MaV" secondAttribute="leading" id="Gbj-BD-i1V"/>
-                            <constraint firstAttribute="bottom" secondItem="khk-eE-ATA" secondAttribute="bottom" id="hwR-A7-cig"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgd" destination="khk-eE-ATA" id="njW-dY-HDH"/>
                         <outlet property="colorPicker" destination="le9-12-h2n" id="Aoc-zH-vHY"/>
                         <outlet property="explainingBox" destination="RS1-5O-pvi" id="Oqm-RU-mvZ"/>
                         <outlet property="label" destination="apJ-VI-BSR" id="bqt-Xp-Iyx"/>
@@ -290,9 +271,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RPurpleGrad" translatesAutoresizingMaskIntoConstraints="NO" id="heg-7q-9tp">
-                                <rect key="frame" x="0.0" y="-50" width="414" height="946"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Badge Image" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="KWJ-3e-w1u">
                                 <rect key="frame" x="20" y="295" width="374" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -320,15 +298,8 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="heg-7q-9tp" secondAttribute="bottom" id="GSb-Ux-eN3"/>
-                            <constraint firstItem="heg-7q-9tp" firstAttribute="leading" secondItem="dBz-UY-dio" secondAttribute="leading" id="H4X-h9-U3z"/>
-                            <constraint firstAttribute="trailing" secondItem="heg-7q-9tp" secondAttribute="trailing" id="RLt-fw-7tp"/>
-                            <constraint firstItem="heg-7q-9tp" firstAttribute="top" secondItem="dBz-UY-dio" secondAttribute="top" constant="-50" id="zHL-Ny-nuM"/>
-                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgd" destination="heg-7q-9tp" id="J2I-aJ-uyz"/>
                         <outlet property="chooseImgButton" destination="r9w-yG-HoO" id="xfg-X9-k9P"/>
                         <outlet property="explainingBox" destination="D0h-aP-Y5J" id="0Zv-rk-vil"/>
                         <outlet property="labelTitle" destination="KWJ-3e-w1u" id="sFG-O6-NEq"/>
@@ -350,9 +321,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RYellowGrad" translatesAutoresizingMaskIntoConstraints="NO" id="uwP-QZ-SA3">
-                                <rect key="frame" x="0.0" y="-50" width="414" height="946"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Apply Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="vka-W1-eFR">
                                 <rect key="frame" x="20" y="295" width="374" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -382,12 +350,6 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="uwP-QZ-SA3" secondAttribute="trailing" id="2xM-6a-C8L"/>
-                            <constraint firstItem="uwP-QZ-SA3" firstAttribute="leading" secondItem="n3L-KV-Dks" secondAttribute="leading" id="Exh-3A-pYu"/>
-                            <constraint firstAttribute="bottom" secondItem="uwP-QZ-SA3" secondAttribute="bottom" id="PuS-gZ-Q5P"/>
-                            <constraint firstItem="uwP-QZ-SA3" firstAttribute="top" secondItem="n3L-KV-Dks" secondAttribute="top" constant="-50" id="bsp-my-43o"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="explainingBox" destination="NQJ-Ec-5nu" id="mk7-SV-JdB"/>
@@ -411,9 +373,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RGreenGrad" translatesAutoresizingMaskIntoConstraints="NO" id="b1k-6M-b2Y">
-                                <rect key="frame" x="0.0" y="-50" width="414" height="946"/>
-                            </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Credits" textAlignment="center" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XgO-Hc-MTd">
                                 <rect key="frame" x="47" y="198" width="320" height="500"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -424,12 +383,6 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="b1k-6M-b2Y" firstAttribute="leading" secondItem="8ZF-1O-gkZ" secondAttribute="leading" id="79U-aA-rJn"/>
-                            <constraint firstAttribute="trailing" secondItem="b1k-6M-b2Y" secondAttribute="trailing" id="V2s-jY-Duf"/>
-                            <constraint firstAttribute="bottom" secondItem="b1k-6M-b2Y" secondAttribute="bottom" id="gHK-YG-Jnx"/>
-                            <constraint firstItem="b1k-6M-b2Y" firstAttribute="top" secondItem="8ZF-1O-gkZ" secondAttribute="top" constant="-50" id="lLl-9f-37m"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="credits" destination="XgO-Hc-MTd" id="AOS-8r-mZk"/>
@@ -441,11 +394,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="RBlueGrad" width="414" height="842"/>
-        <image name="RGreenGrad" width="414" height="842"/>
-        <image name="RPurpleGrad" width="414" height="842"/>
-        <image name="RRedGrad" width="414" height="842"/>
-        <image name="RYellowGrad" width="414" height="842"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

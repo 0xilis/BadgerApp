@@ -9,6 +9,7 @@
 #import "BadgeCountMinimumViewController.h"
 #import "BadgerAppSelectionViewController.h"
 #include "BadgerPrefHandler.h"
+#import "BadgeColorViewController.h"
 
 NSString *badgeSetting;
 UISlider *slider;
@@ -28,6 +29,10 @@ UISlider *slider;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
+    //RRedGrad.png
+    [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
+    
     [_numberField setReturnKeyType:UIReturnKeyDone];
     _numberField.delegate = self;
     [_numberField setAlpha:0.5];
@@ -35,7 +40,8 @@ UISlider *slider;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor]; //if dark mode this looks weird in app selection 
     NSLog(@"%@", [self cellTitle]);
     if ([[self cellTitle]isEqualToString:trans(@"Badge Count Minimum")]) {
-        _backgd.image = [UIImage imageNamed:@"RRedGrad.png"];
+        //RRedGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
         _appLabel.hidden = 1;
         [_label setText:trans(@"Badge Count Minimum")];
         [_explainingBox setText:trans(@"This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps.")];
@@ -44,7 +50,8 @@ UISlider *slider;
             _numberField.text = badgerRetriveUniversalPref(@"BadgeCountMinimum");
         }
     } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Minimum for App")]) {
-        _backgd.image = [UIImage imageNamed:@"ROrangeGrad.png"];
+        //ROrangeGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFA959").CGColor, (id)colorFromHexString(@"FF5B51").CGColor, nil]];
         _appLabel.hidden = 0;
         _appLabel.text = [self appName];
         [_label setText:trans(@"Badge Count Minimum")];
@@ -54,7 +61,8 @@ UISlider *slider;
             _numberField.text = badgerRetriveAppPref([self appBundleID],@"BadgeCountMinimum");
         }
     } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Limit")]) {
-        _backgd.image = [UIImage imageNamed:@"RYellowGrad.png"];
+        //RYellowGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFE259").CGColor, (id)colorFromHexString(@"FFA751").CGColor, nil]];
         _appLabel.hidden = 1;
         [_label setText:trans(@"Badge Count Limit")];
         [_explainingBox setText:trans(@"This affects the badge count limit for all applications, universally throughout the system, with the exception if you set a custom limit for a specific app/apps.")];
@@ -63,7 +71,8 @@ UISlider *slider;
             _numberField.text = badgerRetriveUniversalPref(@"BadgeCountLimit");
         }
     } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Limit for App")]) {
-        _backgd.image = [UIImage imageNamed:@"RGreenGrad.png"];
+        //RGreenGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
         _appLabel.hidden = 0;
         _appLabel.text = [self appName];
         [_label setText:@"Badge Count Limit"];
@@ -84,7 +93,8 @@ UISlider *slider;
         [slider setAlpha:0.5];
         [self.view addSubview:slider];
         if ([self appBundleID]) {
-            _backgd.image = [UIImage imageNamed:@"ROrangeGrad.png"];
+            //RRedGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
             if ([self badgeCount]) {
                 NSString *BadgeOpacity = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
                 if (BadgeOpacity) {
@@ -107,7 +117,8 @@ UISlider *slider;
                 }
             }
         } else {
-            _backgd.image = [UIImage imageNamed:@"RRedGrad.png"];
+            //RPurpleGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
             if ([self badgeCount]) {
                 NSString *BadgeOpacity = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeOpacity");
                 if (BadgeOpacity) {
@@ -131,7 +142,8 @@ UISlider *slider;
             }
         }
     } else if ([[self cellTitle]isEqualToString:trans(@"Custom Badge Label")]) {
-        _backgd.image = [UIImage imageNamed:@"ROrangeGrad.png"];
+        //RRedGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
         _appLabel.hidden = 1;
         [_label setText:trans(@"Custom Badge Label")];
         [_explainingBox setText:trans(@"Set a custom label for notification badges.")];
@@ -162,7 +174,8 @@ UISlider *slider;
         [self.view addSubview:slider];
         if ([self appBundleID]) {
             [_explainingBox setText:[trans(@"This affects the badge size for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
-            _backgd.image = [UIImage imageNamed:@"RGreenGrad.png"];
+            //RYellowGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFE259").CGColor, (id)colorFromHexString(@"FFA751").CGColor, nil]];
             if ([self badgeCount]) {
                 NSString *BadgeSize = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize");
                 if (BadgeSize) {
@@ -185,8 +198,9 @@ UISlider *slider;
                 }
             }
         } else {
+            //ROrangeGrad.png
+            [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFA959").CGColor, (id)colorFromHexString(@"FF5B51").CGColor, nil]];
             if ([self badgeCount]) {
-                _backgd.image = [UIImage imageNamed:@"RYellowGrad.png"];
                 NSString *BadgeSize = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeSize");
                 if (BadgeSize) {
                     _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
@@ -197,7 +211,6 @@ UISlider *slider;
                     [slider setValue:100];
                 }
             } else {
-                _backgd.image = [UIImage imageNamed:@"RYellowGrad.png"];
                 NSString *BadgeSize = badgerRetriveUniversalPref(@"BadgeSize");
                 if (BadgeSize) {
                     _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
@@ -220,7 +233,8 @@ UISlider *slider;
     //[_appLabel setTextColor:[UIColor purpleColor]];
     [_appLabel setAlpha:0.5];
     //[_numberField setTextColor:[UIColor purpleColor]];
-    [_label setFont:[UIFont fontWithName:@"Helvetica-Bold" size:25.0f]];
+    //BUGFIX: (Fixed in Badger 1.2.2) Use the existing font sizes
+    [_label setFont:[UIFont fontWithName:@"Helvetica-Bold" size:[[_label font]pointSize]]];
     [_explainingBox setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f]];
     //_iconView.image = [UIImage imageNamed:@"MinimumBadge.png"];
     //self.view.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.9];//[UIColor colorWithRed:255.0/255.0 green:7.0/255.0 blue:58.0/255.0 alpha:1.0];//cellColorFromRow(0);
@@ -250,12 +264,26 @@ UISlider *slider;
     //resize and then size again idfk but this causes less bugs. fuck storyboards.
     [_label sizeToFit];
     [_label layoutIfNeeded];
-    if (_label.frame.size.width > [self.view frame].size.width) {
+    //NSLog(@"label frame: %@",NSStringFromCGRect([_label frame]));
+    //NSLog(@"label bounds: %@",NSStringFromCGRect([_label bounds]));
+    //if ((_label.frame.origin.x + _label.frame.size.width) > [self.view frame].size.width) {
         [_label setFrame:CGRectMake(_label.frame.origin.x, _label.frame.origin.y, [self.view frame].size.width - (_label.frame.origin.x * 2), _label.frame.size.height)];
+    //}
+    if ((_label.bounds.origin.x + _label.bounds.size.width) > [self.view frame].size.width) {
+        //[_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view frame].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
+        [_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view bounds].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
     }
-    if (_label.bounds.size.width > [self.view frame].size.width) {
-        [_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view frame].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
-    }
+    
+    //NSLog(@"label frame: %@",NSStringFromCGRect([_label frame]));
+    //NSLog(@"label bounds: %@",NSStringFromCGRect([_label bounds]));
+    //NSLog(@"frame width: %f",[self.view frame].size.width);
+    
+    //set up gradient
+    [betterBackGd setStartPoint:CGPointMake(0, 0)];
+    [betterBackGd setEndPoint:CGPointMake(1, 1)];
+    [betterBackGd setFrame:[[self view] bounds]]; //CGRectMake(0, 0, [[self view]frame].size.width, [[self view]frame].size.height)
+    [betterBackGd setType:kCAGradientLayerAxial];
+    [[[self view]layer]insertSublayer:betterBackGd atIndex:0];
 }
 
 /*

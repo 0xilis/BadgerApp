@@ -7,6 +7,7 @@
 
 #import "BadgerCustomImageViewController.h"
 #import "BadgerPrefHandler.h"
+#import "BadgeColorViewController.h"
 
 @interface BadgerCustomImageViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
@@ -20,6 +21,9 @@
 - (void)viewDidLoad {
     /// <UINavigationBarDelegate, UIImagePickerControllerDelegate>
     [super viewDidLoad];
+    CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
+    //RBlueGrad.png
+    [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"ABDCFF").CGColor, (id)colorFromHexString(@"0396FF").CGColor, nil]];
     [_labelTitle setAlpha:0.5];
     [_explainingBox setAlpha:0.5];
     [_chooseImgButton setAlpha:0.5];
@@ -27,7 +31,8 @@
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     [_chooseImgButton.layer setCornerRadius:5.0];
     if ([self appBundleID]) {
-        [_backgd setImage:[UIImage imageNamed:@"RRedGrad.png"]];
+        //RPurpleGrad.png
+        [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
         [_chooseImgButton setBackgroundColor:[UIColor blueColor]];
         [_explainingBox setText:[trans(@"This affects the badge image for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
     } else {
@@ -37,56 +42,64 @@
     if ([self badgeCount]) {
         if ([self appBundleID]) {
             if (badgerRetriveAppCountPref([self badgeCount],[self appBundleID], @"BadgeImagePath")) {
-                [_chooseImgButton setHidden:1];
-                UIImageView *badgeImage;
-                //if (@available(iOS 9.0, *)) {
+                //Safety check if image is not in the path
+                UIImage *imageFromBadgeImagePath = [UIImage imageWithContentsOfFile:badgerRetriveAppCountPref([self badgeCount],[self appBundleID], @"BadgeImagePath")];
+                if (imageFromBadgeImagePath) {
+                    [_chooseImgButton setHidden:1];
+                    UIImageView *badgeImage;
                     badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width / 2 - 25, UIScreen.mainScreen.bounds.size.height / 2 - 25, 50, 50)];
-                /*} else {
-                    badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.applicationFrame.size.width / 2 - 25, UIScreen.mainScreen.applicationFrame.size.height / 2 - 25, 50, 50)];
-                }*/
-                badgeImage.image = [UIImage imageWithContentsOfFile:badgerRetriveAppCountPref([self badgeCount],[self appBundleID], @"BadgeImagePath")];
-                [self.view addSubview:badgeImage];
+                    badgeImage.image = imageFromBadgeImagePath;
+                    [self.view addSubview:badgeImage];
+                }
             }
         } else {
             if (badgerRetriveUniversalCountPref([self badgeCount], @"BadgeImagePath")) {
-                [_chooseImgButton setHidden:1];
-                UIImageView *badgeImage;
-                //if (@available(iOS 9.0, *)) {
+                //Safety check if image is not in the path
+                UIImage *imageFromBadgeImagePath = [UIImage imageWithContentsOfFile:badgerRetriveUniversalCountPref([self badgeCount], @"BadgeImagePath")];
+                if (imageFromBadgeImagePath) {
+                    [_chooseImgButton setHidden:1];
+                    UIImageView *badgeImage;
                     badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width / 2 - 25, UIScreen.mainScreen.bounds.size.height / 2 - 25, 50, 50)];
-                /*} else {
-                    badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.applicationFrame.size.width / 2 - 25, UIScreen.mainScreen.applicationFrame.size.height / 2 - 25, 50, 50)];
-                }*/
-                badgeImage.image = [UIImage imageWithContentsOfFile:badgerRetriveUniversalCountPref([self badgeCount], @"BadgeImagePath")];
-                [self.view addSubview:badgeImage];
+                    badgeImage.image = imageFromBadgeImagePath;
+                    [self.view addSubview:badgeImage];
+                }
             }
         }
     } else {
         if ([self appBundleID]) {
             if (badgerRetriveAppPref([self appBundleID],@"BadgeImagePath")) {
-                [_chooseImgButton setHidden:1];
-                UIImageView *badgeImage;
-                //if (@available(iOS 9.0, *)) {
+                //Safety check if image is not in the path
+                UIImage *imageFromBadgeImagePath = [UIImage imageWithContentsOfFile:badgerRetriveAppPref([self appBundleID],@"BadgeImagePath")];
+                if (imageFromBadgeImagePath) {
+                    [_chooseImgButton setHidden:1];
+                    UIImageView *badgeImage;
                     badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width / 2 - 25, UIScreen.mainScreen.bounds.size.height / 2 - 25, 50, 50)];
-                /*} else {
-                    badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.applicationFrame.size.width / 2 - 25, UIScreen.mainScreen.applicationFrame.size.height / 2 - 25, 50, 50)];
-                }*/
-                badgeImage.image = [UIImage imageWithContentsOfFile:badgerRetriveAppPref([self appBundleID],@"BadgeImagePath")];
-                [self.view addSubview:badgeImage];
+                    badgeImage.image = imageFromBadgeImagePath;
+                    [self.view addSubview:badgeImage];
+                }
             }
         } else {
             if (badgerRetriveUniversalPref(@"BadgeImagePath")) {
-                [_chooseImgButton setHidden:1];
-                UIImageView *badgeImage;
-                //if (@available(iOS 9.0, *)) {
+                //Safety check if image is not in the path
+                UIImage *imageFromBadgeImagePath = [UIImage imageWithContentsOfFile:badgerRetriveUniversalPref(@"BadgeImagePath")];
+                if (imageFromBadgeImagePath) {
+                    [_chooseImgButton setHidden:1];
+                    UIImageView *badgeImage;
                     badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width / 2 - 25, UIScreen.mainScreen.bounds.size.height / 2 - 25, 50, 50)];
-                /*} else {
-                    badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.applicationFrame.size.width / 2 - 25, UIScreen.mainScreen.applicationFrame.size.height / 2 - 25, 50, 50)];
-                }*/
-                badgeImage.image = [UIImage imageWithContentsOfFile:badgerRetriveUniversalPref(@"BadgeImagePath")];
-                [self.view addSubview:badgeImage];
+                    badgeImage.image = imageFromBadgeImagePath;
+                    [self.view addSubview:badgeImage];
+                }
             }
         }
     }
+    
+    //set up gradient
+    [betterBackGd setStartPoint:CGPointMake(0, 0)];
+    [betterBackGd setEndPoint:CGPointMake(1, 1)];
+    [betterBackGd setFrame:[[self view] bounds]]; //CGRectMake(0, 0, [[self view]frame].size.width, [[self view]frame].size.height)
+    [betterBackGd setType:kCAGradientLayerAxial];
+    [[[self view]layer]insertSublayer:betterBackGd atIndex:0];
+    
     // Do any additional setup after loading the view.
 }
 
