@@ -12,6 +12,7 @@
 #import "BadgerCustomImageViewController.h"
 #import "BadgeColorViewController.h"
 #import <Foundation/Foundation.h>
+#import "BadgerTopNotchCoverView.h"
 
 //NSArray *configs;
 NSMutableArray *configs;
@@ -66,7 +67,6 @@ UIView *topNotchCoverCount;
             [configs addObjectsFromArray:badgerRetriveConfigsWithUniversalPref(@"BadgeFont")];
         }
     }
-    //configs = [[NSArray alloc]initWithArray:mutableConfigs];
     if (@available(iOS 13.0, *)) {
         self.configsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped];
     } else {
@@ -74,11 +74,6 @@ UIView *topNotchCoverCount;
     }
     self.configsTableView.dataSource = self;
     self.configsTableView.delegate = self;
-    //if (@available(iOS 11.0, *)) {
-        //[_configsTableView setFrame:CGRectMake(0, 0, _configsTableView.frame.size.width, _configsTableView.frame.size.height)];
-    /*} else {
-        [_configsTableView setFrame:CGRectMake(0, 0, _configsTableView.frame.size.width, _configsTableView.frame.size.height)];
-    }*/
     [self.view addSubview:self.configsTableView];
     if (@available(iOS 13.0, *)) {
         self.view.backgroundColor = [UIColor systemBackgroundColor];
@@ -114,6 +109,7 @@ UIView *topNotchCoverCount;
         self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
     }
     [topNotchCoverCount setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
+    [BadgerTopNotchCoverView reappear:self.navigationController.view];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -130,51 +126,12 @@ UIView *topNotchCoverCount;
     } else {
         cell.textLabel.text = [configs objectAtIndex:indexPath.row];
     }
-    /*if (indexPath.row != 0) {
-        UIButton *deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width-(UIScreen.mainScreen.bounds.size.width / 2 - 40), 0, UIScreen.mainScreen.bounds.size.width / 2 - 40, 44)];
-    [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
-        [deleteButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-        [deleteButton setTintColor:[UIColor redColor]];
-        [deleteButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-        [deleteButton addTarget:cell action:@selector(deleteCountConfig:) forControlEvents:UIControlEventTouchUpInside];
-        for (UIView *subview in cell.subviews) {
-            if ([subview isMemberOfClass:[UIButton class]]) {
-                if ([((UIButton *)subview).titleLabel.text isEqualToString:@"Reset"] || [((UIButton *)subview).titleLabel.text isEqualToString:@"Delete"]) {
-                    [subview removeFromSuperview];
-                }
-            }
-        }
-        if (![cell.subviews containsObject:deleteButton]) {
-            [cell addSubview:deleteButton];
-        }
-    } else {
-        UIButton *resetButton = [[UIButton alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width -(UIScreen.mainScreen.bounds.size.width / 2 - 40), 0, UIScreen.mainScreen.bounds.size.width / 2 - 40, 44)];
-        //[resetButton setBackgroundColor:[UIColor colorWithRed:1.0 green:0.866 blue:0.996 alpha:1.0]];
-        //[resetButton setTintColor:[UIColor systemPinkColor]];
-        //[resetButton.layer setCornerRadius:5.0];
-        [resetButton setTitle:@"Reset" forState:UIControlStateNormal];
-            [resetButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-            [resetButton setTintColor:[UIColor blueColor]];
-            [resetButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-            [resetButton addTarget:cell action:@selector(resetDefaultConfig:) forControlEvents:UIControlEventTouchUpInside];
-        for (UIView *subview in cell.subviews) {
-            if ([subview isMemberOfClass:[UIButton class]]) {
-                if ([((UIButton *)subview).titleLabel.text isEqualToString:@"Reset"] || [((UIButton *)subview).titleLabel.text isEqualToString:@"Delete"]) {
-                    [subview removeFromSuperview];
-                }
-            }
-        }
-        if (![cell.subviews containsObject:resetButton]) {
-            [cell addSubview:resetButton];
-        }
-    }*/
-    //[deleteButton addTarget:self action:@selector(deleteCountConfig:) forControlEvents:UIControlEventValueChanged];
-    //cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [BadgerTopNotchCoverView disappear:self.navigationController.view];
     NSString *countConfig = [configs objectAtIndex:indexPath.row];
     if ([[self cellTitle]isEqualToString:trans(@"Custom Badge Label")]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];

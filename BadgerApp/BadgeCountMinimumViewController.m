@@ -92,54 +92,21 @@ UISlider *slider;
         [slider setTintColor:[UIColor orangeColor]];
         [slider setAlpha:0.5];
         [self.view addSubview:slider];
+        id currentBadgeOpacity = badgerRetriveCurrentPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
+        if (currentBadgeOpacity) {
+            _numberField.text = [NSString stringWithFormat:@"%@%%",currentBadgeOpacity];
+            _numberField.subviews[0].alpha = [currentBadgeOpacity floatValue] / 100;
+            [slider setValue:[currentBadgeOpacity integerValue]];
+        } else {
+            _numberField.text = @"100%";
+            [slider setValue:100];
+        }
         if ([self appBundleID]) {
             //RRedGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
-            if ([self badgeCount]) {
-                NSString *BadgeOpacity = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
-                if (BadgeOpacity) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeOpacity];
-                    _numberField.subviews[0].alpha = [badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity") floatValue] / 100;
-                    [slider setValue:[badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            } else {
-                NSString *BadgeOpacity = badgerRetriveAppPref([self appBundleID],@"BadgeOpacity");
-                if (BadgeOpacity) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeOpacity];
-                    _numberField.subviews[0].alpha = [badgerRetriveAppPref([self appBundleID],@"BadgeOpacity") floatValue] / 100;
-                    [slider setValue:[badgerRetriveAppPref([self appBundleID],@"BadgeOpacity") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            }
         } else {
             //RPurpleGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
-            if ([self badgeCount]) {
-                NSString *BadgeOpacity = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeOpacity");
-                if (BadgeOpacity) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeOpacity];
-                    _numberField.subviews[0].alpha = [badgerRetriveUniversalCountPref([self badgeCount],@"BadgeOpacity") floatValue] / 100;
-                    [slider setValue:[badgerRetriveUniversalCountPref([self badgeCount],@"BadgeOpacity") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            } else {
-                NSString *BadgeOpacity = badgerRetriveUniversalPref(@"BadgeOpacity");
-                if (BadgeOpacity) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeOpacity];
-                    _numberField.subviews[0].alpha = [badgerRetriveUniversalPref(@"BadgeOpacity") floatValue] / 100;
-                    [slider setValue:[badgerRetriveUniversalPref(@"BadgeOpacity") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            }
         }
     } else if ([[self cellTitle]isEqualToString:trans(@"Custom Badge Label")]) {
         //RRedGrad.png
@@ -170,88 +137,32 @@ UISlider *slider;
         [slider setMaximumValue:200];
         [slider setMinimumValue:50];
         [slider setTintColor:[UIColor orangeColor]];
-        [slider setAlpha:0.5];
+        [slider setAlpha:1.0];
         [self.view addSubview:slider];
+        NSString *BadgeSize = badgerRetriveCurrentPref([self badgeCount],[self appBundleID],@"BadgeSize");
+        if (BadgeSize) {
+            _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
+            //_numberField.subviews[0].alpha = [BadgeSize floatValue] / 100;
+            [slider setValue:[BadgeSize integerValue]];
+        } else {
+            _numberField.text = @"100%";
+            [slider setValue:100];
+        }
         if ([self appBundleID]) {
             [_explainingBox setText:[trans(@"This affects the badge size for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
             //RYellowGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFE259").CGColor, (id)colorFromHexString(@"FFA751").CGColor, nil]];
-            if ([self badgeCount]) {
-                NSString *BadgeSize = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize");
-                if (BadgeSize) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
-                    _numberField.subviews[0].alpha = [badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize") floatValue] / 100;
-                    [slider setValue:[badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            } else {
-                NSString *BadgeSize = badgerRetriveAppPref([self appBundleID],@"BadgeSize");
-                if (BadgeSize) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
-                    _numberField.subviews[0].alpha = [badgerRetriveAppPref([self appBundleID],@"BadgeOpacity") floatValue] / 100;
-                    [slider setValue:[badgerRetriveAppPref([self appBundleID],@"BadgeSize") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            }
         } else {
             //ROrangeGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFA959").CGColor, (id)colorFromHexString(@"FF5B51").CGColor, nil]];
-            if ([self badgeCount]) {
-                NSString *BadgeSize = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeSize");
-                if (BadgeSize) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
-                    _numberField.subviews[0].alpha = [badgerRetriveUniversalCountPref([self badgeCount],@"BadgeSize") floatValue] / 100;
-                    [slider setValue:[badgerRetriveUniversalCountPref([self badgeCount],@"BadgeSize") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            } else {
-                NSString *BadgeSize = badgerRetriveUniversalPref(@"BadgeSize");
-                if (BadgeSize) {
-                    _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
-                    _numberField.subviews[0].alpha = [badgerRetriveUniversalPref(@"BadgeSize") floatValue] / 100;
-                    [slider setValue:[badgerRetriveUniversalPref(@"BadgeSize") integerValue]];
-                } else {
-                    _numberField.text = @"100%";
-                    [slider setValue:100];
-                }
-            }
         }
     }
-    //[_appLabel sizeToFit];
-    //[_explainingBox sizeToFit];
-    //[_label sizeToFit];
-    //[_label setTextColor:[UIColor purpleColor]];
     [_label setAlpha:0.5];
-    //[_explainingBox setTextColor:[UIColor purpleColor]];
     [_explainingBox setAlpha:0.5];
-    //[_appLabel setTextColor:[UIColor purpleColor]];
     [_appLabel setAlpha:0.5];
-    //[_numberField setTextColor:[UIColor purpleColor]];
     //BUGFIX: (Fixed in Badger 1.2.2) Use the existing font sizes
     [_label setFont:[UIFont fontWithName:@"Helvetica-Bold" size:[[_label font]pointSize]]];
     [_explainingBox setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f]];
-    //_iconView.image = [UIImage imageNamed:@"MinimumBadge.png"];
-    //self.view.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.9];//[UIColor colorWithRed:255.0/255.0 green:7.0/255.0 blue:58.0/255.0 alpha:1.0];//cellColorFromRow(0);
-    //self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.0];//[UIColor colorWithRed:255.0/255.0 green:7.0/255.0 blue:58.0/255.0 alpha:1.0];
-    //_numberField.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:0.0/255.0 blue:20.0/255.0 alpha:0.7];/*[UIColor colorWithRed:139.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];*///[UIColor colorWithRed:254.0/255.0 green:193.0/255.0 blue:206.0/255.0 alpha:1.0];
-    //_explainingBox.backgroundColor = _numberField.backgroundColor;//[UIColor colorWithRed:254.0/255.0 green:193.0/255.0 blue:206.0/255.0 alpha:1.0];
-    //_explainingBox.layer.cornerRadius = 10.0;
-    /*UIView *topNotchCover;
-    if (@available(iOS 11.0, *)) {
-        topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.applicationFrame.size.width, self.navigationController.navigationBar.frame.size.height)]; //height 96 on 852, 91 on 548
-    //
-    } else {
-        topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.applicationFrame.size.width, 91+(UIScreen.mainScreen.applicationFrame.size.height/60.8)-9.01315789)]; //height 96 on 852, 91 on 548
-    }
-    topNotchCover.hidden = NO;
-    topNotchCover.backgroundColor = self.navigationController.navigationBar.backgroundColor;
-    [self.view addSubview:topNotchCover];*/
     // Do any additional setup after loading the view.
     //BUGFIX: (Fixed in Badger 1.2.2) Sometimes with French translations, label can get too big, we *do* resize the label but the thing is that's before we replace the label with the translation, so it's resized for the english translation and not the current actual translation :P. This has been fixed by the line below and now we resize after translation.
     [_label setAdjustsFontSizeToFitWidth:YES];
@@ -264,19 +175,10 @@ UISlider *slider;
     //resize and then size again idfk but this causes less bugs. fuck storyboards.
     [_label sizeToFit];
     [_label layoutIfNeeded];
-    //NSLog(@"label frame: %@",NSStringFromCGRect([_label frame]));
-    //NSLog(@"label bounds: %@",NSStringFromCGRect([_label bounds]));
-    //if ((_label.frame.origin.x + _label.frame.size.width) > [self.view frame].size.width) {
-        [_label setFrame:CGRectMake(_label.frame.origin.x, _label.frame.origin.y, [self.view frame].size.width - (_label.frame.origin.x * 2), _label.frame.size.height)];
-    //}
+    [_label setFrame:CGRectMake(_label.frame.origin.x, _label.frame.origin.y, [self.view frame].size.width - (_label.frame.origin.x * 2), _label.frame.size.height)];
     if ((_label.bounds.origin.x + _label.bounds.size.width) > [self.view frame].size.width) {
-        //[_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view frame].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
         [_label setBounds:CGRectMake(_label.bounds.origin.x, _label.bounds.origin.y, [self.view bounds].size.width - (_label.bounds.origin.x * 2), _label.bounds.size.height)];
     }
-    
-    //NSLog(@"label frame: %@",NSStringFromCGRect([_label frame]));
-    //NSLog(@"label bounds: %@",NSStringFromCGRect([_label bounds]));
-    //NSLog(@"frame width: %f",[self.view frame].size.width);
     
     //set up gradient
     [betterBackGd setStartPoint:CGPointMake(0, 0)];
@@ -306,12 +208,6 @@ UISlider *slider;
     [scanner scanCharactersFromSet:numbers intoString:&newText];
     }
     if (newText.length < 1 && ![badgeSetting isEqualToString:@"label"]) {
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Invalid %@ Count",badgeSetting]
-                                                        message:trans(@"Please input a number.")
-                                                       delegate:self
-                                              cancelButtonTitle:trans(@"Okay")
-                                              otherButtonTitles:nil];
-        [alert show];*/
         if ([badgeSetting isEqualToString:@"minimum"]) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid minimum Count") message:trans(@"Your minimum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -331,12 +227,6 @@ UISlider *slider;
         }
     }
     if ([newText integerValue] < 0 && [badgeSetting isEqualToString:@"opacity"]) {
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:trans(@"Invalid opacity")
-                                                        message:trans(@"Your (BADGESETTING) has to be equal to or greater than 0%.")
-                                                       delegate:self
-                                              cancelButtonTitle:trans(@"Okay")
-                                              otherButtonTitles:nil];
-        [alert show];*/
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid opacity") message:trans(@"Your opacity has to be equal to or greater than 0%.") preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }];
@@ -344,12 +234,6 @@ UISlider *slider;
         [self presentViewController:alert animated:YES completion:nil];
         newText = @"0";
     } else if ([newText integerValue] > 100 && [badgeSetting isEqualToString:@"opacity"]) {
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:trans(@"Invalid opacity")
-                                                        message:trans(@"Your opacity has to be 100% or less.")
-                                                       delegate:self
-                                              cancelButtonTitle:trans(@"Okay")
-                                              otherButtonTitles:nil];
-        [alert show];*/
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid opacity") message:trans(@"Your opacity has to be 100% or less.") preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }];
@@ -357,12 +241,6 @@ UISlider *slider;
         [self presentViewController:alert animated:YES completion:nil];
         newText = @"100";
     } else if ([newText integerValue] < 50 && [badgeSetting isEqualToString:@"size"]) {
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:trans(@"Invalid size")
-                                                        message:trans(@"Your size has to be equal to or greater than 50%.")
-                                                       delegate:self
-                                              cancelButtonTitle:trans(@"Okay")
-                                              otherButtonTitles:nil];
-        [alert show];*/
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid size") message:trans(@"Your size has to be equal to or greater than 50%.") preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }];
@@ -370,12 +248,6 @@ UISlider *slider;
         [self presentViewController:alert animated:YES completion:nil];
         newText = @"50";
     } else if ([newText integerValue] > 200 && [badgeSetting isEqualToString:@"size"]) {
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:trans(@"Invalid size")
-                                                        message:trans(@"Your size has to be 200% or less.")
-                                                       delegate:self
-                                              cancelButtonTitle:trans(@"Okay")
-                                              otherButtonTitles:nil];
-        [alert show];*/
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid size") message:trans(@"Your size has to be 200% or less.") preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }];
@@ -384,12 +256,6 @@ UISlider *slider;
         newText = @"100";
     }
     if ([newText integerValue] < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"] && ![badgeSetting isEqualToString:@"label"]) {
-        /*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Invalid %@ Count",badgeSetting]
-                                                        message:[NSString stringWithFormat:@"Your %@ has to be greater than 0.",badgeSetting]
-                                                       delegate:self
-                                              cancelButtonTitle:trans(@"Okay")
-                                              otherButtonTitles:nil];
-        [alert show];*/
         if ([badgeSetting isEqualToString:@"minimum"]) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid minimum Count") message:trans(@"Your minimum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -596,84 +462,18 @@ UISlider *slider;
 -(void)sliderChange:(id)sender {
     _numberField.text = [NSString stringWithFormat:@"%d%%",(int)[slider value]];
     if ([badgeSetting isEqualToString:@"opacity"]) {
-        if ([self appBundleID]) {
-            if ((int)[slider value] == 100) {
-                if ([self badgeCount]) {
-                    badgerRemoveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
-                } else {
-                    badgerRemoveAppPref([self appBundleID],@"BadgeOpacity");
-                }
-            } else {
-                if ([self badgeCount]) {
-                    badgerSaveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                } else {
-                    badgerSaveAppPref([self appBundleID],@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                }
-            }
+        if ((int)[slider value] == 100) {
+            badgerRemoveCurrentPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
         } else {
-            if ((int)[slider value] == 100) {
-                if ([self badgeCount]) {
-                    badgerRemoveUniversalCountPref([self badgeCount],@"BadgeOpacity");
-                } else {
-                    badgerRemoveUniversalPref(@"BadgeOpacity");
-                }
-            } else {
-                if ([self badgeCount]) {
-                    badgerSaveUniversalCountPref([self badgeCount],@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                } else {
-                    badgerSaveUniversalPref(@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                }
-            }
+            badgerSaveCurrentPref([self badgeCount],[self appBundleID],@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
         }
     } else if ([badgeSetting isEqualToString:@"size"]) {
-        if ([self appBundleID]) {
-            if ((int)[slider value] == 100) {
-                if ([self badgeCount]) {
-                    badgerRemoveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize");
-                } else {
-                    badgerRemoveAppPref([self appBundleID],@"BadgeSize");
-                }
-            } else {
-                if ([self badgeCount]) {
-                    badgerSaveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                } else {
-                    badgerSaveAppPref([self appBundleID],@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                }
-            }
+        if ((int)[slider value] == 100) {
+            badgerRemoveCurrentPref([self badgeCount],[self appBundleID],@"BadgeSize");
         } else {
-            if ((int)[slider value] == 100) {
-                if ([self badgeCount]) {
-                    badgerRemoveUniversalCountPref([self badgeCount],@"BadgeSize");
-                } else {
-                    badgerRemoveUniversalPref(@"BadgeSize");
-                }
-            } else {
-                if ([self badgeCount]) {
-                    badgerSaveUniversalCountPref([self badgeCount],@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                } else {
-                    badgerSaveUniversalPref(@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
-                }
-            }
+            badgerSaveCurrentPref([self badgeCount],[self appBundleID],@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
         }
     }
     _numberField.subviews[0].alpha = slider.value / 100;
 }
 @end
-
-void setThemePinkGrad(NSString *themeName) {
-    //Input the name of the theme, ex @"PinkGrad.png"
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", docDir,@"GradientType.txt"];
-    NSError *error;
-    [themeName writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
-}
-
-NSString *getTheme(void) {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@", docDir,@"GradientType.txt"];
-    NSError *error;
-    NSString *fileContents = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-    return fileContents;
-}

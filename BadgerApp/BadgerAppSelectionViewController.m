@@ -13,6 +13,7 @@
 #import "BadgerCustomImageViewController.h"
 //#import <MobileCoreServices/LSApplicationProxy.h>
 //#import <MobileCoreServices/LSApplicationWorkspace.h>
+#import "BadgerTopNotchCoverView.h"
 
 NSMutableArray *appImages;
 NSMutableArray *appNames;
@@ -60,40 +61,6 @@ UIView *topNotchCoverAppSelection;
 -(LSApplicationState*)appState;
 - (LSApplicationRecord*)correspondingApplicationRecord;
 @end
-
-/*@interface BadgerApplicationProxy : LSApplicationProxy
-- (NSString*)applicationNameForSort;
-@end
-
-@implementation BadgerApplicationProxy : LSApplicationProxy
-- (NSString*)applicationNameForSort {
-    NSString *localName = [self valueForKey:@"_localizedName"];
-    if (localName) {
-        if (![localName isEqualToString:@""]) {
-            return localName;
-        }
-    }
-    NSURL* bundleURL = self.bundleURL;
-    if ([bundleURL checkResourceIsReachableAndReturnError:nil]) {
-        NSBundle* bundle = [NSBundle bundleWithURL:bundleURL];
-        localName = [bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-        if (localName) {
-            if (![localName isEqualToString:@""]) {
-                return localName;
-            }
-        }
-        localName = [bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-        if (localName) {
-            if (![localName isEqualToString:@""]) {
-                return localName;
-            }
-        }
-        return self.localizedName;
-    } else {
-        return self.localizedName;
-    }
-}
-@end*/
 
 @interface LSApplicationWorkspace : NSObject
 + (id) defaultWorkspace;
@@ -148,7 +115,6 @@ UIView *topNotchCoverAppSelection;
     appImages = [[NSMutableArray alloc]init];
     appNames = [[NSMutableArray alloc]init];
     appBundleIDs = [[NSMutableArray alloc]init];
-    //Class LSApplicationWorkspace = NSClassFromString(@"LSApplicationWorkspace");
     Class LSApplicationWorkspace = NSClassFromString(@"LSApplicationWorkspace");
     id AAURLConfiguration1 = [LSApplicationWorkspace defaultWorkspace];
     [AAURLConfiguration1 addObserver:self];
@@ -157,8 +123,6 @@ UIView *topNotchCoverAppSelection;
     if (AAURLConfiguration1) {
         id arrApp = [AAURLConfiguration1 allInstalledApplications];
         //sort all apps alphabetically
-        //NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"localizedName" ascending:YES];
-        //arrApp = [arrApp sortedArrayUsingDescriptors:@[sort]];
         for (int i=0; i<[arrApp count]; i++) {
             LSApplicationProxy *app = [arrApp objectAtIndex:i];
             NSArray* appTags;
@@ -174,20 +138,12 @@ UIView *topNotchCoverAppSelection;
                     launchProhibited = app.launchProhibited;
                 }
             if ((![appTags containsObject:@"hidden"]) && (!launchProhibited) && ![[app applicationIdentifier] isEqualToString:@"com.apple.webapp"]) {
-                
-                //NSLog(@"appTags: %@",app.appTags);
-                //NSString* bundleId =[app applicationIdentifier];
-                //NSLog(@"app: %@",bundleId);
-                //NSLog(@"apploc: %s",[[app bundleURL] fileSystemRepresentation]);
-                //NSLog(@"app name: %@",[app localizedName]);
-                //get CFBundleIcons (or CFBundleIcons~ipad) from info.plist in [[app bundleURL] fileSystemRepresentation]. CFBundleIconName has CFBundlePrimaryIcon which has CFBundleIconFiles, though it may also have CFBundleIconName
-                //NSMutableDictionary *infoPlist = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%s/Info.plist",[[app bundleURL] fileSystemRepresentation]]];
                 BadgerAppCell *badgerApp = [[BadgerAppCell alloc]init];
                 UIImage *appIcon = [UIImage _applicationIconImageForBundleIdentifier:[app applicationIdentifier] format:1 scale:[UIScreen mainScreen].scale];
                 if (appIcon) {
-                    [badgerApp setAppImage:appIcon];//[appImages addObject:appIcon];
+                    [badgerApp setAppImage:appIcon];
                 } else {
-                    [badgerApp setAppImage:@"NOIMG"];//[appImages addObject:@"NOIMG"];
+                    [badgerApp setAppImage:@"NOIMG"];
                 }
                 if ([app localizedName]){
                     if (![[app localizedName]isEqualToString:@""]) {
@@ -214,70 +170,12 @@ UIView *topNotchCoverAppSelection;
                 }
                 [badgerApp setAppBundleID:[app applicationIdentifier]];
                 [badgerApps addObject:badgerApp];
-                //[appNames addObject:[app localizedName]];
-               // [appBundleIDs addObject:[app applicationIdentifier]];
-                //[infoPlist setObject:@"788" forKey:@"CFBundleVersion"];
-                //[infoPlist writeToFile:[NSString stringWithFormat:@"%s/Info.plist",[[app bundleURL] fileSystemRepresentation]] atomically:YES];
-                /*if ([infoPlist objectForKey:@"CFBundleIcons"]) {
-                    if ([[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"]) {
-                        if ([[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]) {
-                                if ([[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]) {
-                                    
-                                    
-                                        if ([UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@.png",[[app bundleURL] fileSystemRepresentation],[[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]) {
-                                    [appImages addObject:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@.png",[[app bundleURL] fileSystemRepresentation],[[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]];
-                                            [appNames addObject:[app localizedName]];
-                                            [appBundleIDs addObject:[app applicationIdentifier]];
-                                        } else if ([UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@@2x.png",[[app bundleURL] fileSystemRepresentation],[[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]) {
-                                [appImages addObject:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@@2x.png",[[app bundleURL] fileSystemRepresentation],[[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]];
-                                        [appNames addObject:[app localizedName]];
-                                        [appBundleIDs addObject:[app applicationIdentifier]];
-                                    } else if ([UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@@3x.png",[[app bundleURL] fileSystemRepresentation],[[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]) {
-                                [appImages addObject:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@@3x.png",[[app bundleURL] fileSystemRepresentation],[[[[infoPlist objectForKey:@"CFBundleIcons"] objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]];
-                                        [appNames addObject:[app localizedName]];
-                                        [appBundleIDs addObject:[app applicationIdentifier]];
-                                    } else {
-                                        [appImages addObject:@"NOIMG"];
-                                        [appNames addObject:[app localizedName]];
-                                        [appBundleIDs addObject:[app applicationIdentifier]];
-                                    }
-                                } else {
-                                    [appImages addObject:@"NOIMG"];
-                                    [appNames addObject:[app localizedName]];
-                                    [appBundleIDs addObject:[app applicationIdentifier]];
-                                }
-                        } else {
-                            [appImages addObject:@"NOIMG"];
-                            [appNames addObject:[app localizedName]];
-                            [appBundleIDs addObject:[app applicationIdentifier]];;
-                        }
-                    } else {
-                        [appImages addObject:@"NOIMG"];
-                        [appNames addObject:[app localizedName]];
-                        [appBundleIDs addObject:[app applicationIdentifier]];
-                    }
-                } else {
-                    if ([infoPlist objectForKey:@"CFBundleIconFiles"]) {
-                        [appImages addObject:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%s/%@.png",[[app bundleURL] fileSystemRepresentation],[[infoPlist objectForKey:@"CFBundleIconFiles"]objectAtIndex:0]]]];
-                    } else {
-                        [appImages addObject:@"NOIMG"];
-                    }
-                    [appNames addObject:[app localizedName]];
-                    [appBundleIDs addObject:[app applicationIdentifier]];
-                }*/
-                //infoPlist = nil;
             }
-            
         }
-    } else {
-        NSLog(@"NOPE");
     }
     //sort all apps alphabetically
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"appName" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     badgerApps = [[badgerApps sortedArrayUsingDescriptors:@[sort]]mutableCopy];
-    NSLog(@"BadgerApps: %@",badgerApps);
-    NSLog(@"BadgerApps LastObj appName: %@",[[badgerApps lastObject]appName]);
-    NSLog(@"BadgerApps LastObj appBundleID: %@",[[badgerApps lastObject]appBundleID]);
     for (BadgerAppCell *aBadgerApp in badgerApps) {
         [appNames addObject:[aBadgerApp appName]];
         [appImages addObject:[aBadgerApp appImage]];
@@ -286,35 +184,14 @@ UIView *topNotchCoverAppSelection;
     filteredAppImages = appImages;
     filteredAppNames = appNames;
     filteredAppBundleIDs = appBundleIDs;
-    /*Class appInfo = NSClassFromString(@"appInfo");
-    id appInfoInstance = [appInfo sharedInstance];
-    [appInfoInstance addObserver:self];
-    if (appInfoInstance) {
-        [appInfoInstance setAppImages:appImages];
-        [appInfoInstance setAppNames:appNames];
-    }*/
-    //if (@available(iOS 11.0, *)) {
     if (@available(iOS 13.0, *)) {
         self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped]; //previously self.view.frame.size.height + 35 iPod Touch 7, y value is 110 on iPod Touch 7 and 130 on iPhone 11 (UIScreen.mainScreen.applicationFrame.size.height/15.2)-(548/15.2)
     } else {
         self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
     }
-    /*} else {
-        self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0+self.navigationController.navigationBar.frame.size.height+50, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
-    }*/
     self.myTableView.dataSource = self;
     self.myTableView.delegate = self;
-    /*if (@available(iOS 11.0, *)) {
-        //self.navigationController.navigationBar.prefersLargeTitles = NO;
-        [_myTableView setFrame:CGRectMake(10, 0, _myTableView.frame.size.width - 20, _myTableView.frame.size.height)];
-    } else {
-        [_myTableView setFrame:CGRectMake(0, 0, _myTableView.frame.size.width, _myTableView.frame.size.height)];
-    }*/
-    //_myTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //[_myTableView setShowsVerticalScrollIndicator:NO];
-    //[_myTableView setShowsHorizontalScrollIndicator:NO];
     [self.view addSubview:self.myTableView];
-    //self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     if (@available(iOS 13.0, *)) {
         self.view.backgroundColor = [UIColor systemBackgroundColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
@@ -337,27 +214,10 @@ UIView *topNotchCoverAppSelection;
     self.navigationController.navigationBar.userInteractionEnabled = YES;
     [self.navigationItem.searchController.searchBar setPlaceholder:trans(@"Search for an app...")];
     self.navigationItem.hidesSearchBarWhenScrolling = NO;
-    //self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     // Do any additional setup after loading the view.
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    /*if (@available(iOS 13.0, *)) {
-        self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
-        self.view.backgroundColor = [UIColor systemBackgroundColor];
-        self.navigationController.navigationBar.tintColor = [UIColor labelColor];
-    } else {
-        // Fallback on earlier versions
-        //self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
-        self.view.backgroundColor = [UIColor whiteColor];
-        self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-        
-    }*/
-    /*if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
-        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
-    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
-            [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
-    }*/
     [self updateTopNotchCoverSize];
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -372,6 +232,7 @@ UIView *topNotchCoverAppSelection;
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
             [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     }
+    [BadgerTopNotchCoverView reappear:self.navigationController.view];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -379,7 +240,6 @@ UIView *topNotchCoverAppSelection;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //NSLog(@"appNames count: %lu",(unsigned long)[appNames count]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
@@ -389,53 +249,18 @@ UIView *topNotchCoverAppSelection;
     if ([[filteredAppImages objectAtIndex:indexPath.row]isEqual:@"NOIMG"]){}else{
         cell.imageView.image = [filteredAppImages objectAtIndex:indexPath.row];
     }
-    //cell.backgroundColor = cellColorFromRow(indexPath.row);
-    /*cell.layer.masksToBounds = YES;
-    if (@available(iOS 11.0, *)) {
-        if (indexPath.row == 0) {
-            cell.layer.cornerRadius = 15.0;
-            [cell.layer setMaskedCorners:3]; // kCALayerMaxXMinYCorner|kCALayerMinXMinYCorner
-        } else if (indexPath.row == [appNames count]-1) {
-            cell.layer.cornerRadius = 15.0;
-            [cell.layer setMaskedCorners:12]; // kCALayerMinXMaxYCorner|kCALayerMaxXMaxYCorner
-        } else {
-            cell.layer.cornerRadius = 0.0;
-            [cell.layer setMaskedCorners:0];
-        }
-    }*/
-    /*if (@available(iOS 11.0, *)) {
-        if (indexPath.row == (long)0) {
-            NSLog(@"app at %ld: %@",(long)indexPath.row,[appNames objectAtIndex:indexPath.row]);
-            cell.layer.cornerRadius = 15.0;
-            [cell.layer setMaskedCorners:kCALayerMaxXMinYCorner|kCALayerMinXMinYCorner];
-        } else if (indexPath.row == (long)([appNames count]-1)) {
-            NSLog(@"app mat %ld: %@",(long)indexPath.row,[appNames objectAtIndex:indexPath.row]);
-            cell.layer.cornerRadius = 15.0;
-            [cell.layer setMaskedCorners:kCALayerMinXMaxYCorner|kCALayerMaxXMaxYCorner];
-        }
-    }*/
-    //cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*Class appInfo = NSClassFromString(@"appInfo");
-    id appInfoInstance = [appInfo sharedInstance];
-    //[appInfoInstance addObserver:self];
-    if (appInfoInstance) {
-        [appInfoInstance setAppName:[appNames objectAtIndex:indexPath.row]];
-    }*/
     if ([[self cellTitle] isEqualToString:trans(@"Badge Shape for App")] || [[self cellTitle] isEqualToString:trans(@"Badge Color for App")]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
         myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
         myNewVC.cellTitle = [self cellTitle];
         myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-        NSLog(@"appName: %@",[filteredAppNames objectAtIndex:indexPath.row]);
-        NSLog(@"cellTitle: %@",[self cellTitle]);
-        NSLog(@"appBundleID: %@",[filteredAppBundleIDs objectAtIndex:indexPath.row]);
         [self.navigationController pushViewController:myNewVC animated:YES];
     } else if ([[self cellTitle] isEqualToString:trans(@"Badge Size for App")] || [[self cellTitle] isEqualToString:trans(@"Badge Label Color for App")] || [[self cellTitle] isEqualToString:trans(@"Badge Position for App")]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -459,15 +284,13 @@ UIView *topNotchCoverAppSelection;
         myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
         [self.navigationController pushViewController:myNewVC animated:YES];
     } else {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    BadgeCountMinimumViewController *myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
-    myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
-    myNewVC.cellTitle = [self cellTitle];
-    myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-    NSLog(@"appName: %@",[filteredAppNames objectAtIndex:indexPath.row]);
-    NSLog(@"cellTitle: %@",[self cellTitle]);
-    NSLog(@"appBundleID: %@",[filteredAppBundleIDs objectAtIndex:indexPath.row]);
-    [self.navigationController pushViewController:myNewVC animated:YES];
+        [BadgerTopNotchCoverView disappear:self.navigationController.view];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        BadgeCountMinimumViewController *myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
+        myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
+        myNewVC.cellTitle = [self cellTitle];
+        myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
+        [self.navigationController pushViewController:myNewVC animated:YES];
     }
 }
 
@@ -504,7 +327,8 @@ UIView *topNotchCoverAppSelection;
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     if (self.navigationItem.searchController.searchBar.frame.origin.y > 0) {
-        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.origin.y)];
+        //[topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.origin.y)];
+        [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y)];
     }
 }
 
@@ -517,5 +341,4 @@ UIView *topNotchCoverAppSelection;
         [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y + self.navigationItem.searchController.searchBar.frame.size.height)];
     }
 }
-
 @end

@@ -4,6 +4,14 @@
 <dict>
 	<key>AppConfiguration</key>
 	<dict/>
+	<key>BadgerCheckCompatibility</key>
+	<true/>
+	<key>BadgerConfigFormatVersion</key>
+	<integer>1</integer>
+	<key>BadgerDiplayVersionForMinimumCompatibilityVersion</key>
+	<string>1.2.2</string>
+	<key>BadgerMinimumCompatibilityVersion</key>
+	<integer>6</integer>
 	<key>UniversalConfiguration</key>
 	<dict>
 		<key>DefaultConfig</key>
@@ -11,13 +19,13 @@
 			<key>BadgeColor</key>
 			<dict>
 				<key>Blue</key>
-				<string>0.333333</string>
+				<string>0.894118</string>
 				<key>ColorName</key>
-				<string>Pink</string>
+				<string>Random</string>
 				<key>Green</key>
-				<string>0.176471</string>
+				<string>0.015686</string>
 				<key>Red</key>
-				<string>1.000000</string>
+				<string>0.121569</string>
 			</dict>
 		</dict>
 	</dict>

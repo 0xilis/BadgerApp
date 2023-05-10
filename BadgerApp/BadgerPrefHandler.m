@@ -18,7 +18,9 @@ NSString *preferencesDirectory = @"/var/mobile/Library/Badger/Prefs/BadgerPrefs.
 
 void badgerSaveUniversalPref(NSString *prefKey, id prefValue) {
     NSMutableDictionary *badgerPlist = [[NSMutableDictionary alloc]initWithContentsOfFile:preferencesDirectory];
+    NSLog(@"before: %@",badgerPlist);
     [[[badgerPlist objectForKey:@"UniversalConfiguration"]objectForKey:@"DefaultConfig"]setObject:prefValue forKey:prefKey];
+    NSLog(@"after: %@",badgerPlist);
     [badgerPlist writeToFile:preferencesDirectory atomically:YES];
 }
 //prefApp is app's bundle ID
@@ -368,6 +370,7 @@ BOOL badgerIsCompatibleWithConfiguration(void) {
     return NO;
 }
 
+//ported from Paged
 NSString *badgerGetMinimumCompatibilityVersion(void) {
     NSMutableDictionary *pagedPlist = [[NSMutableDictionary alloc]initWithContentsOfFile:preferencesDirectory];
     if (!pagedPlist) {
@@ -382,6 +385,7 @@ NSString *badgerGetMinimumCompatibilityVersion(void) {
     return ret;
 }
 
+//maybe ported from Paged i can't remember
 id badgerGetMinimumCompatibilityBuildNumber(void) {
     NSMutableDictionary *pagedPlist = [[NSMutableDictionary alloc]initWithContentsOfFile:preferencesDirectory];
     if (!pagedPlist) {
@@ -389,4 +393,52 @@ id badgerGetMinimumCompatibilityBuildNumber(void) {
         return 0;
     }
     return pagedPlist[@"BadgerMinimumCompatibilityVersion"];
+}
+
+void badgerRemoveCurrentPref(long count, NSString *prefApp, NSString *prefKey) {
+    if (prefApp) {
+        if (count) {
+            badgerRemoveAppCountPref(count,prefApp, prefKey);
+        } else {
+            badgerRemoveAppPref(prefApp, prefKey);
+        }
+    } else {
+        if (count) {
+            badgerRemoveUniversalCountPref(count,prefKey);
+        } else {
+            badgerRemoveUniversalPref(prefKey);
+        }
+    }
+}
+
+void badgerSaveCurrentPref(long count, NSString *prefApp, NSString *prefKey, id prefValue) {
+    if (prefApp) {
+        if (count) {
+            badgerSaveAppCountPref(count,prefApp, prefKey, prefValue);
+        } else {
+            badgerSaveAppPref(prefApp, prefKey, prefValue);
+        }
+    } else {
+        if (count) {
+            badgerSaveUniversalCountPref(count, prefKey, prefValue);
+        } else {
+            badgerSaveUniversalPref(prefKey, prefValue);
+        }
+    }
+}
+
+id badgerRetriveCurrentPref(long count, NSString *prefApp, NSString *prefKey) {
+    if (count) {
+        if (prefApp) {
+            return badgerRetriveAppCountPref(count, prefApp, prefKey);
+        } else {
+            return badgerRetriveUniversalCountPref(count, prefKey);
+        }
+    } else {
+        if (prefApp) {
+            return badgerRetriveAppPref(prefApp, prefKey);
+        } else {
+            return badgerRetriveUniversalPref(prefKey);
+        }
+    }
 }

@@ -31,4 +31,7 @@ BOOL badgerDoesHaveCompatibilitySafetyFlags(void);
 BOOL badgerIsCompatibleWithConfiguration(void);
 NSString *badgerGetMinimumCompatibilityVersion(void);
 id badgerGetMinimumCompatibilityBuildNumber(void);
+void badgerRemoveCurrentPref(long count, NSString *prefApp, NSString *prefKey);
+void badgerSaveCurrentPref(long count, NSString *prefApp, NSString *prefKey, id prefValue);
+id badgerRetriveCurrentPref(long count, NSString *prefApp, NSString *prefKey);
 #endif /* BadgerPrefHandler_h */
