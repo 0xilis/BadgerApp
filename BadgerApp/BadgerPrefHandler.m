@@ -13,8 +13,6 @@
 #define BADGER_DISPLAY_VERSION_FOR_MINIMUM_COMPATIBILITY_VERSION "1.2.2"
 
 NSString *preferencesDirectory = @"/var/mobile/Library/Badger/Prefs/BadgerPrefs.plist";
-//NSString *preferencesDirectory = @"/Users/zachary7829/Desktop/xCode stuff/BadgerApp/BadgerApp/TestBadgerPrefs.plist";
-//NSString *preferencesDirectory = @"/Users/zachary7829/Library/Mobile Documents/com~apple~CloudDocs/Desktop/xCode stuff/BadgerApp/BadgerApp/TestBadgerPrefs.plist";
 
 void badgerSaveUniversalPref(NSString *prefKey, id prefValue) {
     NSMutableDictionary *badgerPlist = [[NSMutableDictionary alloc]initWithContentsOfFile:preferencesDirectory];
