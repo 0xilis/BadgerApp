@@ -13,22 +13,24 @@
 
 NSString *badgeSetting;
 UISlider *slider;
+long badgeCount3;
+NSString *appBundleID3;
 
 @interface BadgeCountMinimumViewController ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *iconView;
 @property (weak, nonatomic) IBOutlet UITextField *numberField;
 @property (weak, nonatomic) IBOutlet UITextView *explainingBox;
-@property (weak, nonatomic) IBOutlet UIImageView *backgd;
 @property (weak, nonatomic) IBOutlet UILabel *appLabel;
 @property (weak, nonatomic) IBOutlet UILabel *label;
--(void)sliderChange:(id)sender;
+//-(void)sliderChange:(id)sender;
 @end
 
 @implementation BadgeCountMinimumViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    badgeCount3 = [self badgeCount];
+    appBundleID3 = [self appBundleID];
     CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
     //RRedGrad.png
     [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
@@ -37,9 +39,8 @@ UISlider *slider;
     _numberField.delegate = self;
     [_numberField setAlpha:0.5];
     [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor]; //if dark mode this looks weird in app selection 
-    NSLog(@"%@", [self cellTitle]);
-    if ([[self cellTitle]isEqualToString:trans(@"Badge Count Minimum")]) {
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor]; //if dark mode this looks weird in app selection
+    if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum")]) {
         //RRedGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
         _appLabel.hidden = 1;
@@ -49,7 +50,7 @@ UISlider *slider;
         if (badgerRetriveUniversalPref(@"BadgeCountMinimum")) {
             _numberField.text = badgerRetriveUniversalPref(@"BadgeCountMinimum");
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Minimum for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum for App")]) {
         //ROrangeGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFA959").CGColor, (id)colorFromHexString(@"FF5B51").CGColor, nil]];
         _appLabel.hidden = 0;
@@ -57,10 +58,10 @@ UISlider *slider;
         [_label setText:trans(@"Badge Count Minimum")];
         [_explainingBox setText:[trans(@"This affects the minimum badge count for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
         badgeSetting = @"minimum";
-        if (badgerRetriveAppPref([self appBundleID],@"BadgeCountMinimum")) {
-            _numberField.text = badgerRetriveAppPref([self appBundleID],@"BadgeCountMinimum");
+        if (badgerRetriveAppPref(appBundleID3,@"BadgeCountMinimum")) {
+            _numberField.text = badgerRetriveAppPref(appBundleID3,@"BadgeCountMinimum");
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Limit")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Limit")]) {
         //RYellowGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFE259").CGColor, (id)colorFromHexString(@"FFA751").CGColor, nil]];
         _appLabel.hidden = 1;
@@ -70,7 +71,7 @@ UISlider *slider;
         if (badgerRetriveUniversalPref(@"BadgeCountLimit")) {
             _numberField.text = badgerRetriveUniversalPref(@"BadgeCountLimit");
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Limit for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Limit for App")]) {
         //RGreenGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
         _appLabel.hidden = 0;
@@ -78,10 +79,10 @@ UISlider *slider;
         [_label setText:@"Badge Count Limit"];
         [_explainingBox setText:[trans(@"This affects the badge count limit for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
         badgeSetting = @"limit";
-        if (badgerRetriveAppPref([self appBundleID],@"BadgeCountLimit")) {
-            _numberField.text = badgerRetriveAppPref([self appBundleID],@"BadgeCountLimit");
+        if (badgerRetriveAppPref(appBundleID3,@"BadgeCountLimit")) {
+            _numberField.text = badgerRetriveAppPref(appBundleID3,@"BadgeCountLimit");
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Opacity")] || [[self cellTitle]isEqualToString:trans(@"Badge Opacity for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Opacity")] || [daCellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
         _appLabel.hidden = 1;
         [_label setText:trans(@"Badge Opacity")];
         [_explainingBox setText:trans(@"This affects the badge opacity for notification badges.")];
@@ -92,7 +93,7 @@ UISlider *slider;
         [slider setTintColor:[UIColor orangeColor]];
         [slider setAlpha:0.5];
         [self.view addSubview:slider];
-        id currentBadgeOpacity = badgerRetriveCurrentPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
+        id currentBadgeOpacity = badgerRetriveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity");
         if (currentBadgeOpacity) {
             _numberField.text = [NSString stringWithFormat:@"%@%%",currentBadgeOpacity];
             _numberField.subviews[0].alpha = [currentBadgeOpacity floatValue] / 100;
@@ -101,14 +102,14 @@ UISlider *slider;
             _numberField.text = @"100%";
             [slider setValue:100];
         }
-        if ([self appBundleID]) {
+        if (appBundleID3) {
             //RRedGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
         } else {
             //RPurpleGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Custom Badge Label")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Custom Badge Label")]) {
         //RRedGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
         _appLabel.hidden = 1;
@@ -116,8 +117,8 @@ UISlider *slider;
         [_explainingBox setText:trans(@"Set a custom label for notification badges.")];
         badgeSetting = @"label";
         NSString *BadgeLabel;
-        if ([self badgeCount]) {
-            BadgeLabel = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeLabel");
+        if (badgeCount3) {
+            BadgeLabel = badgerRetriveUniversalCountPref(badgeCount3,@"BadgeLabel");
         } else {
             BadgeLabel = badgerRetriveUniversalPref(@"BadgeLabel");
         }
@@ -127,7 +128,7 @@ UISlider *slider;
             _numberField.text = @"";
         }
         _numberField.placeholder = trans(@"Enter label...");
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Size")] || [[self cellTitle]isEqualToString:trans(@"Badge Size for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Size")] || [daCellTitle isEqualToString:trans(@"Badge Size for App")]) {
         _appLabel.hidden = 1;
         [_label setText:trans(@"Badge Size")];
         [_explainingBox setText:trans(@"This affects the badge size for notification badges.")];
@@ -139,7 +140,7 @@ UISlider *slider;
         [slider setTintColor:[UIColor orangeColor]];
         [slider setAlpha:1.0];
         [self.view addSubview:slider];
-        NSString *BadgeSize = badgerRetriveCurrentPref([self badgeCount],[self appBundleID],@"BadgeSize");
+        NSString *BadgeSize = badgerRetriveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize");
         if (BadgeSize) {
             _numberField.text = [NSString stringWithFormat:@"%@%%",BadgeSize];
             //_numberField.subviews[0].alpha = [BadgeSize floatValue] / 100;
@@ -148,7 +149,7 @@ UISlider *slider;
             _numberField.text = @"100%";
             [slider setValue:100];
         }
-        if ([self appBundleID]) {
+        if (appBundleID3) {
             [_explainingBox setText:[trans(@"This affects the badge size for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
             //RYellowGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFE259").CGColor, (id)colorFromHexString(@"FFA751").CGColor, nil]];
@@ -279,94 +280,38 @@ UISlider *slider;
     }
     [textField resignFirstResponder];
     //save plist
-    if ([[self cellTitle]isEqualToString:trans(@"Badge Count Minimum")]) {
+    if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum")]) {
         if ([newText isEqualToString:@"1"]) {
             badgerRemoveUniversalPref(@"BadgeCountMinimum");
         } else {
             badgerSaveUniversalPref(@"BadgeCountMinimum", textField.text);
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Minimum for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum for App")]) {
         if ([newText isEqualToString:@"1"]) {
-            badgerRemoveAppPref([self appBundleID], @"BadgeCountMinimum");
+            badgerRemoveAppPref(appBundleID3, @"BadgeCountMinimum");
         } else {
-            badgerSaveAppPref([self appBundleID], @"BadgeCountMinimum", textField.text);
+            badgerSaveAppPref(appBundleID3, @"BadgeCountMinimum", textField.text);
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Limit")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Limit")] || [daCellTitle isEqualToString:trans(@"Badge Count Limit for App")]) {
         if ([newText isEqualToString:@"None"]) {
-            badgerRemoveUniversalPref(@"BadgeCountLimit");
+            badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeCountLimit");
         } else {
-            badgerSaveUniversalPref(@"BadgeCountLimit", textField.text);
+            badgerSaveCurrentPref(badgeCount3, appBundleID3, @"BadgeCountLimit", textField.text);
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Count Limit for App")]) {
-        if ([newText isEqualToString:@"None"]) {
-            badgerRemoveAppPref([self appBundleID],@"BadgeCountLimit");
-        } else {
-            badgerSaveAppPref([self appBundleID],@"BadgeCountLimit", textField.text);
-        }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Opacity")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Opacity")] || [daCellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
         if ([newText isEqualToString:@"100"]) {
-            if ([self badgeCount]) {
-                badgerRemoveUniversalCountPref([self badgeCount],@"BadgeOpacity");
-            } else {
-                badgerRemoveUniversalPref(@"BadgeOpacity");
-            }
+            badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity");
         } else {
-            if ([self badgeCount]) {
-                badgerSaveUniversalCountPref([self badgeCount],@"BadgeOpacity", newText);
-            } else {
-                badgerSaveUniversalPref(@"BadgeOpacity", newText);
-            }
+            badgerSaveCurrentPref(badgeCount3,appBundleID3, @"BadgeOpacity", newText);
         }
         [slider setValue:[newText integerValue] animated:YES];
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Opacity for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Custom Badge Label")]) {
+        badgerSaveCurrentPref(badgeCount3, NULL, @"BadgeLabel", newText);
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Size")] || [daCellTitle isEqualToString:trans(@"Badge Size for App")]) {
         if ([newText isEqualToString:@"100"]) {
-            if ([self badgeCount]) {
-                badgerRemoveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
-            } else {
-                badgerRemoveAppPref([self appBundleID],@"BadgeOpacity");
-            }
+            badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize");
         } else {
-            if ([self badgeCount]) {
-                badgerSaveAppCountPref([self badgeCount],[self appBundleID],@"BadgeOpacity", newText);
-            } else {
-                badgerSaveAppPref([self appBundleID],@"BadgeOpacity", newText);
-            }
-        }
-        [slider setValue:[newText integerValue] animated:YES];
-    } else if ([[self cellTitle]isEqualToString:trans(@"Custom Badge Label")]) {
-        if ([self badgeCount]) {
-            badgerSaveUniversalCountPref([self badgeCount], @"BadgeLabel", newText);
-        } else {
-            badgerSaveUniversalPref(@"BadgeLabel", newText);
-        }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Size")]) {
-        if ([newText isEqualToString:@"100"]) {
-            if ([self badgeCount]) {
-                badgerRemoveUniversalCountPref([self badgeCount],@"BadgeSize");
-            } else {
-                badgerRemoveUniversalPref(@"BadgeSize");
-            }
-        } else {
-            if ([self badgeCount]) {
-                badgerSaveUniversalCountPref([self badgeCount],@"BadgeSize", newText);
-            } else {
-                badgerSaveUniversalPref(@"BadgeSize", newText);
-            }
-        }
-        [slider setValue:[newText integerValue] animated:YES];
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Size for App")]) {
-        if ([newText isEqualToString:@"100"]) {
-            if ([self badgeCount]) {
-                badgerRemoveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize");
-            } else {
-                badgerRemoveAppPref([self appBundleID],@"BadgeSize");
-            }
-        } else {
-            if ([self badgeCount]) {
-                badgerSaveAppCountPref([self badgeCount],[self appBundleID],@"BadgeSize", newText);
-            } else {
-                badgerSaveAppPref([self appBundleID],@"BadgeSize", newText);
-            }
+            badgerSaveCurrentPref(badgeCount3,appBundleID3, @"BadgeSize", newText);
         }
         [slider setValue:[newText integerValue] animated:YES];
     }
@@ -391,16 +336,17 @@ UISlider *slider;
             newText = @"100";
         }
     }
-    if ([newText integerValue] < 0 && [badgeSetting isEqualToString:@"opacity"]) {
+    long integerValue = [newText integerValue];
+    if (integerValue < 0 && [badgeSetting isEqualToString:@"opacity"]) {
         newText = @"0";
-    } else if ([newText integerValue] > 100 && [badgeSetting isEqualToString:@"opacity"]) {
+    } else if (integerValue > 100 && [badgeSetting isEqualToString:@"opacity"]) {
         newText = @"100";
-    } else if ([newText integerValue] < 50 && [badgeSetting isEqualToString:@"size"]) {
+    } else if (integerValue < 50 && [badgeSetting isEqualToString:@"size"]) {
         newText = @"50";
-    } else if ([newText integerValue] > 200 && [badgeSetting isEqualToString:@"size"]) {
+    } else if (integerValue > 200 && [badgeSetting isEqualToString:@"size"]) {
         newText = @"100";
     }
-    if ([newText integerValue] < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"] && ![badgeSetting isEqualToString:@"label"]) {
+    if (integerValue < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"] && ![badgeSetting isEqualToString:@"label"]) {
         if ([badgeSetting isEqualToString:@"minimum"]) {
             newText = @"1";
         } else {
@@ -408,7 +354,7 @@ UISlider *slider;
         }
     }
     if (![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"label"]) {
-        textField.text = [@([newText integerValue]) stringValue];
+        textField.text = [@(integerValue) stringValue];
     } else {
         textField.text = newText;
     }
@@ -463,15 +409,15 @@ UISlider *slider;
     _numberField.text = [NSString stringWithFormat:@"%d%%",(int)[slider value]];
     if ([badgeSetting isEqualToString:@"opacity"]) {
         if ((int)[slider value] == 100) {
-            badgerRemoveCurrentPref([self badgeCount],[self appBundleID],@"BadgeOpacity");
+            badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity");
         } else {
-            badgerSaveCurrentPref([self badgeCount],[self appBundleID],@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
+            badgerSaveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
         }
     } else if ([badgeSetting isEqualToString:@"size"]) {
         if ((int)[slider value] == 100) {
-            badgerRemoveCurrentPref([self badgeCount],[self appBundleID],@"BadgeSize");
+            badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize");
         } else {
-            badgerSaveCurrentPref([self badgeCount],[self appBundleID],@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
+            badgerSaveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
         }
     }
     _numberField.subviews[0].alpha = slider.value / 100;

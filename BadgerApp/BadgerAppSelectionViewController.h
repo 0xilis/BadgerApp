@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BadgerAppSelectionViewController : UIViewController
-@property (nonatomic, assign, readwrite) NSString* cellTitle;
+@interface BadgerAppSelectionViewController : BadgerViewController
+
 @end
 
 /*@interface appInfo : NSObject {

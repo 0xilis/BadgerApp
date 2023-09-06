@@ -9,29 +9,21 @@
 #import "BadgeCountMinimumViewController.h"
 #import "BadgerAppSelectionViewController.h"
 #import "BadgeColorViewController.h"
-/*#import <sys/stat.h>
-#import <sys/types.h>
-#import <unistd.h>
-#include <dlfcn.h>
-#import <spawn.h>*/
 #import "BadgerCountConfigManagerViewController.h"
 #import "BadgerPrefHandler.h"
 #import "BadgerVersionInfo.h"
-#import "BadgerTableViewCell.h"
 #import "BadgerApplySettingsViewController.h"
 #import "BadgerCreditsViewController.h"
-#import "BadgerTopNotchCoverView.h"
-
-#define ROWS 20
-
-#define TRIAL 0
+#import "BadgerEasyTranslations.h"
 
 #define TRANS 0
 
 NSArray *cellTitles;
 NSMutableArray *filteredCells;
+NSString *daCellTitle;
 
 UIView *topNotchCover;
+UIView *topTopNotchCoverView;
 
 @interface ViewController ()
 
@@ -47,20 +39,19 @@ UIView *topNotchCover;
     [super viewDidLoad];
     cellTitles = [[NSArray alloc]initWithObjects:@"Badge Count Minimum",@"Badge Count Minimum for App",@"Badge Count Limit",@"Badge Color",@"Badge Color for App",@"Badge Opacity",@"Badge Opacity for App",@"Badge Position",@"Badge Shape",@"Badge Shape for App",@"Badge Image",@"Badge Image for App",@"Custom Badge Label",@"Badge Size",@"Badge Size for App",@"Badge Label Color",@"Badge Label Color for App",@"Badge Font",@"Apply Settings",@"Credits", nil];
     @autoreleasepool {
-        NSMutableArray *mutableCellTitles = [[NSMutableArray alloc]init];
+        filteredCells = [[NSMutableArray alloc]init];
         for (NSString* cellTitle in cellTitles) {
-            [mutableCellTitles addObject:trans(cellTitle)];
+            [filteredCells addObject:trans(cellTitle)];
         }
-        cellTitles = [[NSArray alloc]initWithArray:mutableCellTitles];
+        cellTitles = [[NSArray alloc]initWithArray:filteredCells];
     }
-    filteredCells = [cellTitles mutableCopy];
     self.navigationController.navigationBar.prefersLargeTitles = YES;
     // https://stackoverflow.com/questions/65330737/uinavigationcontroller-and-large-titles-when-popping-viewcontroller
     [[self navigationItem]setLargeTitleDisplayMode:UINavigationItemLargeTitleDisplayModeAlways];
     
     //https://stackoverflow.com/questions/64005273/ios14-navigationitem-largetitledisplaymode-always-not-work
     //*maybe* this is needed on iOS 14+?
-    [[[self navigationController]navigationBar]sizeToFit];
+    //[[[self navigationController]navigationBar]sizeToFit];
     
 #if TRIAL
     //TODO: Note, this is dumb. Why am I protecting against hooking, these checks are not obfuscated at all and can easily be patched out. Oh wait yeah I decided to not burn myself into obfuscation and DRM to just be used for betas (well ig this will be used for the trial system as well but anyway), and instead just focus on the good tweak. Still leaving this here though since ig it does prevent simple flex patches from forcing no expire
@@ -153,19 +144,32 @@ UIView *topNotchCover;
     }
 #endif
     
-    FILE *file;
+    badgerSetUpPrefPlist();
     
-    if ((file = fopen("/var/mobile/Library/Badger/Prefs/BadgerPrefs.plist","r"))) {
-        fclose(file);
-    } else {
-        badgerSetUpPrefPlistAtSpecificLocation(@"/var/mobile/Library/Badger/Prefs/BadgerPrefs.plist");
-    }
+    /*int ret;
+    const char *filename = BADGER_PATH_TO_PLIST;
+    
+#if __aarch64__
+    asm volatile (
+        "mov x16, #21\n\t"
+        "mov x0, %1\n\t"
+        "mov x1, #0\n\t"
+        "mov x8, #0x80\n\t"
+        "svc #0x80\n\t"
+        "cbnz x0, .+8\n\t"
+        "bl _badgerSetUpPrefPlist\n\t"
+        : "=r" (ret)
+        : "r" (filename)
+        : "x0", "x16", "x1", "x8", "cc"
+    );
+#endif*/
+     
     
     self.navigationController.navigationBar.userInteractionEnabled = NO;
     //TODO: Provide an option for iOS 12- users to have dark mode rather than defaulting them to light mode with no option to switch.
     if (@available(iOS 13.0, *)) {
         self.view.backgroundColor = [UIColor systemBackgroundColor];
-        self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
+        //self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
     } else {
         self.view.backgroundColor = [UIColor whiteColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
@@ -198,62 +202,63 @@ UIView *topNotchCover;
     if (@available(iOS 13.0, *)) { } else {
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     }
-    BOOL didPresentNoPlistAlert = NO;
-    if (badgerDoesHaveCompatibilitySafetyFlags() == NO) {
-        //Does not have the compatibility safety flags that were added in 1.2.2 - add them
-        if (badgerAddMinimumCompatibilityVersion() == NO) {
-            //This function only returns NO when badgerPlist cannot be found. Show an alert.
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Badger" message:trans(@"BadgerApp cannot seem to load preferences. This may cause unexpected behavior.") preferredStyle:UIAlertControllerStyleActionSheet];
-
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        //action when pressed button
+    }];
+    FILE *fp;
+    if ((fp = fopen(BADGER_PATH_TO_PLIST, "r"))) {
+        fclose(fp);
+        /* add compatibility safety flags if we need to */
+        badgerAddCompatibilitySafetyFlagsIfNeeded();
+        if (!badgerIsCompatibleWithConfiguration()) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Badger" message:[trans(@"Your Badger configuration is not compatible with this version. Please upgrade to Badger (BADGER_MINIMUM_COMPATIBILITY_VERSION) or higher. You can optionally choose to reset your configuration file to use this outdated version.") stringByReplacingOccurrencesOfString:@"(BADGER_MINIMUM_COMPATIBILITY_VERSION)" withString:badgerGetMinimumCompatibilityVersion()] preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction *resetAction = [UIAlertAction actionWithTitle:trans(@"Reset") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 //action when pressed button
             }];
             
             [alertController addAction:okAction];
+            [alertController addAction:resetAction];
             
+            //thank u to https://stackoverflow.com/questions/60516848/swift-set-uibarbuttonitem-as-source-for-popover-without-tap for letting me know how to have my app not crash on iOS 12
             [[alertController popoverPresentationController]setSourceRect:CGRectMake(0, 0, 0, 0)];
             [[alertController popoverPresentationController]setSourceView:[self view]];
             
-            [self.parentViewController presentViewController:alertController animated:YES completion:nil];
-            didPresentNoPlistAlert = YES;
+            [self.parentViewController presentViewController:alertController animated:YES completion: nil];
         }
-    }
-    if (badgerIsCompatibleWithConfiguration() == NO && !didPresentNoPlistAlert && badgerDoesHaveCompatibilitySafetyFlags()) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Badger" message:[trans(@"Your Badger configuration is not compatible with this version. Please upgrade to Badger (BADGER_MINIMUM_COMPATIBILITY_VERSION) or higher. You can optionally choose to reset your configuration file to use this outdated version.") stringByReplacingOccurrencesOfString:@"(BADGER_MINIMUM_COMPATIBILITY_VERSION)" withString:badgerGetMinimumCompatibilityVersion()] preferredStyle:UIAlertControllerStyleActionSheet];
-
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            //action when pressed button
-        }];
-        
-        UIAlertAction *resetAction = [UIAlertAction actionWithTitle:trans(@"Reset") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-            //action when pressed button
-        }];
+    } else {
+        /* badgerPlist cannot be found. Show an alert. */
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Badger" message:trans(@"BadgerApp cannot seem to load preferences. This may cause unexpected behavior.") preferredStyle:UIAlertControllerStyleActionSheet];
         
         [alertController addAction:okAction];
-        [alertController addAction:resetAction];
         
-        //thank u to https://stackoverflow.com/questions/60516848/swift-set-uibarbuttonitem-as-source-for-popover-without-tap for letting me know how to have my app not crash on iOS 12
         [[alertController popoverPresentationController]setSourceRect:CGRectMake(0, 0, 0, 0)];
         [[alertController popoverPresentationController]setSourceView:[self view]];
         
-        [self.parentViewController presentViewController:alertController animated:YES completion: nil];
+        [self.parentViewController presentViewController:alertController animated:YES completion:nil];
     }
     //For some strange, inexplicable reason, the prefersLargeTitles navbar condenses if we show an alert. After toying around with it for a day I found that calling sendSubviewToBack somehow fixes it???? So we workaround this behavior by creating a useless view and send it to the back. If you know *why* this happens, please get in contact with me (Snoolie K) because words cannot describe my confusion.
     UIView *genericView = [[UIView alloc]init];
     [self.view addSubview:genericView];
     [self.view sendSubviewToBack:genericView];
-    BadgerTopNotchCoverView *topTopNotchCoverView = [[BadgerTopNotchCoverView alloc]init];
+    topTopNotchCoverView = [[UIView alloc]init];
     if (@available(iOS 13.0, *)) {
         [topTopNotchCoverView setBackgroundColor:[UIColor systemBackgroundColor]];
     } else {
         [topTopNotchCoverView setBackgroundColor:[UIColor whiteColor]];
     }
     [topTopNotchCoverView setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[[self navigationController]navigationBar]frame].origin.y)];
+    //self.navigationController.navigationBarHidden = NO;
+    //self.navigationController.navigationBar.standardAppearance.
     [self.navigationController.view addSubview:topTopNotchCoverView];
 }
 
 //TODO: Hacky workaround for the infamous navbar bug. It's hacky but I have had no idea how to fix this since 1.0 and I'm so happy to finally find a workaround in 1.2.2 even if it's not how to properly fix.
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    self.edgesForExtendedLayout = UIRectEdgeTop;
     [self updateTopNotchCoverSize];
 }
 
@@ -271,28 +276,26 @@ UIView *topNotchCover;
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
         [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     }
-    [BadgerTopNotchCoverView reappear:self.navigationController.view];
+    [topTopNotchCoverView setHidden:NO];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [filteredCells count];
 }
 
--(BadgerTableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BadgerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
-        cell = [[BadgerTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
 #if TRANS
     cell.backgroundColor = basedCellColorFromRow(indexPath.row);
 #endif
-    cell.textLabel.text = cellTitleFromRow(indexPath.row);
-    cell.imageView.image = cellImageFromTitle(cellTitleFromRow(indexPath.row));
+    
+    NSString *cellTitle = cellTitleFromRow(indexPath.row);
+    cell.textLabel.text = cellTitle;
+    cell.imageView.image = cellImageFromRow([cellTitles indexOfObject:cellTitle]);
     [cell.textLabel setAdjustsFontSizeToFitWidth:1];
-    //If we got a row that for whatever fucking reason appears even if we already have all the rows we need, hide it. Actually the better solution is to just probably return nil or something because this might look the scrolling look weird but whatever, this was really only needed back in the September builds.
-    if (indexPath.row > (ROWS-1)) {
-        [cell setHidden:1];
-    }
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [cell.imageView.layer setMasksToBounds:YES];
@@ -303,162 +306,88 @@ UIView *topNotchCover;
 //TODO: Ugly method, improve later in Badger 1.3 when we switch to no storyboards (i suck at them)
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self updateTopNotchCoverSize];
-    NSString *cellTitle = cellTitleFromRow(indexPath.row);
-    Class cellInfo = NSClassFromString(@"cellInfo");
-    id cellInfoInstance = [cellInfo sharedInstance];
-    [cellInfoInstance addObserver:self];
-    if (cellInfoInstance) {
-        [cellInfoInstance setCellTitle:cellTitle];
+    daCellTitle = cellTitleFromRow(indexPath.row);
+    long row = [cellTitles indexOfObject:daCellTitle];
+    
+    BadgerViewController *myNewVC;
+    
+    if (row == 0) {
+        //[cellTitle isEqualToString:trans(@"Badge Count Minimum")]
+        [topTopNotchCoverView setHidden:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
+    } else if (row == 1) {
+        //[cellTitle isEqualToString:trans(@"Badge Count Minimum for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row == 2) {
+        //[cellTitle isEqualToString:trans(@"Badge Count Limit")]
+        [topTopNotchCoverView setHidden:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
+    } else if (row == 3) {
+        //[cellTitle isEqualToString:trans(@"Badge Color")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 4) {
+        //[cellTitle isEqualToString:trans(@"Badge Color for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row == 5) {
+        //[cellTitle isEqualToString:trans(@"Badge Opacity")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 6) {
+        //[cellTitle isEqualToString:trans(@"Badge Opacity for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row == 7) {
+        //[cellTitle isEqualToString:trans(@"Badge Position")]
+        [topTopNotchCoverView setHidden:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgeColorViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeColorViewController"];
+    } else if (row == 8) {
+        //[cellTitle isEqualToString:trans(@"Badge Shape")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 9) {
+        //[cellTitle isEqualToString:trans(@"Badge Shape for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row == 10) {
+        //[cellTitle isEqualToString:trans(@"Badge Image")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 11) {
+        //[cellTitle isEqualToString:trans(@"Badge Image for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row < 14) {
+        //[cellTitle isEqualToString:trans(@"Custom Badge Label")]
+        //[cellTitle isEqualToString:trans(@"Badge Size")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 14) {
+        //[cellTitle isEqualToString:trans(@"Badge Size for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row == 15) {
+        //[cellTitle isEqualToString:trans(@"Badge Label Color")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 16) {
+        //[cellTitle isEqualToString:trans(@"Badge Label Color for App")]
+        myNewVC = [[BadgerAppSelectionViewController alloc]init];
+    } else if (row == 17) {
+        //[cellTitle isEqualToString:trans(@"Badge Font")]
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if (row == 18) {
+        //[cellTitle isEqualToString:trans(@"Apply Settings")]
+        [topTopNotchCoverView setHidden:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        myNewVC = (BadgerApplySettingsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerApplySettingsViewController"];
+    } else {
+        //[cellTitle isEqualToString:trans(@"Credits")]
+        [topTopNotchCoverView setHidden:YES];
+        myNewVC = [[BadgerCreditsViewController alloc]init];
     }
-    if ([cellTitle isEqualToString:trans(@"Badge Count Minimum")]) {
-        [BadgerTopNotchCoverView disappear:self.navigationController.view];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgeCountMinimumViewController *myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Count Minimum for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Count Limit")]) {
-        [BadgerTopNotchCoverView disappear:self.navigationController.view];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgeCountMinimumViewController *myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Count Limit for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Color")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Opacity")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Position")]) {
-        [BadgerTopNotchCoverView disappear:self.navigationController.view];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgeColorViewController *myNewVC = (BadgeColorViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeColorViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Shape")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Image")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Custom Badge Label")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Color for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Shape for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Badge Size")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Size for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Label Color")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Label Color for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Image for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Position for App")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerAppSelectionViewController *myNewVC = (BadgerAppSelectionViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerAppSelectionViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Font")]) {
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.cellTitle = cellTitle;
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Apply Settings")]) {
-        
-        [BadgerTopNotchCoverView disappear:self.navigationController.view];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerApplySettingsViewController *myNewVC = (BadgerApplySettingsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerApplySettingsViewController"];
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    } else if ([cellTitle isEqualToString:trans(@"Credits")]) {
-        
-        [BadgerTopNotchCoverView disappear:self.navigationController.view];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCreditsViewController *myNewVC = (BadgerCreditsViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCreditsViewController"];
-        [self.navigationController pushViewController:myNewVC animated:YES];
-         
-    }
+    //myNewVC.cellTitle = cellTitle;
+    [self.navigationController pushViewController:myNewVC animated:YES];
 }
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     return indexPath;
@@ -468,12 +397,13 @@ UIView *topNotchCover;
     return 50;//return 66; //orig 44.0
 }*/
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    filteredCells = [[NSMutableArray alloc]init];
-    if ([searchText isEqualToString:@""]) {
+    NSString *searchTextLowercase = [searchText lowercaseString];
+    if ([searchTextLowercase isEqualToString:@""]) {
         filteredCells = [cellTitles mutableCopy];
     } else {
+        filteredCells = [[NSMutableArray alloc]init];
         for (NSString* aCellTitle in cellTitles) {
-            if ([[aCellTitle lowercaseString]containsString:[searchText lowercaseString]]) {
+            if ([[aCellTitle lowercaseString]containsString:searchTextLowercase]) {
                 [filteredCells addObject:aCellTitle];
             }
         }
@@ -507,51 +437,54 @@ UIView *topNotchCover;
 @end
 NSString *cellTitleFromRow(long row) {
     //yes this function is used
-    return [cellTitles objectAtIndex:row];
+    return [filteredCells objectAtIndex:row];
 }
 
-int cellRowFromTitle(NSString *cellTitle) {
-    int cellRow = 0;
-    while ((!([[filteredCells objectAtIndex:cellRow]isEqualToString:cellTitle])) && cellRow <= filteredCells.count) {
-        cellRow++;
-    }
-    if (cellRow > filteredCells.count) {
-        return -1;
-    }
-    return cellRow;
-}
-
-UIImage* cellImageFromTitle(NSString* cellTitle) {
-    if ([cellTitle isEqualToString:trans(@"Badge Count Minimum")] || [cellTitle isEqualToString:trans(@"Badge Count Minimum for App")]) {
+UIImage* cellImageFromRow(long row) {
+    if (row < 2) {
+        //[cellTitle isEqualToString:trans(@"Badge Count Minimum")] || [cellTitle isEqualToString:trans(@"Badge Count Minimum for App")]
         return [UIImage imageNamed:@"MinimumBadge.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Count Limit")] || [cellTitle isEqualToString:trans(@"Badge Count Limit for App")]) {
+    } else if (row == 2) {
+        //[cellTitle isEqualToString:trans(@"Badge Count Limit")] || [cellTitle isEqualToString:trans(@"Badge Count Limit for App")]
         return [UIImage imageNamed:@"MaxBadge.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Color")] || [cellTitle isEqualToString:trans(@"Badge Color for App")]) {
+    } else if (row < 5) {
+        //[cellTitle isEqualToString:trans(@"Badge Color")] || [cellTitle isEqualToString:trans(@"Badge Color for App")]
         return [UIImage imageNamed:@"ColorBadge.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Opacity")] || [cellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
+    } else if (row < 7) {
+        //[cellTitle isEqualToString:trans(@"Badge Opacity")] || [cellTitle isEqualToString:trans(@"Badge Opacity for App")]
         return [UIImage imageNamed:@"BadgeOpacity.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Position")] || [cellTitle isEqualToString:trans(@"Badge Position for App")]) {
+    } else if (row == 7) {
+        //[cellTitle isEqualToString:trans(@"Badge Position")] || [cellTitle isEqualToString:trans(@"Badge Position for App")]
         return [UIImage imageNamed:@"BadgePos.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Shape")] || [cellTitle isEqualToString:trans(@"Badge Shape for App")]) {
+    } else if (row < 10) {
+        //[cellTitle isEqualToString:trans(@"Badge Shape")] || [cellTitle isEqualToString:trans(@"Badge Shape for App")]
         return [UIImage imageNamed:@"BadgeShape.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Image")] || [cellTitle isEqualToString:trans(@"Badge Image for App")]) {
+    } else if (row < 12) {
+        //[cellTitle isEqualToString:trans(@"Badge Image")] || [cellTitle isEqualToString:trans(@"Badge Image for App")]
         return [UIImage imageNamed:@"ImageBadge.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Custom Badge Label")] || [cellTitle isEqualToString:trans(@"Custom Badge Label for App")]) {
+    } else if (row == 12) {
+        //[cellTitle isEqualToString:trans(@"Custom Badge Label")] || [cellTitle isEqualToString:trans(@"Custom Badge Label for App")]
         return [UIImage imageNamed:@"CustomLabelBadge.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Size")] || [cellTitle isEqualToString:trans(@"Badge Size for App")]) {
+    } else if (row < 15) {
+        //[cellTitle isEqualToString:trans(@"Badge Size")] || [cellTitle isEqualToString:trans(@"Badge Size for App")]
         return [UIImage imageNamed:@"BadgeSize.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Label Color")] || [cellTitle isEqualToString:trans(@"Badge Label Color for App")]) {
+    } else if (row < 17) {
+        //[cellTitle isEqualToString:trans(@"Badge Label Color")] || [cellTitle isEqualToString:trans(@"Badge Label Color for App")]
         return [UIImage imageNamed:@"BadgeLabelColor.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Badge Font")]) {
+    } else if (row == 17) {
+        //[cellTitle isEqualToString:trans(@"Badge Font")]
         return [UIImage imageNamed:@"BadgeFont.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Apply Settings")]) {
+    } else if (row == 18) {
+        //[cellTitle isEqualToString:trans(@"Apply Settings")]
         return [UIImage imageNamed:@"ReloadBadger.png"];
-    } else if ([cellTitle isEqualToString:trans(@"Credits")]) {
+    } else {
+        //[cellTitle isEqualToString:trans(@"Credits")]
         return [UIImage imageNamed:@"Credits.png"];
     }
-    return NULL;
+    //return NULL;
 }
 
+#if TRANS
 UIColor *basedCellColorFromRow(long row) { //UNUSED: i compile Badger app with #TRANS on to make it 100% more epic. in the final release version, this function is not ever used.
     int colorId = row % 4;
     CGFloat red, green, blue, alpha;
@@ -576,3 +509,4 @@ UIColor *basedCellColorFromRow(long row) { //UNUSED: i compile Badger app with #
     [cellColor getRed:&red green: &green blue: &blue alpha: &alpha]; //iOS 5.0+
     return [UIColor colorWithRed:red green:green blue:blue alpha:0.5];
 }
+#endif

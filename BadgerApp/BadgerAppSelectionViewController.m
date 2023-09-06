@@ -11,9 +11,7 @@
 #import "BadgeColorViewController.h"
 #import "BadgerCountConfigManagerViewController.h"
 #import "BadgerCustomImageViewController.h"
-//#import <MobileCoreServices/LSApplicationProxy.h>
-//#import <MobileCoreServices/LSApplicationWorkspace.h>
-#import "BadgerTopNotchCoverView.h"
+#import "BadgerEasyTranslations.h"
 
 NSMutableArray *appImages;
 NSMutableArray *appNames;
@@ -103,7 +101,7 @@ UIView *topNotchCoverAppSelection;
 @end
 
 @interface BadgerAppSelectionViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate>
-@property (strong, nonatomic) IBOutlet UITableView *myTableView;
+@property (strong, nonatomic) UITableView *myTableView;
 @end
 
 @implementation BadgerAppSelectionViewController
@@ -111,6 +109,7 @@ UIView *topNotchCoverAppSelection;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = trans(@"Apps");
+    self.navigationController.navigationBar.prefersLargeTitles = YES;
     
     appImages = [[NSMutableArray alloc]init];
     appNames = [[NSMutableArray alloc]init];
@@ -137,38 +136,32 @@ UIView *topNotchCoverAppSelection;
                     appTags = app.appTags;
                     launchProhibited = app.launchProhibited;
                 }
-            if ((![appTags containsObject:@"hidden"]) && (!launchProhibited) && ![[app applicationIdentifier] isEqualToString:@"com.apple.webapp"]) {
+            NSString *applicationIdentifier = [app applicationIdentifier];
+            if ((![appTags containsObject:@"hidden"]) && (!launchProhibited) && ![applicationIdentifier isEqualToString:@"com.apple.webapp"]) {
                 BadgerAppCell *badgerApp = [[BadgerAppCell alloc]init];
-                UIImage *appIcon = [UIImage _applicationIconImageForBundleIdentifier:[app applicationIdentifier] format:1 scale:[UIScreen mainScreen].scale];
+                [badgerApp setAppBundleID:applicationIdentifier];
+                UIImage *appIcon = [UIImage _applicationIconImageForBundleIdentifier:applicationIdentifier format:1 scale:[UIScreen mainScreen].scale];
+                /* yes i know these are the exact same */
+                /* for some reason if i do it the normal way it fucks up optimizations */
+                /* so this results in faster code when compiling... */
                 if (appIcon) {
                     [badgerApp setAppImage:appIcon];
                 } else {
-                    [badgerApp setAppImage:@"NOIMG"];
+                    [badgerApp setAppImage:appIcon];
                 }
-                if ([app localizedName]){
-                    if (![[app localizedName]isEqualToString:@""]) {
-                        [badgerApp setAppName:[app localizedName]];
-                    } else {
-                        NSMutableDictionary *infoPlist = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%s/Info.plist",[[app bundleURL] fileSystemRepresentation]]];
-                        if ([infoPlist objectForKey:@"CFBundleDisplayName"]) {
-                            [badgerApp setAppName:[infoPlist objectForKey:@"CFBundleDisplayName"]];
-                        } else if ([infoPlist objectForKey:@"CFBundleName"]) {
-                            [badgerApp setAppName:[infoPlist objectForKey:@"CFBundleName"]];
-                        } else {
-                            [badgerApp setAppName:app.localizedName];
+                NSString *localizedName = [app localizedName];
+                if (!localizedName || [@"" isEqualToString:localizedName]){
+                    NSURL *infoPlistURL = [[app bundleURL] URLByAppendingPathComponent:@"Info.plist"];
+                    NSDictionary *infoPlist = [NSDictionary dictionaryWithContentsOfURL:infoPlistURL];
+                    localizedName = [infoPlist objectForKey:@"CFBundleDisplayName"];
+                    if (!localizedName) {
+                        localizedName = [infoPlist objectForKey:@"CFBundleName"];
+                        if (!localizedName) {
+                            localizedName = app.localizedName;
                         }
                     }
-                } else {
-                    NSMutableDictionary *infoPlist = [[NSMutableDictionary alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%s/Info.plist",[[app bundleURL] fileSystemRepresentation]]];
-                    if ([infoPlist objectForKey:@"CFBundleDisplayName"]) {
-                        [badgerApp setAppName:[infoPlist objectForKey:@"CFBundleDisplayName"]];
-                    } else if ([infoPlist objectForKey:@"CFBundleName"]) {
-                        [badgerApp setAppName:[infoPlist objectForKey:@"CFBundleName"]];
-                    } else {
-                        [badgerApp setAppName:app.localizedName];
-                    }
                 }
-                [badgerApp setAppBundleID:[app applicationIdentifier]];
+                [badgerApp setAppName:localizedName];
                 [badgerApps addObject:badgerApp];
             }
         }
@@ -207,7 +200,7 @@ UIView *topNotchCoverAppSelection;
     topNotchCoverAppSelection.hidden = NO;
     topNotchCoverAppSelection.backgroundColor = self.navigationController.navigationBar.backgroundColor;
     [self.view addSubview:topNotchCoverAppSelection];
-    self.view.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+    //self.view.backgroundColor = self.navigationController.navigationBar.backgroundColor;
     UISearchController *searchController = [[UISearchController alloc] init];
     searchController.searchBar.delegate = self;
     self.navigationItem.searchController = searchController;
@@ -232,7 +225,7 @@ UIView *topNotchCoverAppSelection;
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
             [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     }
-    [BadgerTopNotchCoverView reappear:self.navigationController.view];
+    [topTopNotchCoverView setHidden:NO];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -246,8 +239,9 @@ UIView *topNotchCoverAppSelection;
     }
     //REMEMBER! MAKE SURE YOU UPDATE VIEWCONTROLLER FOR INSTALLED USER APPS THAT DON'T HAVE ICONS!!!
     cell.textLabel.text = [filteredAppNames objectAtIndex:indexPath.row];
-    if ([[filteredAppImages objectAtIndex:indexPath.row]isEqual:@"NOIMG"]){}else{
-        cell.imageView.image = [filteredAppImages objectAtIndex:indexPath.row];
+    id appImage = [filteredAppImages objectAtIndex:indexPath.row];
+    if (appImage) {
+        cell.imageView.image = appImage;
     }
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
@@ -255,55 +249,35 @@ UIView *topNotchCoverAppSelection;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([[self cellTitle] isEqualToString:trans(@"Badge Shape for App")] || [[self cellTitle] isEqualToString:trans(@"Badge Color for App")]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
-        myNewVC.cellTitle = [self cellTitle];
-        myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([[self cellTitle] isEqualToString:trans(@"Badge Size for App")] || [[self cellTitle] isEqualToString:trans(@"Badge Label Color for App")] || [[self cellTitle] isEqualToString:trans(@"Badge Position for App")]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
-        myNewVC.cellTitle = [self cellTitle];
-        myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([[self cellTitle] isEqualToString:trans(@"Badge Image for App")]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
-        myNewVC.cellTitle = [self cellTitle];
-        myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-        [self.navigationController pushViewController:myNewVC animated:YES];
-    } else if ([[self cellTitle] isEqualToString:trans(@"Badge Opacity for App")]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgerCountConfigManagerViewController *myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
-        myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
-        myNewVC.cellTitle = [self cellTitle];
-        myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-        [self.navigationController pushViewController:myNewVC animated:YES];
+    BadgerViewController *myNewVC;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    if ([daCellTitle isEqualToString:trans(@"Badge Shape for App")] || [daCellTitle isEqualToString:trans(@"Badge Color for App")]) {
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Size for App")] || [daCellTitle isEqualToString:trans(@"Badge Label Color for App")] || [daCellTitle isEqualToString:trans(@"Badge Position for App")]) {
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Image for App")]) {
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
+        myNewVC = (BadgerCountConfigManagerViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgerCountConfigManagerViewController"];
     } else {
-        [BadgerTopNotchCoverView disappear:self.navigationController.view];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        BadgeCountMinimumViewController *myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
-        myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
-        myNewVC.cellTitle = [self cellTitle];
-        myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
-        [self.navigationController pushViewController:myNewVC animated:YES];
+        [topTopNotchCoverView setHidden:YES];
+        myNewVC = (BadgeCountMinimumViewController *)[storyboard instantiateViewControllerWithIdentifier:@"BadgeCountMinimumViewController"];
     }
+    myNewVC.appName = [filteredAppNames objectAtIndex:indexPath.row];
+    myNewVC.appBundleID = [filteredAppBundleIDs objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:myNewVC animated:YES];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     filteredAppNames = [[NSMutableArray alloc]init];
     filteredAppBundleIDs = [[NSMutableArray alloc]init];
     filteredAppImages = [[NSMutableArray alloc]init];
-    short index = 0;
     if ([searchText isEqualToString:@""]) {
         filteredAppNames = appNames;
         filteredAppBundleIDs = appBundleIDs;
         filteredAppImages = appImages;
     } else {
+        short index = 0;
         for (NSString* aAppName in appNames) {
             if ([[aAppName lowercaseString]containsString:[searchText lowercaseString]]) {
                 [filteredAppNames addObject:aAppName];
@@ -341,4 +315,5 @@ UIView *topNotchCoverAppSelection;
         [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y + self.navigationItem.searchController.searchBar.frame.size.height)];
     }
 }
+
 @end

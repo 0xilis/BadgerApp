@@ -10,11 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BadgeCountMinimumViewController : UIViewController<UITextViewDelegate, UITextFieldDelegate>
-@property (nonatomic, assign) NSString* appName;
-@property (nonatomic, assign) NSString* appBundleID;
-@property (nonatomic, assign, readwrite) NSString* cellTitle;
-@property (nonatomic, assign, readwrite) long badgeCount;
+@interface BadgeCountMinimumViewController : BadgerViewController<UITextViewDelegate, UITextFieldDelegate>
 @end
 
 NS_ASSUME_NONNULL_END

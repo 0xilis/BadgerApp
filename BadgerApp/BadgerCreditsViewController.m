@@ -17,7 +17,10 @@
 - (void)viewDidLoad {
     [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor]; //if dark mode this looks weird in app selection
-    [[self credits]setText:trans(@"Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nGerman - lost\nChinese - u/vincent0408")];
+    UITextView *credits = [[UITextView alloc]initWithFrame:CGRectMake(10, 10, [[UIScreen mainScreen]bounds].size.width - 20, [[UIScreen mainScreen]bounds].size.height - 20)];
+    [credits setText:trans(@"Credits:\nDevelopers\nSnoolie (QuickUpdateShortcutSupport@protonmail.com, @QuickUpdate5 Twitter, u/0xilis reddit, 0xilis GitHub)\n\n\nTranslators:\nGerman - lost\nChinese - u/vincent0408")];
+    [credits setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:credits];
     CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
     //ROrangeGrad.png
     [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FFA959").CGColor, (id)colorFromHexString(@"FF5B51").CGColor, nil]];

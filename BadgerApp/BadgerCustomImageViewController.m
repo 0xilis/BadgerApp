@@ -12,15 +12,19 @@
 @interface BadgerCustomImageViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 @property (weak, nonatomic) IBOutlet UITextView *explainingBox;
-@property (weak, nonatomic) IBOutlet UIImageView *backgd;
 @property (weak, nonatomic) IBOutlet UIButton *chooseImgButton;
 
 @end
+
+long badgeCount2;
+NSString *appBundleID2;
 
 @implementation BadgerCustomImageViewController
 - (void)viewDidLoad {
     /// <UINavigationBarDelegate, UIImagePickerControllerDelegate>
     [super viewDidLoad];
+    badgeCount2 = [self badgeCount];
+    appBundleID2 = [self appBundleID];
     CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
     //RBlueGrad.png
     [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"ABDCFF").CGColor, (id)colorFromHexString(@"0396FF").CGColor, nil]];
@@ -30,7 +34,7 @@
     [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     [_chooseImgButton.layer setCornerRadius:5.0];
-    if ([self appBundleID]) {
+    if (appBundleID2) {
         //RPurpleGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
         //[_chooseImgButton setBackgroundColor:[UIColor blueColor]];
@@ -40,7 +44,7 @@
         [_chooseImgButton setBackgroundColor:[UIColor orangeColor]];
     }
     [_chooseImgButton setTitle:trans(@"Choose Image") forState:UIControlStateNormal];
-    id currentImagePath = badgerRetriveCurrentPref([self badgeCount],[self appBundleID], @"BadgeImagePath");
+    id currentImagePath = badgerRetriveCurrentPref(badgeCount2,appBundleID2, @"BadgeImagePath");
     if (currentImagePath) {
         //Safety check if image is not in the path
         UIImage *imageFromBadgeImagePath = [UIImage imageWithContentsOfFile:currentImagePath];
@@ -93,23 +97,22 @@
     badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width / 2 - 25, UIScreen.mainScreen.bounds.size.height / 2 - 25, 50, 50)];
     badgeImage.image = [self imageWithImage:selectedImage scaledToSize:CGSizeMake(24,24)];
     NSData* binaryImageData = UIImagePNGRepresentation([self imageWithImage:selectedImage scaledToSize:CGSizeMake(24,24)]);
-    if ([self badgeCount]) {
-        if ([self appBundleID]) {
-            [binaryImageData writeToFile:[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/%@.png",[NSString stringWithFormat:@"%ld-%@",_badgeCount,[self appBundleID]]] atomically:YES];
-            badgerSaveAppCountPref(_badgeCount, [self appBundleID],@"BadgeImagePath", [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/%@.png",[NSString stringWithFormat:@"%ld-%@",_badgeCount,[self appBundleID]]]);
+    NSString *imageFilepath;
+    if (badgeCount2) {
+        if (appBundleID2) {
+            imageFilepath = [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/%ld-%@.png",badgeCount2,appBundleID2];
         } else {
-            [binaryImageData writeToFile:[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/%@.png",[NSString stringWithFormat:@"%ld",_badgeCount]] atomically:YES];
-            badgerSaveUniversalCountPref(_badgeCount, @"BadgeImagePath", [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/%@.png",[NSString stringWithFormat:@"%ld",_badgeCount]]);
+            imageFilepath = [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/%ld.png",badgeCount2];
         }
     } else {
-        if ([self appBundleID]) {
-            [binaryImageData writeToFile:[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/Default-%@.png",[self appBundleID]] atomically:YES];
-            badgerSaveAppPref([self appBundleID],@"BadgeImagePath", [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/Default-%@.png",[self appBundleID]]);
+        if (appBundleID2) {
+            imageFilepath = [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeImages/Default-%@.png",appBundleID2];
         } else {
-            [binaryImageData writeToFile:@"/var/mobile/Library/Badger/BadgeImages/Default.png" atomically:YES];
-            badgerSaveUniversalPref(@"BadgeImagePath", @"/var/mobile/Library/Badger/BadgeImages/Default.png");
+            imageFilepath = @"/var/mobile/Library/Badger/BadgeImages/Default.png";
         }
     }
+    [binaryImageData writeToFile:imageFilepath atomically:YES];
+    badgerSaveCurrentPref(badgeCount2, appBundleID2, @"BadgeImagePath", imageFilepath);
     
     [self.view addSubview:badgeImage];
     [self dismissViewControllerAnimated:YES completion:nil];

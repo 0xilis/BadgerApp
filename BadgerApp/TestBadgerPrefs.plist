@@ -3,7 +3,25 @@
 <plist version="1.0">
 <dict>
 	<key>AppConfiguration</key>
-	<dict/>
+	<dict>
+		<key>cum.0xilis.BadgerApp</key>
+		<dict>
+			<key>DefaultConfig</key>
+			<dict>
+				<key>BadgeColor</key>
+				<dict>
+					<key>Blue</key>
+					<string>0.000000</string>
+					<key>ColorName</key>
+					<string>Default (Red)</string>
+					<key>Green</key>
+					<string>0.000000</string>
+					<key>Red</key>
+					<string>1.000000</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
 	<key>BadgerCheckCompatibility</key>
 	<true/>
 	<key>BadgerConfigFormatVersion</key>
@@ -19,13 +37,13 @@
 			<key>BadgeColor</key>
 			<dict>
 				<key>Blue</key>
-				<string>0.894118</string>
+				<string>0.168627</string>
 				<key>ColorName</key>
 				<string>Random</string>
 				<key>Green</key>
-				<string>0.015686</string>
+				<string>0.172549</string>
 				<key>Red</key>
-				<string>0.121569</string>
+				<string>0.588235</string>
 			</dict>
 		</dict>
 	</dict>

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B00B7E7F28E799BB00C84D6B /* BadgerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B00B7E7E28E799BB00C84D6B /* BadgerTableViewCell.m */; };
 		B018644A28CBA20400D7C2EA /* BadgerPrefHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B018644928CBA20400D7C2EA /* BadgerPrefHandler.m */; };
 		B018644C28CE4C8C00D7C2EA /* TestBadgerPrefs.plist in Resources */ = {isa = PBXBuildFile; fileRef = B018644B28CE4C8C00D7C2EA /* TestBadgerPrefs.plist */; };
 		B02465EC293319280029B850 /* BadgerCreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B02465EB293319280029B850 /* BadgerCreditsViewController.m */; };
@@ -19,7 +18,6 @@
 		B0AC91C328D516E100BDF59F /* BadgerCustomImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AC91C228D516E100BDF59F /* BadgerCustomImageViewController.m */; };
 		B0AF596728E384A30069395E /* BadgerVersionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AF596628E384A30069395E /* BadgerVersionInfo.m */; };
 		B0B27D2A28F9910A00A1C3F0 /* BadgerApplySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B27D2828F9910A00A1C3F0 /* BadgerApplySettingsViewController.m */; };
-		B0BF585F28D01D560017AA0B /* BadgerCountConfigItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B0BF585E28D01D560017AA0B /* BadgerCountConfigItem.m */; };
 		B0EDB7F228CFF4230005DF84 /* BadgerCountConfigManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0EDB7F128CFF4230005DF84 /* BadgerCountConfigManagerViewController.m */; };
 		B0F5FCBA28B9310A00EA8AEA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F5FCB928B9310A00EA8AEA /* AppDelegate.m */; };
 		B0F5FCBD28B9310A00EA8AEA /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F5FCBC28B9310A00EA8AEA /* SceneDelegate.m */; };
@@ -31,8 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B00B7E7D28E799BB00C84D6B /* BadgerTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerTableViewCell.h; sourceTree = "<group>"; };
-		B00B7E7E28E799BB00C84D6B /* BadgerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerTableViewCell.m; sourceTree = "<group>"; };
+		B0089CFD2A032B7B00C8198E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B0089CFE2A032B7B00C8198E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		B016B30B28F9E6B9003A27D8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B018644828CBA20400D7C2EA /* BadgerPrefHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerPrefHandler.h; sourceTree = "<group>"; };
 		B018644928CBA20400D7C2EA /* BadgerPrefHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerPrefHandler.m; sourceTree = "<group>"; };
@@ -64,8 +62,6 @@
 		B0BEC3D2292E918500C94D1F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		B0BEC3D32931DF8800C94D1F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		B0BEC3D42931DF8800C94D1F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		B0BF585D28D01D550017AA0B /* BadgerCountConfigItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgerCountConfigItem.h; sourceTree = "<group>"; };
-		B0BF585E28D01D560017AA0B /* BadgerCountConfigItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgerCountConfigItem.m; sourceTree = "<group>"; };
 		B0DCAE6129B9550F008D0172 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B0DCAE6229B9550F008D0172 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		B0DCAE6329B9550F008D0172 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -128,8 +124,6 @@
 				B02465EB293319280029B850 /* BadgerCreditsViewController.m */,
 				B0B27D2928F9910A00A1C3F0 /* BadgerApplySettingsViewController.h */,
 				B0B27D2828F9910A00A1C3F0 /* BadgerApplySettingsViewController.m */,
-				B00B7E7D28E799BB00C84D6B /* BadgerTableViewCell.h */,
-				B00B7E7E28E799BB00C84D6B /* BadgerTableViewCell.m */,
 				B0F5FCB828B9310A00EA8AEA /* AppDelegate.h */,
 				B0F5FCB928B9310A00EA8AEA /* AppDelegate.m */,
 				B0F5FCBB28B9310A00EA8AEA /* SceneDelegate.h */,
@@ -155,8 +149,6 @@
 				B018644B28CE4C8C00D7C2EA /* TestBadgerPrefs.plist */,
 				B0EDB7F028CFF4230005DF84 /* BadgerCountConfigManagerViewController.h */,
 				B0EDB7F128CFF4230005DF84 /* BadgerCountConfigManagerViewController.m */,
-				B0BF585D28D01D550017AA0B /* BadgerCountConfigItem.h */,
-				B0BF585E28D01D560017AA0B /* BadgerCountConfigItem.m */,
 				B0AC91C128D516E100BDF59F /* BadgerCustomImageViewController.h */,
 				B0AC91C228D516E100BDF59F /* BadgerCustomImageViewController.m */,
 				B0AF596528E384A30069395E /* BadgerVersionInfo.h */,
@@ -212,6 +204,7 @@
 				"zh-Hans",
 				hu,
 				fr,
+				ja,
 			);
 			mainGroup = B0F5FCAC28B9310900EA8AEA;
 			productRefGroup = B0F5FCB628B9310A00EA8AEA /* Products */;
@@ -245,7 +238,6 @@
 			files = (
 				B0A4396428C7AFA5006D5D92 /* BadgerAppSelectionViewController.m in Sources */,
 				B0EDB7F228CFF4230005DF84 /* BadgerCountConfigManagerViewController.m in Sources */,
-				B00B7E7F28E799BB00C84D6B /* BadgerTableViewCell.m in Sources */,
 				B0AC91C328D516E100BDF59F /* BadgerCustomImageViewController.m in Sources */,
 				B0F5FCC028B9310A00EA8AEA /* ViewController.m in Sources */,
 				B0A4396728C84B1A006D5D92 /* BadgeColorViewController.m in Sources */,
@@ -255,7 +247,6 @@
 				B0F5FCCB28B9310E00EA8AEA /* main.m in Sources */,
 				B02465EC293319280029B850 /* BadgerCreditsViewController.m in Sources */,
 				B0453D45292B0DE000188C80 /* BadgerEasyTranslations.m in Sources */,
-				B0BF585F28D01D560017AA0B /* BadgerCountConfigItem.m in Sources */,
 				B0B27D2A28F9910A00A1C3F0 /* BadgerApplySettingsViewController.m in Sources */,
 				B0A4395E28C666F5006D5D92 /* BadgeCountMinimumViewController.m in Sources */,
 				B0F5FCBD28B9310A00EA8AEA /* SceneDelegate.m in Sources */,
@@ -275,6 +266,7 @@
 				B0BEC3D42931DF8800C94D1F /* zh-Hans */,
 				B091B446294CFBB000B13F6E /* hu */,
 				B0DCAE6129B9550F008D0172 /* fr */,
+				B0089CFD2A032B7B00C8198E /* ja */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -289,6 +281,7 @@
 				B0BEC3D32931DF8800C94D1F /* zh-Hans */,
 				B091B445294CFBB000B13F6E /* hu */,
 				B0DCAE6229B9550F008D0172 /* fr */,
+				B0089CFE2A032B7B00C8198E /* ja */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -424,9 +417,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 6;
+				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = RR5WP5NG77;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BadgerApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Badger;
@@ -443,6 +438,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.2;
+				OTHER_CFLAGS = "-flto";
 				PRODUCT_BUNDLE_IDENTIFIER = cum.0xilis.BadgerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -458,9 +454,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 6;
+				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = RR5WP5NG77;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BadgerApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Badger;
@@ -477,6 +475,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.2;
+				OTHER_CFLAGS = "-flto";
 				PRODUCT_BUNDLE_IDENTIFIER = cum.0xilis.BadgerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

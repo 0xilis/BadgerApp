@@ -8,10 +8,6 @@
 #import "BadgerEasyTranslations.h"
 #include <time.h>
 
-@implementation BadgerEasyTranslations
-
-@end
-
 NSString *trans(NSString *orig) {
     if (NSLocalizedString(orig, "")) {
         return NSLocalizedString(orig, "");
@@ -19,3 +15,7 @@ NSString *trans(NSString *orig) {
         return orig;
     }
 }
+
+@implementation BadgerViewController
+
+@end

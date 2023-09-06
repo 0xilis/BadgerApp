@@ -7,8 +7,8 @@
 
 #import <UIKit/UIKit.h>
 #include <spawn.h>
+#import "BadgerEasyTranslations.h"
 
-@interface BadgerCreditsViewController : UIViewController
+@interface BadgerCreditsViewController : BadgerViewController//UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextView *credits;
 @end

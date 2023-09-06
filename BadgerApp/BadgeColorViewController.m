@@ -21,13 +21,17 @@ NSArray *colorsToPick;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UITextView *explainingBox;
 @property (weak, nonatomic) IBOutlet UIPickerView *colorPicker;
-@property (weak, nonatomic) IBOutlet UIImageView *backgd;
 @end
+
+long badgeCount;
+NSString *appBundleID;
 
 @implementation BadgeColorViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    badgeCount = [self badgeCount];
+    appBundleID = [self appBundleID];
     CAGradientLayer* betterBackGd = [[CAGradientLayer alloc]init];
     [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
     [_label setFont:[UIFont fontWithName:@"Helvetica-Bold" size:25.0f]];
@@ -36,14 +40,14 @@ NSArray *colorsToPick;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     
     //remember to don't just set these to red, but once pref saving is implemented pull from prefs and get that color
-    if ([[self cellTitle]isEqualToString:trans(@"Badge Color")] || [[self cellTitle]isEqualToString:trans(@"Badge Color for App")]) {
+    if ([daCellTitle isEqualToString:trans(@"Badge Color")] || [daCellTitle isEqualToString:trans(@"Badge Color for App")]) {
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default (Red)",@"Pink",@"Orange",@"Yellow",@"Green",@"Blue",@"Purple",@"Magenta",@"Teal",@"Brown",@"Black",@"White",@"Gray",@"Custom",@"Random",@"App Color", nil];
         NSString *badgeColor;
-        id temp = badgerRetriveCurrentPref([self badgeCount],[self appBundleID],@"BadgeColor");
+        id temp = badgerRetriveCurrentPref(badgeCount,appBundleID,@"BadgeColor");
         if (temp) {
             badgeColor = temp[@"ColorName"];
         }
-        if ([self appBundleID]) {
+        if (appBundleID) {
             //RBlueGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"ABDCFF").CGColor, (id)colorFromHexString(@"0396FF").CGColor, nil]];
             [_explainingBox setText:[trans(@"This affects the badge color for (APPNAME).")stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
@@ -56,16 +60,16 @@ NSArray *colorsToPick;
         [_explainingBox setTextColor:[self matchingLabelColor:badgeColor]];
         [_label setTextColor:[self matchingLabelColor:badgeColor]];
         [_colorPicker selectRow:[colorsToPick indexOfObject:badgeColor] inComponent:0 animated:NO];
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Position")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Position")]) {
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default (Top Right)",@"Top Left",@"Bottom Right",@"Bottom Left",@"Center",@"Random", nil];
         id temp = badgerRetriveUniversalPref(@"BadgePosition");
         if (temp) {
-            if ([temp objectForKey:@"PositionName"]) {
-                [_colorPicker selectRow:[colorsToPick indexOfObject:[temp objectForKey:@"PositionName"]] inComponent:0 animated:NO];
+            if (temp[@"PositionName"]) {
+                [_colorPicker selectRow:[colorsToPick indexOfObject:temp[@"PositionName"]] inComponent:0 animated:NO];
             }
         }
         [_label setText:trans(@"Badge Position")];
-        if ([self appBundleID]) {
+        if (appBundleID) {
             [_explainingBox setText:[trans(@"This affects the badge position for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
         } else {
             [_explainingBox setText:trans(@"This affects the badge position for notification badges.")];
@@ -75,14 +79,14 @@ NSArray *colorsToPick;
         [_label setAlpha:0.5];
         [_explainingBox setAlpha:0.5];
         [_colorPicker setAlpha:0.5];
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Shape")] || [[self cellTitle]isEqualToString:trans(@"Badge Shape for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Shape")] || [daCellTitle isEqualToString:trans(@"Badge Shape for App")]) {
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default",@"Triangle",@"Square",@"Round Square",@"Hexagon", nil];
-        id currentBadgeShape = badgerRetriveCurrentPref([self badgeCount],[self appBundleID], @"BadgeShape");
+        id currentBadgeShape = badgerRetriveCurrentPref(badgeCount,appBundleID, @"BadgeShape");
         if (currentBadgeShape) {
             [_colorPicker selectRow:[colorsToPick indexOfObject:currentBadgeShape] inComponent:0 animated:NO];
         }
         [_label setText:trans(@"Badge Shape")];
-        if ([self appBundleID]) {
+        if (appBundleID) {
             [_explainingBox setText:[trans(@"This affects the shape for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
             //RGreenGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
@@ -94,38 +98,20 @@ NSArray *colorsToPick;
         [_label setAlpha:0.5];
         [_explainingBox setAlpha:0.5];
         [_colorPicker setAlpha:0.5];
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Label Color")] || [[self cellTitle]isEqualToString:trans(@"Badge Label Color for App")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Label Color")] || [daCellTitle isEqualToString:trans(@"Badge Label Color for App")]) {
         [_label setText:trans(@"Badge Label Color")];
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default (White)",@"Red",@"Pink",@"Orange",@"Yellow",@"Green",@"Blue",@"Purple",@"Magenta",@"Teal",@"Brown",@"Black",@"Gray",@"Custom",@"Random", nil];
         NSString *badgeColor;
-        if ([self appBundleID]) {
+        if (appBundleID) {
             //RBlueGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"ABDCFF").CGColor, (id)colorFromHexString(@"0396FF").CGColor, nil]];
-            if ([self badgeCount]) {
-                id temp = badgerRetriveAppCountPref([self badgeCount],[self appBundleID],@"BadgeLabelColor");
-                if (temp) {
-                    badgeColor = [temp objectForKey:@"ColorName"];
-                }
-            } else {
-                id temp = badgerRetriveAppPref([self appBundleID],@"BadgeLabelColor");
-                if (temp) {
-                    badgeColor = [temp objectForKey:@"ColorName"];
-                }
-            }
         } else {
             //RGreenGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
-            if ([self badgeCount]) {
-                id temp = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeLabelColor");
-                if (temp) {
-                    badgeColor = [temp objectForKey:@"ColorName"];
-                }
-            } else {
-                id temp = badgerRetriveUniversalPref(@"BadgeLabelColor");
-                if (temp) {
-                    badgeColor = [temp objectForKey:@"ColorName"];
-                }
-            }
+        }
+        id temp = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeLabelColor");
+        if (temp) {
+            badgeColor = temp[@"ColorName"];
         }
         if (!badgeColor) {
             badgeColor = @"Default (White)";
@@ -133,25 +119,25 @@ NSArray *colorsToPick;
         [_explainingBox setTextColor:[self matchingLabelColor:badgeColor]];
         [_label setTextColor:[self matchingLabelColor:badgeColor]];
         [_colorPicker selectRow:[colorsToPick indexOfObject:badgeColor] inComponent:0 animated:NO];
-        if ([self appBundleID]) {
+        if (appBundleID) {
             [_explainingBox setText:[trans(@"This affects the label color for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
         } else {
             [_explainingBox setText:trans(@"This affects the label color for badges.")];
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Font")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Font")]) {
         [_label setText:trans(@"Badge Font")];
         [_explainingBox setText:trans(@"This affects the font for badge labels.")];
         colorsToPick = [[NSArray alloc]initWithObjects:@"Default",@"Chalkduster",@"Didot",@"Copperplate",@"Papyrus",@"Zapfino",@"Baskerville",@"Courier",@"Custom", nil];
         NSString *badgeColor;
         //RPurpleGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"E2B0FF").CGColor, (id)colorFromHexString(@"9F44D3").CGColor, nil]];
-        if ([self badgeCount]) {
-            badgeColor = badgerRetriveUniversalCountPref([self badgeCount],@"BadgeFont");
+        if (badgeCount) {
+            badgeColor = badgerRetriveUniversalCountPref(badgeCount,@"BadgeFont");
         } else {
             badgeColor = badgerRetriveUniversalPref(@"BadgeFont");
         }
         if (badgeColor == nil) {
-            id currentBadgeFontPath = badgerRetriveCurrentPref(_badgeCount, [self appBundleID], @"BadgeFontPath");
+            id currentBadgeFontPath = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeFontPath");
             if (currentBadgeFontPath) {
                 [_explainingBox setFont:fontFromFile(currentBadgeFontPath, 20.0)];
                 [_label setFont:fontFromFile(currentBadgeFontPath, 23.0)];
@@ -162,14 +148,12 @@ NSArray *colorsToPick;
             }
         }
         [_colorPicker selectRow:[colorsToPick indexOfObject:badgeColor] inComponent:0 animated:NO];
-        if (![badgeColor isEqualToString:@"Default"] && ![badgeColor isEqualToString:@"Custom"]) {
+        if ([badgeColor isEqualToString:@"Default"]) {
+            [_explainingBox setFont:[UIFont systemFontOfSize:20.0]];
+            [_label setFont:[UIFont systemFontOfSize:23.0]];
+        } else if (![badgeColor isEqualToString:@"Custom"]) {
             [_explainingBox setFont:[UIFont fontWithName:badgeColor size:20.0]];
             [_label setFont:[UIFont fontWithName:badgeColor size:23.0]];
-        } else {
-            if ([badgeColor isEqualToString:@"Default"]) {
-                [_explainingBox setFont:[UIFont systemFontOfSize:20.0]];
-                [_label setFont:[UIFont systemFontOfSize:23.0]];
-            }
         }
     }
     
@@ -218,12 +202,12 @@ NSArray *colorsToPick;
 
             label= [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [pickerView rowSizeForComponent:component].width, [pickerView rowSizeForComponent:component].height)];
             label.textAlignment = NSTextAlignmentCenter;
-            if ([[self cellTitle]isEqualToString:trans(@"Badge Color")] || [[self cellTitle]isEqualToString:trans(@"Badge Color for App")] || [[self cellTitle]isEqualToString:trans(@"Badge Label Color")] || [[self cellTitle]isEqualToString:trans(@"Badge Label Color for App")]) {
+            if ([daCellTitle isEqualToString:trans(@"Badge Color")] || [daCellTitle isEqualToString:trans(@"Badge Color for App")] || [daCellTitle isEqualToString:trans(@"Badge Label Color")] || [daCellTitle isEqualToString:trans(@"Badge Label Color for App")]) {
                 label.textColor = [self matchingLabelColor:[colorsToPick objectAtIndex:row]];
             }
-            if ([[self cellTitle]isEqualToString:trans(@"Badge Font")] && ![[colorsToPick objectAtIndex:row]isEqualToString:@"Default"]) {
+            if ([daCellTitle isEqualToString:trans(@"Badge Font")] && ![[colorsToPick objectAtIndex:row]isEqualToString:@"Default"]) {
                 if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Custom"]) {
-                    id currentBadgeFontPath = badgerRetriveCurrentPref(_badgeCount, [self appBundleID], @"BadgeFontPath");
+                    id currentBadgeFontPath = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeFontPath");
                     if (currentBadgeFontPath) {
                         label.font = fontFromFile(currentBadgeFontPath, 14.0);
                     }
@@ -242,15 +226,16 @@ NSArray *colorsToPick;
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if ([[self cellTitle]isEqualToString:trans(@"Badge Color")] || [[self cellTitle]isEqualToString:trans(@"Badge Color for App")]) {
-    [_explainingBox setTextColor:[self matchingLabelColor:[colorsToPick objectAtIndex:row]]];
-    [_label setTextColor:[self matchingLabelColor:[colorsToPick objectAtIndex:row]]];
-    if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Default"]) {
+    NSString *objectAtIndex = [colorsToPick objectAtIndex:row];
+    if ([daCellTitle isEqualToString:trans(@"Badge Color")] || [daCellTitle isEqualToString:trans(@"Badge Color for App")]) {
+    [_explainingBox setTextColor:[self matchingLabelColor:objectAtIndex]];
+    [_label setTextColor:[self matchingLabelColor:objectAtIndex]];
+    if ([objectAtIndex isEqualToString:@"Default"]) {
         //remove BadgeColor since we're default anyway
-        badgerRemoveCurrentPref([self badgeCount],[self appBundleID], @"BadgeColor");
+        badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeColor");
     } else {
         CGFloat red, green, blue, alpha;
-        if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Custom"]) {
+        if ([objectAtIndex isEqualToString:@"Custom"]) {
             red = 0.0;
             green = 0.0;
             blue = 0.0;
@@ -265,7 +250,7 @@ NSArray *colorsToPick;
                 UIColor *customColor = colorFromHexString([[alert textFields][0] text]);
                 if (customColor) {
                     [customColor getRed:(CGFloat *)&red green:(CGFloat *)&green blue:(CGFloat *)&blue alpha:(CGFloat *)&alpha];
-                    badgerSaveCurrentPref([self badgeCount],[self appBundleID], @"BadgeColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",[colorsToPick objectAtIndex:row],@"ColorName", nil]);
+                    badgerSaveCurrentPref(badgeCount,appBundleID, @"BadgeColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",objectAtIndex,@"ColorName", nil]);
                     [self->_label setTextColor:customColor];
                     [self->_explainingBox setTextColor:customColor];
                     [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setTextColor:customColor];
@@ -274,132 +259,131 @@ NSArray *colorsToPick;
             [alert addAction:confirmAction];
             [self presentViewController:alert animated:YES completion:nil];
         } else {
-            [[self matchingLabelColor:[colorsToPick objectAtIndex:row]] getRed:&red green: &green blue: &blue alpha: &alpha];
-            badgerSaveCurrentPref([self badgeCount],[self appBundleID], @"BadgeColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",[colorsToPick objectAtIndex:row],@"ColorName", nil]);
+            [[self matchingLabelColor:objectAtIndex] getRed:&red green: &green blue: &blue alpha: &alpha];
+            badgerSaveCurrentPref(badgeCount,appBundleID, @"BadgeColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",objectAtIndex,@"ColorName", nil]);
         }
     }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Label Color")] || [[self cellTitle]isEqualToString:trans(@"Badge Label Color for App")]) {
-        [_explainingBox setTextColor:[self matchingLabelColor:[colorsToPick objectAtIndex:row]]];
-        [_label setTextColor:[self matchingLabelColor:[colorsToPick objectAtIndex:row]]];
-        if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Default (White)"]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Label Color")] || [daCellTitle isEqualToString:trans(@"Badge Label Color for App")]) {
+        [_explainingBox setTextColor:[self matchingLabelColor:objectAtIndex]];
+        [_label setTextColor:[self matchingLabelColor:objectAtIndex]];
+        if ([objectAtIndex isEqualToString:@"Default (White)"]) {
             //remove BadgeColor since we're default anyway
-            badgerRemoveCurrentPref([self badgeCount],[self appBundleID], @"BadgeLabelColor");
+            badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeLabelColor");
         } else {
             CGFloat red, green, blue, alpha;
-            //[matchingLabelColor([colorsToPick objectAtIndex:row]) getRed:&red green: &green blue: &blue alpha: &alpha];
-            [[self matchingLabelColor:[colorsToPick objectAtIndex:row]] getRed:&red green:&green blue:&blue alpha:&alpha];
-            badgerSaveCurrentPref([self badgeCount],[self appBundleID], @"BadgeLabelColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",[colorsToPick objectAtIndex:row],@"ColorName", nil]);
+            if ([objectAtIndex isEqualToString:@"Custom"]) {
+                red = 0.0;
+                green = 0.0;
+                blue = 0.0;
+                alpha = 1.0;
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Badger"
+                                                                               message:trans(@"Enter the hex code of your color.")
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                    textField.placeholder = @"...";
+                }];
+                UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    UIColor *customColor = colorFromHexString([[alert textFields][0] text]);
+                    if (customColor) {
+                        [customColor getRed:(CGFloat *)&red green:(CGFloat *)&green blue:(CGFloat *)&blue alpha:(CGFloat *)&alpha];
+                        badgerSaveCurrentPref(badgeCount,appBundleID, @"BadgeLabelColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",objectAtIndex,@"ColorName", nil]);
+                        [self->_label setTextColor:customColor];
+                        [self->_explainingBox setTextColor:customColor];
+                        [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setTextColor:customColor];
+                    }
+                }];
+                [alert addAction:confirmAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            } else {
+                [[self matchingLabelColor:objectAtIndex] getRed:&red green:&green blue:&blue alpha:&alpha];
+                badgerSaveCurrentPref(badgeCount,appBundleID, @"BadgeLabelColor", [[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%f",blue],@"Blue",[NSString stringWithFormat:@"%f",green],@"Green",[NSString stringWithFormat:@"%f",red],@"Red",objectAtIndex,@"ColorName", nil]);
+            }
         }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Position")]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Position")]) {
         //Badge Position
-        if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Default (Top Right)"]) {
+        if ([objectAtIndex isEqualToString:@"Default (Top Right)"]) {
             //remove BadgeColor since we're default anyway
             badgerRemoveUniversalPref(@"BadgePosition");
         } else {
-            if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Top Left"]) {
-                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@54,@"CenterXOffset",@0,@"CenterYOffset",[colorsToPick objectAtIndex:row],@"PositionName", nil]);
-            } else if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Bottom Right"]) {
-                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@0,@"CenterXOffset",@54,@"CenterYOffset",[colorsToPick objectAtIndex:row],@"PositionName", nil]);
-            } else if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Bottom Left"]) {
-                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@54,@"CenterXOffset",@54,@"CenterYOffset",[colorsToPick objectAtIndex:row],@"PositionName", nil]);
-            } else if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Center"]) {
-                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@30,@"CenterXOffset",@30,@"CenterYOffset",[colorsToPick objectAtIndex:row],@"PositionName", nil]);
-            } else if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Random"]) {
-                //we need CenterXOffset and CenterYOffset pre-defined in case of 1.1->1.0 downgrade
-                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@0,@"CenterXOffset",@0,@"CenterYOffset",[colorsToPick objectAtIndex:row],@"PositionName", nil]);
-            }
-        }
-    } else if ([[self cellTitle]isEqualToString:trans(@"Badge Font")]) {
-        if (![[colorsToPick objectAtIndex:row]isEqualToString:@"Default"] && ![[colorsToPick objectAtIndex:row]isEqualToString:@"Custom"]) {
-            [_explainingBox setFont:[UIFont fontWithName:[colorsToPick objectAtIndex:row] size:20.0]];
-            [_label setFont:[UIFont fontWithName:[colorsToPick objectAtIndex:row] size:23.0]];
-        } else {
-            if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Custom"]) {
-                
+            if ([objectAtIndex isEqualToString:@"Top Left"]) {
+                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@54,@"CenterXOffset",@0,@"CenterYOffset",objectAtIndex,@"PositionName", nil]);
+            } else if ([objectAtIndex isEqualToString:@"Bottom Right"]) {
+                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@0,@"CenterXOffset",@54,@"CenterYOffset",objectAtIndex,@"PositionName", nil]);
+            } else if ([objectAtIndex isEqualToString:@"Bottom Left"]) {
+                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@54,@"CenterXOffset",@54,@"CenterYOffset",objectAtIndex,@"PositionName", nil]);
+            } else if ([objectAtIndex isEqualToString:@"Center"]) {
+                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@30,@"CenterXOffset",@30,@"CenterYOffset",objectAtIndex,@"PositionName", nil]);
             } else {
-                [_explainingBox setFont:[UIFont systemFontOfSize:20.0]];
-                [_label setFont:[UIFont systemFontOfSize:23.0]];
+                //we need CenterXOffset and CenterYOffset pre-defined in case of 1.1->1.0 downgrade
+                badgerSaveUniversalPref(@"BadgePosition", [[NSDictionary alloc]initWithObjectsAndKeys:@0,@"CenterXOffset",@0,@"CenterYOffset",objectAtIndex,@"PositionName", nil]);
             }
         }
-        if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Custom"]) {
+    } else if ([daCellTitle isEqualToString:trans(@"Badge Font")]) {
+        if ([objectAtIndex isEqualToString:@"Custom"]) {
             UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc]initWithDocumentTypes:[[NSArray alloc]initWithObjects:@"public.truetype-font", nil] inMode:UIDocumentPickerModeImport];
             documentPicker.delegate = self;
             [documentPicker setModalPresentationStyle:UIModalPresentationFormSheet];
             [self presentViewController:documentPicker animated:YES completion:nil];
         } else {
-            if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Default"]) {
-                badgerRemoveCurrentPref([self badgeCount], nil, @"BadgeFont");
-                badgerRemoveCurrentPref([self badgeCount], nil, @"BadgeFontPath");
+            if ([objectAtIndex isEqualToString:@"Default"]) {
+                [_explainingBox setFont:[UIFont systemFontOfSize:20.0]];
+                [_label setFont:[UIFont systemFontOfSize:23.0]];
+                badgerRemoveCurrentPref(badgeCount, nil, @"BadgeFont");
+                badgerRemoveCurrentPref(badgeCount, nil, @"BadgeFontPath");
             } else {
-                badgerSaveCurrentPref([self badgeCount], nil, @"BadgeFont", [colorsToPick objectAtIndex:row]);
+                [_explainingBox setFont:[UIFont fontWithName:objectAtIndex size:20.0]];
+                [_label setFont:[UIFont fontWithName:objectAtIndex size:23.0]];
+                badgerSaveCurrentPref(badgeCount, nil, @"BadgeFont", objectAtIndex);
             }
         }
     } else {
-        if ([[colorsToPick objectAtIndex:row]isEqualToString:@"Default"]) {
+        if ([objectAtIndex isEqualToString:@"Default"]) {
             //remove BadgeColor since we're default anyway
-            badgerRemoveCurrentPref([self badgeCount],[self appBundleID], @"BadgeShape");
+            badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeShape");
         } else {
-            badgerSaveCurrentPref([self badgeCount],[self appBundleID], @"BadgeShape", [colorsToPick objectAtIndex:row]);
+            badgerSaveCurrentPref(badgeCount,appBundleID, @"BadgeShape", objectAtIndex);
         }
     }
 }
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
     if ([urls firstObject]) {
-        badgerRemoveCurrentPref([self badgeCount],[self appBundleID], @"BadgeFontPath");
-        badgerRemoveCurrentPref([self badgeCount],[self appBundleID], @"BadgeFont");
-        if ([self badgeCount]) {
-            if ([self appBundleID]) {
-                FILE *file;
-                if ((file = fopen([[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]]UTF8String],"r"))) {
-                    fclose(file);
-                    remove([[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]]UTF8String]);
-                }
-                [[NSFileManager defaultManager]copyItemAtURL:[urls firstObject] toURL:[NSURL fileURLWithPath:[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]]] error:nil];
-                badgerSaveAppCountPref(_badgeCount, [self appBundleID], @"BadgeFontPath", [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]]);
-                [_label setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]], 23.0)];
-                [_explainingBox setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]], 20.0)];
-                [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",_badgeCount,[self appBundleID]], 14.0)];
+        badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeFontPath");
+        badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeFont");
+        NSString *filePath;
+        if (badgeCount) {
+            if (appBundleID) {
+                filePath = [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld-%@.ttf",badgeCount,appBundleID];
             } else {
-                FILE *file;
-                if ((file = fopen([[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",[self badgeCount]]UTF8String],"r"))) {
-                    fclose(file);
-                    remove([[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",[self badgeCount]]UTF8String]);
-                }
-                [[NSFileManager defaultManager]copyItemAtURL:[urls firstObject] toURL:[NSURL fileURLWithPath:[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",_badgeCount]] error:nil];
-                badgerSaveUniversalCountPref(_badgeCount, @"BadgeFontPath", [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",_badgeCount]);
-                [_label setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",_badgeCount], 23.0)];
-                [_explainingBox setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",_badgeCount], 20.0)];
-                [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",_badgeCount], 14.0)];
+                filePath = [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/%ld.ttf",badgeCount];
             }
         } else {
-            if ([self appBundleID]) {
-                FILE *file;
-                if ((file = fopen([[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]]UTF8String],"r"))) {
-                    fclose(file);
-                    remove([[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]]UTF8String]);
-                }
-                [[NSFileManager defaultManager]copyItemAtURL:[urls firstObject] toURL:[NSURL fileURLWithPath:[NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]]] error:nil];
-                badgerSaveAppPref([self appBundleID], @"BadgeFontPath", [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]]);
-                [_label setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]], 23.0)];
-                [_explainingBox setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]], 20.0)];
-                [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setFont:fontFromFile([NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",[self appBundleID]], 14.0)];
+            if (appBundleID) {
+                filePath = [NSString stringWithFormat:@"/var/mobile/Library/Badger/BadgeFonts/Default-%@.ttf",appBundleID];
             } else {
-                FILE *file;
-                if ((file = fopen("/var/mobile/Library/Badger/BadgeFonts/Default.ttf","r"))) {
-                    fclose(file);
-                    remove("/var/mobile/Library/Badger/BadgeFonts/Default.ttf");
-                }
-                [[NSFileManager defaultManager]copyItemAtURL:[urls firstObject] toURL:[NSURL fileURLWithPath:@"/var/mobile/Library/Badger/BadgeFonts/Default.ttf"] error:nil];
-                badgerSaveUniversalPref(@"BadgeFontPath", @"/var/mobile/Library/Badger/BadgeFonts/Default.ttf");
-                [_label setFont:fontFromFile(@"/var/mobile/Library/Badger/BadgeFonts/Default.ttf", 23.0)];
-                [_explainingBox setFont:fontFromFile(@"/var/mobile/Library/Badger/BadgeFonts/Default.ttf", 20.0)];
-                [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setFont:fontFromFile(@"/var/mobile/Library/Badger/BadgeFonts/Default.ttf", 14.0)];
+                filePath = @"/var/mobile/Library/Badger/BadgeFonts/Default.ttf";
             }
         }
-        
+        FILE *file;
+        if ((file = fopen([filePath UTF8String],"r"))) {
+            fclose(file);
+            remove([filePath UTF8String]);
+        }
+        [[NSFileManager defaultManager]copyItemAtURL:[urls firstObject] toURL:[NSURL fileURLWithPath:filePath] error:nil];
+        badgerSaveCurrentPref(badgeCount, appBundleID, @"BadgeFontPath", filePath);
+        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+        CTFontDescriptorRef desc = CTFontManagerCreateFontDescriptorFromData((CFDataRef)fileData);
+        CTFontRef ctfontSize23 = CTFontCreateWithFontDescriptor(desc, 23.0, nil);
+        UIFont *fontFromFileSize23 = CFBridgingRelease(ctfontSize23);
+        CTFontRef ctfontSize20 = CTFontCreateWithFontDescriptor(desc, 20.0, nil);
+        UIFont *fontFromFileSize20 = CFBridgingRelease(ctfontSize20);
+        CTFontRef ctfontSize14 = CTFontCreateWithFontDescriptor(desc, 14.0, nil);
+        UIFont *fontFromFileSize14 = CFBridgingRelease(ctfontSize14);
+        [_label setFont:fontFromFileSize23];
+        [_explainingBox setFont:fontFromFileSize20];
+        [((UILabel *)[self->_colorPicker viewForRow:[colorsToPick indexOfObject:@"Custom"] forComponent:0])setFont:fontFromFileSize14];
     } else {
         //if user didn't select file, go back to BadgeFont if it exists, if not go to default
-        id currentBadgeFont = badgerRetriveCurrentPref([self badgeCount], [self appBundleID], @"BadgeFont");
+        id currentBadgeFont = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeFont");
         if (currentBadgeFont) {
             [_colorPicker selectRow:[colorsToPick indexOfObject:currentBadgeFont] inComponent:0 animated:YES];
         } else {
@@ -410,7 +394,7 @@ NSArray *colorsToPick;
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
     //if user didn't select file, go back to BadgeFont if it exists, if not go to default
-    id currentBadgeFont = badgerRetriveCurrentPref([self badgeCount], [self appBundleID], @"BadgeFont");
+    id currentBadgeFont = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeFont");
     if (currentBadgeFont) {
         [_colorPicker selectRow:[colorsToPick indexOfObject:currentBadgeFont] inComponent:0 animated:YES];
     } else {
@@ -419,52 +403,42 @@ NSArray *colorsToPick;
 }
 
 -(UIColor*)matchingLabelColor:(NSString*)color {
-    if ([color isEqualToString:@"Default (Red)"]) {
-        return [UIColor redColor];
-    } else if ([color isEqualToString:@"Pink"]) {
-        return [UIColor systemPinkColor];
-    } else if ([color isEqualToString:@"Orange"]) {
-        return [UIColor orangeColor];
-    } else if ([color isEqualToString:@"Yellow"]) {
-        return [UIColor yellowColor];
-    } else if ([color isEqualToString:@"Green"]) {
-        return [UIColor greenColor];
-    } else if ([color isEqualToString:@"Blue"]) {
-        return [UIColor blueColor];
-    } else if ([color isEqualToString:@"Purple"]) {
-        return [UIColor purpleColor];
-    } else if ([color isEqualToString:@"Magenta"]) {
-        return [UIColor magentaColor];
-    } else if ([color isEqualToString:@"Teal"]) {
-        return [UIColor systemTealColor];
-    } else if ([color isEqualToString:@"Brown"]) {
-        return [UIColor brownColor];
-    } else if ([color isEqualToString:@"White"]) {
-        return [UIColor whiteColor];
-    } else if ([color isEqualToString:@"Default (White)"]) {
-        return [UIColor whiteColor];
-    } else if ([color isEqualToString:@"Red"]) {
-        return [UIColor redColor];
-    } else if ([color isEqualToString:@"Gray"]) {
-        return [UIColor grayColor];
-    } else if ([color isEqualToString:@"Custom"]) {
+    NSDictionary *colorList = @{
+        @"Default (Red)" : [UIColor redColor],
+        @"Red" : [UIColor redColor],
+        @"Pink" : [UIColor systemPinkColor],
+        @"Orange" : [UIColor orangeColor],
+        @"Yellow" : [UIColor yellowColor],
+        @"Green" : [UIColor greenColor],
+        @"Blue" : [UIColor blueColor],
+        @"Purple" : [UIColor purpleColor],
+        @"Magenta" : [UIColor magentaColor],
+        @"Teal" : [UIColor systemTealColor],
+        @"Brown" : [UIColor brownColor],
+        @"Default (White)" : [UIColor whiteColor],
+        @"White" : [UIColor whiteColor],
+        @"Gray" : [UIColor grayColor],
+    };
+    UIColor *retColor = colorList[color];
+    if (retColor) {
+        return retColor;
+    }
+    if ([color isEqualToString:@"Custom"]) {
         id currentBadgeColor;
-        if ([[self cellTitle]isEqualToString:trans(@"Badge Color for App")] || [[self cellTitle]isEqualToString:trans(@"Badge Color")]) {
-            currentBadgeColor = badgerRetriveCurrentPref([self badgeCount], [self appBundleID], @"BadgeColor");
-        } else if ([[self cellTitle]isEqualToString:trans(@"Badge Label Color for App")] || [[self cellTitle]isEqualToString:trans(@"Badge Label Color")]) {
-            currentBadgeColor = badgerRetriveCurrentPref([self badgeCount], [self appBundleID], @"BadgeLabelColor");
+        if ([daCellTitle isEqualToString:trans(@"Badge Color for App")] || [daCellTitle isEqualToString:trans(@"Badge Color")]) {
+            currentBadgeColor = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeColor");
+        } else if ([daCellTitle isEqualToString:trans(@"Badge Label Color for App")] || [daCellTitle isEqualToString:trans(@"Badge Label Color")]) {
+            currentBadgeColor = badgerRetriveCurrentPref(badgeCount, appBundleID, @"BadgeLabelColor");
         }
         if (currentBadgeColor) {
             return [UIColor colorWithRed:[currentBadgeColor[@"Red"]floatValue] green:[currentBadgeColor[@"Green"]floatValue] blue:[currentBadgeColor[@"Blue"]floatValue] alpha:1.0];
         }
         return [UIColor colorWithRed:(arc4random_uniform(256) / 255.0) green:(arc4random_uniform(256) / 255.0) blue:(arc4random_uniform(256) / 255.0) alpha:1.0];
-    } else if ([color isEqualToString:@"Random"]) {
-        return [UIColor colorWithRed:(arc4random_uniform(256) / 255.0) green:(arc4random_uniform(256) / 255.0) blue:(arc4random_uniform(256) / 255.0) alpha:1.0];
-    } else if ([color isEqualToString:@"App Color"]) {
-           return [UIColor colorWithRed:(arc4random_uniform(256) / 255.0) green:(arc4random_uniform(256) / 255.0) blue:(arc4random_uniform(256) / 255.0) alpha:1.0];
-    } else {
-        return [UIColor blackColor];
     }
+    if ([color isEqualToString:@"Random"] || [color isEqualToString:@"App Color"]) {
+        return [UIColor colorWithRed:(arc4random_uniform(256) / 255.0) green:(arc4random_uniform(256) / 255.0) blue:(arc4random_uniform(256) / 255.0) alpha:1.0];
+    }
+    return [UIColor blackColor];
 }
 @end
 

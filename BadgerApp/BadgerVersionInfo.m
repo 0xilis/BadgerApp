@@ -6,6 +6,9 @@
 //
 
 #import "BadgerVersionInfo.h"
+
+#if TRIAL
+
 #include <time.h>
 
 @implementation BadgerVersionInfo
@@ -64,3 +67,5 @@
 #define badgerBuild @"1F"
 #define badgerVersion @"1.2.2"
 #define isTrial 0*/
+
+#endif

@@ -6,12 +6,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BadgerEasyTranslations : NSObject
+NSString *trans(NSString *orig);
+
+@interface BadgerViewController : UIViewController
+@property (nonatomic, assign) NSString* appName;
+@property (nonatomic, assign) NSString* appBundleID;
+@property (nonatomic, assign, readwrite) long badgeCount;
 @end
 
-NSString *trans(NSString *orig);
+extern NSString *daCellTitle;
+extern UIView *topTopNotchCoverView;
 
 NS_ASSUME_NONNULL_END

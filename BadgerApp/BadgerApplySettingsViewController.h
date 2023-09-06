@@ -7,8 +7,9 @@
 
 #import <UIKit/UIKit.h>
 #include <spawn.h>
+#import "BadgerEasyTranslations.h"
 
-@interface BadgerApplySettingsViewController : UIViewController
+@interface BadgerApplySettingsViewController : BadgerViewController //UIViewController
 @property (weak, nonatomic) IBOutlet UIButton *respringButton;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UITextView *explainingBox;
