@@ -14,6 +14,7 @@ void badgerSaveUniversalPref(NSString *prefKey, id prefValue);
 void badgerSaveAppPref(NSString *prefApp, NSString *prefKey, id prefValue);
 void badgerRemoveUniversalPref(NSString *prefKey);
 void badgerRemoveAppPref(NSString *prefApp, NSString *prefKey);
+void badgerResetPrefPlist(void);
 void badgerSetUpPrefPlist(void);
 id badgerRetriveUniversalPref(NSString *prefKey);
 id badgerRetriveAppPref(NSString *prefApp, NSString *prefKey);

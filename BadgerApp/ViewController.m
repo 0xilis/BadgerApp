@@ -27,8 +27,9 @@ UIView *topTopNotchCoverView;
 
 @interface ViewController ()
 
-@property (strong, nonatomic) IBOutlet UITableView *myTableView;
 @end
+
+UITableView *mainTableView;
 
 @implementation ViewController
 
@@ -176,13 +177,13 @@ UIView *topTopNotchCoverView;
     }
     self.navigationItem.title = @"Badger";
     if (@available(iOS 13.0, *)) {
-        self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped];
+        mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped];
     } else {
-        self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
+        mainTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
     }
-    self.myTableView.dataSource = self;
-    self.myTableView.delegate = self;
-    [self.view addSubview:self.myTableView];
+    mainTableView.dataSource = self;
+    mainTableView.delegate = self;
+    [self.view addSubview:mainTableView];
     
     //for ios 11+, since navigation bar may be below status bar, creating some funky looks with the table view
     topNotchCover = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height)]; //height 96 on 852, 91 on 548
@@ -203,9 +204,7 @@ UIView *topTopNotchCoverView;
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     }
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        //action when pressed button
-    }];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:nil];
     FILE *fp;
     if ((fp = fopen(BADGER_PATH_TO_PLIST, "r"))) {
         fclose(fp);
@@ -216,6 +215,8 @@ UIView *topTopNotchCoverView;
             
             UIAlertAction *resetAction = [UIAlertAction actionWithTitle:trans(@"Reset") style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 //action when pressed button
+                badgerResetPrefPlist(); /* reset plist */
+                badgerSetUpPrefPlist(); /* fixing uniConfig */
             }];
             
             [alertController addAction:okAction];
@@ -259,7 +260,7 @@ UIView *topTopNotchCoverView;
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setTranslucent:YES];
     self.edgesForExtendedLayout = UIRectEdgeTop;
-    [self updateTopNotchCoverSize];
+    updateTopNotchCoverSize(topNotchCover, self);
 }
 
 //TODO: On iOS 12+ this is fine, but on iOS 13+ we change the color of the one navigation bars (different view controllers don't have different navbar bgs, they should) so it looks a little weird when moving. I thought, ok, small issue, but you only really notice it if you look close, so I'll fix this later but no need to fix it for now, but the swipe gesture makes this issue much more noticable to a terrible degree so now I actually need to fucking fix it in Badger 1.3 or Badger 1.2.2.
@@ -305,7 +306,7 @@ UIView *topTopNotchCoverView;
 }
 //TODO: Ugly method, improve later in Badger 1.3 when we switch to no storyboards (i suck at them)
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self updateTopNotchCoverSize];
+    updateTopNotchCoverSize(topNotchCover, self);
     daCellTitle = cellTitleFromRow(indexPath.row);
     long row = [cellTitles indexOfObject:daCellTitle];
     
@@ -408,30 +409,21 @@ UIView *topTopNotchCoverView;
             }
         }
     }
-    [_myTableView reloadData];
-    [self updateTopNotchCoverSize];
+    [mainTableView reloadData];
+    updateTopNotchCoverSize(topNotchCover, self);
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     filteredCells = [cellTitles mutableCopy];
-    [_myTableView reloadData];
-    [self updateTopNotchCoverSize];
+    [mainTableView reloadData];
+    updateTopNotchCoverSize(topNotchCover, self);
 }
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self updateTopNotchCoverSize];
+    updateTopNotchCoverSize(topNotchCover, self);
 }
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     if (self.navigationItem.searchController.searchBar.frame.origin.y > 0) {
         //[topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.origin.y)];
         [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y)];
-    }
-}
--(void)updateTopNotchCoverSize {
-    if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
-        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
-    } else if (self.navigationItem.searchController.searchBar.frame.origin.y != 0) {
-        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationItem.searchController.searchBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.origin.y + self.navigationController.navigationBar.frame.origin.y)];
-    } else if (self.navigationController.navigationBar.frame.size.height > 0) {
-        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y + self.navigationItem.searchController.searchBar.frame.size.height)];
     }
 }
 @end
@@ -510,3 +502,17 @@ UIColor *basedCellColorFromRow(long row) { //UNUSED: i compile Badger app with #
     return [UIColor colorWithRed:red green:green blue:blue alpha:0.5];
 }
 #endif
+
+void updateTopNotchCoverSize(UIView *topNotchCover, UIViewController *self) {
+    CGFloat navBarYStartPos = self.navigationController.navigationBar.frame.origin.y;
+    CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat searchBarYStartPos = self.navigationItem.searchController.searchBar.frame.origin.y;
+    CGFloat searchBarHeight = self.navigationItem.searchController.searchBar.frame.size.height;
+    if (navBarHeight == searchBarYStartPos) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, navBarHeight + searchBarHeight + navBarYStartPos)];
+    } else if (searchBarYStartPos != 0) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, searchBarHeight + searchBarYStartPos + navBarYStartPos)];
+    } else if (navBarHeight > 0) {
+        [topNotchCover setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, navBarYStartPos + searchBarHeight)];
+    }
+}

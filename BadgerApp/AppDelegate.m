@@ -41,29 +41,4 @@
     return YES;
 }
 
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-    return;
-}
-
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    return;
-}
-
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    return;
-}
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    return;
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    return;
-}
-
 @end

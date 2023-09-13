@@ -17,9 +17,10 @@ UIView *topNotchCoverCount;
 NSString *prefWeAreDealingWith;
 
 @interface BadgerCountConfigManagerViewController () <UITableViewDelegate, UITableViewDataSource>
-@property (strong, nonatomic) IBOutlet UITableView *configsTableView;
 -(void)createCountConfig:(id)sender;
 @end
+
+UITableView *configsTableView;
 
 @implementation BadgerCountConfigManagerViewController
 
@@ -60,13 +61,13 @@ NSString *prefWeAreDealingWith;
     }
     configs = badgerRetriveConfigsWithCurrentPref([self appBundleID], prefWeAreDealingWith);
     if (@available(iOS 13.0, *)) {
-        self.configsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped];
+        configsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped];
     } else {
-        self.configsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
+        configsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
     }
-    self.configsTableView.dataSource = self;
-    self.configsTableView.delegate = self;
-    [self.view addSubview:self.configsTableView];
+    configsTableView.dataSource = self;
+    configsTableView.delegate = self;
+    [self.view addSubview:configsTableView];
     if (@available(iOS 13.0, *)) {
         self.view.backgroundColor = [UIColor systemBackgroundColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
@@ -173,12 +174,11 @@ NSString *prefWeAreDealingWith;
             } else {
                 /* we don't need to save count config yet, just when user makes a value */
                 [configs addObject:newText];
-                [self->_configsTableView reloadData];
+                [configsTableView reloadData];
                 return;
             }
         }
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        }];
+        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:nil];
         [alert addAction:confirmAction];
         [self presentViewController:alert animated:YES completion:nil];
     }];
@@ -210,7 +210,7 @@ NSString *prefWeAreDealingWith;
         } else {
             [configs removeObject:rowTitle];
             badgerRemoveCurrentPref([rowTitle integerValue], [self appBundleID], prefWeAreDealingWith);
-            [_configsTableView reloadData];
+            [configsTableView reloadData];
         }
     }
 }

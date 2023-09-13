@@ -101,8 +101,10 @@ UIView *topNotchCoverAppSelection;
 @end
 
 @interface BadgerAppSelectionViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate>
-@property (strong, nonatomic) UITableView *myTableView;
+
 @end
+
+UITableView *myTableView;
 
 @implementation BadgerAppSelectionViewController
 
@@ -126,16 +128,15 @@ UIView *topNotchCoverAppSelection;
             LSApplicationProxy *app = [arrApp objectAtIndex:i];
             NSArray* appTags;
             BOOL launchProhibited = NO;
-            if([app respondsToSelector:@selector(correspondingApplicationRecord)])
-                {
-                    // On iOS 14, self.appTags is always empty but the application record still has the correct ones
-                    LSApplicationRecord* record = [app correspondingApplicationRecord];
-                    appTags = record.appTags;
-                    launchProhibited = record.launchProhibited;
-                } else {
-                    appTags = app.appTags;
-                    launchProhibited = app.launchProhibited;
-                }
+            if([app respondsToSelector:@selector(correspondingApplicationRecord)]) {
+                // On iOS 14, self.appTags is always empty but the application record still has the correct ones
+                LSApplicationRecord* record = [app correspondingApplicationRecord];
+                appTags = record.appTags;
+                launchProhibited = record.launchProhibited;
+            } else {
+                appTags = app.appTags;
+                launchProhibited = app.launchProhibited;
+            }
             NSString *applicationIdentifier = [app applicationIdentifier];
             if ((![appTags containsObject:@"hidden"]) && (!launchProhibited) && ![applicationIdentifier isEqualToString:@"com.apple.webapp"]) {
                 BadgerAppCell *badgerApp = [[BadgerAppCell alloc]init];
@@ -144,18 +145,19 @@ UIView *topNotchCoverAppSelection;
                 /* yes i know these are the exact same */
                 /* for some reason if i do it the normal way it fucks up optimizations */
                 /* so this results in faster code when compiling... */
-                if (appIcon) {
+                /*if (appIcon) {
                     [badgerApp setAppImage:appIcon];
                 } else {
                     [badgerApp setAppImage:appIcon];
-                }
+                }*/
+                [badgerApp setAppImage:appIcon];
                 NSString *localizedName = [app localizedName];
                 if (!localizedName || [@"" isEqualToString:localizedName]){
                     NSURL *infoPlistURL = [[app bundleURL] URLByAppendingPathComponent:@"Info.plist"];
                     NSDictionary *infoPlist = [NSDictionary dictionaryWithContentsOfURL:infoPlistURL];
-                    localizedName = [infoPlist objectForKey:@"CFBundleDisplayName"];
+                    localizedName = infoPlist[@"CFBundleDisplayName"];
                     if (!localizedName) {
-                        localizedName = [infoPlist objectForKey:@"CFBundleName"];
+                        localizedName = infoPlist[@"CFBundleName"];
                         if (!localizedName) {
                             localizedName = app.localizedName;
                         }
@@ -177,24 +179,26 @@ UIView *topNotchCoverAppSelection;
     filteredAppImages = appImages;
     filteredAppNames = appNames;
     filteredAppBundleIDs = appBundleIDs;
+    UITableViewStyle tableViewStyle;
     if (@available(iOS 13.0, *)) {
-        self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStyleInsetGrouped]; //previously self.view.frame.size.height + 35 iPod Touch 7, y value is 110 on iPod Touch 7 and 130 on iPhone 11 (UIScreen.mainScreen.applicationFrame.size.height/15.2)-(548/15.2)
+        tableViewStyle = UITableViewStyleInsetGrouped;
     } else {
-        self.myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:UITableViewStylePlain];
+        tableViewStyle = UITableViewStylePlain;
     }
-    self.myTableView.dataSource = self;
-    self.myTableView.delegate = self;
-    [self.view addSubview:self.myTableView];
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height) style:tableViewStyle];
+    myTableView.dataSource = self;
+    myTableView.delegate = self;
+    [self.view addSubview:myTableView];
     if (@available(iOS 13.0, *)) {
         self.view.backgroundColor = [UIColor systemBackgroundColor];
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
         self.navigationController.navigationBar.tintColor = [UIColor labelColor];
     } else {
         // Fallback on earlier versions
-        self.view.backgroundColor = [UIColor whiteColor];
-        self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+        UIColor *whiteColor = [UIColor whiteColor];
+        self.view.backgroundColor = whiteColor;
+        self.navigationController.navigationBar.backgroundColor = whiteColor;
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-        
     }
     topNotchCoverAppSelection = [[UIView alloc]initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height / 1.5)]; //height 96 on 852, 91 on 548
     topNotchCoverAppSelection.hidden = NO;
@@ -211,15 +215,18 @@ UIView *topNotchCoverAppSelection;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self updateTopNotchCoverSize];
+    //[self updateTopNotchCoverSize];
+    updateTopNotchCoverSize(topNotchCoverAppSelection, self);
 }
 - (void)viewDidAppear:(BOOL)animated {
     if (@available(iOS 13.0, *)) {
         self.navigationController.navigationBar.backgroundColor = [UIColor systemBackgroundColor];
+        self.navigationController.navigationBar.tintColor = [UIColor labelColor];
     } else {
         self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+        self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     }
-    self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    //self.navigationItem.hidesSearchBarWhenScrolling = NO;
     if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
         [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
@@ -269,15 +276,15 @@ UIView *topNotchCoverAppSelection;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    filteredAppNames = [[NSMutableArray alloc]init];
-    filteredAppBundleIDs = [[NSMutableArray alloc]init];
-    filteredAppImages = [[NSMutableArray alloc]init];
     if ([searchText isEqualToString:@""]) {
         filteredAppNames = appNames;
         filteredAppBundleIDs = appBundleIDs;
         filteredAppImages = appImages;
     } else {
         short index = 0;
+        filteredAppNames = [[NSMutableArray alloc]init];
+        filteredAppBundleIDs = [[NSMutableArray alloc]init];
+        filteredAppImages = [[NSMutableArray alloc]init];
         for (NSString* aAppName in appNames) {
             if ([[aAppName lowercaseString]containsString:[searchText lowercaseString]]) {
                 [filteredAppNames addObject:aAppName];
@@ -287,16 +294,18 @@ UIView *topNotchCoverAppSelection;
             index++;
         }
     }
-    [_myTableView reloadData];
-    [self updateTopNotchCoverSize];
+    [myTableView reloadData];
+    //[self updateTopNotchCoverSize];
+    updateTopNotchCoverSize(topNotchCoverAppSelection, self);
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     filteredAppNames = appNames;
     filteredAppBundleIDs = appBundleIDs;
     filteredAppImages = appImages;
-    [_myTableView reloadData];
-    [self updateTopNotchCoverSize];
+    [myTableView reloadData];
+    //[self updateTopNotchCoverSize];
+    updateTopNotchCoverSize(topNotchCoverAppSelection, self);
 }
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -306,7 +315,7 @@ UIView *topNotchCoverAppSelection;
     }
 }
 
--(void)updateTopNotchCoverSize {
+/*-(void)updateTopNotchCoverSize {
     if (self.navigationController.navigationBar.frame.size.height == self.navigationItem.searchController.searchBar.frame.origin.y) {
         [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.size.height + self.navigationItem.searchController.searchBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y)];
     } else if (self.navigationItem.searchController.searchBar.frame.origin.y != 0) {
@@ -314,6 +323,6 @@ UIView *topNotchCoverAppSelection;
     } else if (self.navigationController.navigationBar.frame.size.height > 0) {
         [topNotchCoverAppSelection setFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, self.navigationController.navigationBar.frame.origin.y + self.navigationItem.searchController.searchBar.frame.size.height)];
     }
-}
+}*/
 
 @end

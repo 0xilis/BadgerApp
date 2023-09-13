@@ -12,6 +12,20 @@
 		B02465EC293319280029B850 /* BadgerCreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B02465EB293319280029B850 /* BadgerCreditsViewController.m */; };
 		B0453D40292B01BE00188C80 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0453D3E292B01BE00188C80 /* Localizable.strings */; };
 		B0453D45292B0DE000188C80 /* BadgerEasyTranslations.m in Sources */ = {isa = PBXBuildFile; fileRef = B0453D44292B0DE000188C80 /* BadgerEasyTranslations.m */; };
+		B069004E2AA9F8BB00F9AD13 /* MinimumBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900402AA9F8BA00F9AD13 /* MinimumBadge.png */; };
+		B069004F2AA9F8BB00F9AD13 /* BadgeFont.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900412AA9F8BA00F9AD13 /* BadgeFont.png */; };
+		B06900502AA9F8BB00F9AD13 /* ImageBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900422AA9F8BA00F9AD13 /* ImageBadge.png */; };
+		B06900512AA9F8BB00F9AD13 /* MaxBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900432AA9F8BA00F9AD13 /* MaxBadge.png */; };
+		B06900522AA9F8BB00F9AD13 /* CustomLabelBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900442AA9F8BA00F9AD13 /* CustomLabelBadge.png */; };
+		B06900532AA9F8BB00F9AD13 /* ReloadBadger.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900452AA9F8BA00F9AD13 /* ReloadBadger.png */; };
+		B06900542AA9F8BB00F9AD13 /* BadgeOpacity.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900462AA9F8BA00F9AD13 /* BadgeOpacity.png */; };
+		B06900552AA9F8BB00F9AD13 /* BadgePos.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900472AA9F8BA00F9AD13 /* BadgePos.png */; };
+		B06900562AA9F8BB00F9AD13 /* BadgeSize.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900482AA9F8BA00F9AD13 /* BadgeSize.png */; };
+		B06900572AA9F8BB00F9AD13 /* BadgeLabelColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B06900492AA9F8BA00F9AD13 /* BadgeLabelColor.png */; };
+		B06900582AA9F8BB00F9AD13 /* Credits.png in Resources */ = {isa = PBXBuildFile; fileRef = B069004A2AA9F8BA00F9AD13 /* Credits.png */; };
+		B06900592AA9F8BB00F9AD13 /* ColorBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = B069004B2AA9F8BA00F9AD13 /* ColorBadge.png */; };
+		B069005A2AA9F8BB00F9AD13 /* BadgeShape.png in Resources */ = {isa = PBXBuildFile; fileRef = B069004C2AA9F8BA00F9AD13 /* BadgeShape.png */; };
+		B069005B2AA9F8BB00F9AD13 /* BadgerLoadingIcon1.2.2.png in Resources */ = {isa = PBXBuildFile; fileRef = B069004D2AA9F8BA00F9AD13 /* BadgerLoadingIcon1.2.2.png */; };
 		B0A4395E28C666F5006D5D92 /* BadgeCountMinimumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A4395D28C666F5006D5D92 /* BadgeCountMinimumViewController.m */; };
 		B0A4396428C7AFA5006D5D92 /* BadgerAppSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A4396328C7AFA5006D5D92 /* BadgerAppSelectionViewController.m */; };
 		B0A4396728C84B1A006D5D92 /* BadgeColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A4396628C84B19006D5D92 /* BadgeColorViewController.m */; };
@@ -44,6 +58,20 @@
 		B0453D44292B0DE000188C80 /* BadgerEasyTranslations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgerEasyTranslations.m; sourceTree = "<group>"; };
 		B0453D46292B253E00188C80 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Main.strings"; sourceTree = "<group>"; };
 		B0453D47292B253E00188C80 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		B06900402AA9F8BA00F9AD13 /* MinimumBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MinimumBadge.png; sourceTree = "<group>"; };
+		B06900412AA9F8BA00F9AD13 /* BadgeFont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgeFont.png; sourceTree = "<group>"; };
+		B06900422AA9F8BA00F9AD13 /* ImageBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ImageBadge.png; sourceTree = "<group>"; };
+		B06900432AA9F8BA00F9AD13 /* MaxBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MaxBadge.png; sourceTree = "<group>"; };
+		B06900442AA9F8BA00F9AD13 /* CustomLabelBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CustomLabelBadge.png; sourceTree = "<group>"; };
+		B06900452AA9F8BA00F9AD13 /* ReloadBadger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReloadBadger.png; sourceTree = "<group>"; };
+		B06900462AA9F8BA00F9AD13 /* BadgeOpacity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgeOpacity.png; sourceTree = "<group>"; };
+		B06900472AA9F8BA00F9AD13 /* BadgePos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgePos.png; sourceTree = "<group>"; };
+		B06900482AA9F8BA00F9AD13 /* BadgeSize.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgeSize.png; sourceTree = "<group>"; };
+		B06900492AA9F8BA00F9AD13 /* BadgeLabelColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgeLabelColor.png; sourceTree = "<group>"; };
+		B069004A2AA9F8BA00F9AD13 /* Credits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Credits.png; sourceTree = "<group>"; };
+		B069004B2AA9F8BA00F9AD13 /* ColorBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ColorBadge.png; sourceTree = "<group>"; };
+		B069004C2AA9F8BA00F9AD13 /* BadgeShape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgeShape.png; sourceTree = "<group>"; };
+		B069004D2AA9F8BA00F9AD13 /* BadgerLoadingIcon1.2.2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadgerLoadingIcon1.2.2.png; sourceTree = "<group>"; };
 		B091B445294CFBB000B13F6E /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Main.strings; sourceTree = "<group>"; };
 		B091B446294CFBB000B13F6E /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B0A4395C28C666F5006D5D92 /* BadgeCountMinimumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeCountMinimumViewController.h; sourceTree = "<group>"; };
@@ -100,6 +128,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B069003F2AA9F8BA00F9AD13 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				B06900402AA9F8BA00F9AD13 /* MinimumBadge.png */,
+				B06900412AA9F8BA00F9AD13 /* BadgeFont.png */,
+				B06900422AA9F8BA00F9AD13 /* ImageBadge.png */,
+				B06900432AA9F8BA00F9AD13 /* MaxBadge.png */,
+				B06900442AA9F8BA00F9AD13 /* CustomLabelBadge.png */,
+				B06900452AA9F8BA00F9AD13 /* ReloadBadger.png */,
+				B06900462AA9F8BA00F9AD13 /* BadgeOpacity.png */,
+				B06900472AA9F8BA00F9AD13 /* BadgePos.png */,
+				B06900482AA9F8BA00F9AD13 /* BadgeSize.png */,
+				B06900492AA9F8BA00F9AD13 /* BadgeLabelColor.png */,
+				B069004A2AA9F8BA00F9AD13 /* Credits.png */,
+				B069004B2AA9F8BA00F9AD13 /* ColorBadge.png */,
+				B069004C2AA9F8BA00F9AD13 /* BadgeShape.png */,
+				B069004D2AA9F8BA00F9AD13 /* BadgerLoadingIcon1.2.2.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		B0F5FCAC28B9310900EA8AEA = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +169,7 @@
 		B0F5FCB728B9310A00EA8AEA /* BadgerApp */ = {
 			isa = PBXGroup;
 			children = (
+				B069003F2AA9F8BA00F9AD13 /* Images */,
 				B02465EA293319280029B850 /* BadgerCreditsViewController.h */,
 				B02465EB293319280029B850 /* BadgerCreditsViewController.m */,
 				B0B27D2928F9910A00A1C3F0 /* BadgerApplySettingsViewController.h */,
@@ -221,11 +271,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B06900592AA9F8BB00F9AD13 /* ColorBadge.png in Resources */,
+				B06900562AA9F8BB00F9AD13 /* BadgeSize.png in Resources */,
 				B0453D40292B01BE00188C80 /* Localizable.strings in Resources */,
+				B06900552AA9F8BB00F9AD13 /* BadgePos.png in Resources */,
 				B018644C28CE4C8C00D7C2EA /* TestBadgerPrefs.plist in Resources */,
+				B069005A2AA9F8BB00F9AD13 /* BadgeShape.png in Resources */,
+				B069004F2AA9F8BB00F9AD13 /* BadgeFont.png in Resources */,
+				B069005B2AA9F8BB00F9AD13 /* BadgerLoadingIcon1.2.2.png in Resources */,
+				B06900532AA9F8BB00F9AD13 /* ReloadBadger.png in Resources */,
+				B06900512AA9F8BB00F9AD13 /* MaxBadge.png in Resources */,
 				B0F5FCC828B9310E00EA8AEA /* LaunchScreen.storyboard in Resources */,
+				B06900522AA9F8BB00F9AD13 /* CustomLabelBadge.png in Resources */,
 				B0F5FCC528B9310E00EA8AEA /* Assets.xcassets in Resources */,
+				B06900572AA9F8BB00F9AD13 /* BadgeLabelColor.png in Resources */,
+				B069004E2AA9F8BB00F9AD13 /* MinimumBadge.png in Resources */,
+				B06900582AA9F8BB00F9AD13 /* Credits.png in Resources */,
 				B0F5FCC328B9310A00EA8AEA /* Main.storyboard in Resources */,
+				B06900502AA9F8BB00F9AD13 /* ImageBadge.png in Resources */,
+				B06900542AA9F8BB00F9AD13 /* BadgeOpacity.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,13 +479,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_OPTIMIZATION = space;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 6;
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = RR5WP5NG77;
+				ENABLE_BITCODE = YES;
+				GCC_ENABLE_BUILTIN_FUNCTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = z;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_STRICT_ALIASING = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BadgerApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Badger;
@@ -437,11 +514,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				LLVM_LTO = NO;
 				MARKETING_VERSION = 1.2.2;
 				OTHER_CFLAGS = "-flto";
 				PRODUCT_BUNDLE_IDENTIFIER = cum.0xilis.BadgerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_PNG_TEXT = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -452,13 +532,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_OPTIMIZATION = space;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				COMPRESS_PNG_FILES = NO;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 6;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = NO;
 				DEVELOPMENT_TEAM = RR5WP5NG77;
+				ENABLE_BITCODE = YES;
+				GCC_ENABLE_BUILTIN_FUNCTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = z;
+				GCC_STRICT_ALIASING = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BadgerApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Badger;
@@ -474,11 +564,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				LLVM_LTO = NO;
 				MARKETING_VERSION = 1.2.2;
 				OTHER_CFLAGS = "-flto";
 				PRODUCT_BUNDLE_IDENTIFIER = cum.0xilis.BadgerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_PNG_TEXT = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

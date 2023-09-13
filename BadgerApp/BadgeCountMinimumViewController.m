@@ -22,12 +22,11 @@ NSString *appBundleID3;
 @property (weak, nonatomic) IBOutlet UITextView *explainingBox;
 @property (weak, nonatomic) IBOutlet UILabel *appLabel;
 @property (weak, nonatomic) IBOutlet UILabel *label;
-//-(void)sliderChange:(id)sender;
 @end
 
 @implementation BadgeCountMinimumViewController
 
-- (void)viewDidLoad {
+-(void)viewDidLoad {
     [super viewDidLoad];
     badgeCount3 = [self badgeCount];
     appBundleID3 = [self appBundleID];
@@ -47,8 +46,9 @@ NSString *appBundleID3;
         [_label setText:trans(@"Badge Count Minimum")];
         [_explainingBox setText:trans(@"This affects the minimum badge count for all applications, universally throughout the system, with the exception if you set a custom amount for a specific app/apps.")];
         badgeSetting = @"minimum";
-        if (badgerRetriveUniversalPref(@"BadgeCountMinimum")) {
-            _numberField.text = badgerRetriveUniversalPref(@"BadgeCountMinimum");
+        NSString *countMinimum = badgerRetriveUniversalPref(@"BadgeCountMinimum");
+        if (countMinimum) {
+            _numberField.text = countMinimum;
         }
     } else if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum for App")]) {
         //ROrangeGrad.png
@@ -58,8 +58,9 @@ NSString *appBundleID3;
         [_label setText:trans(@"Badge Count Minimum")];
         [_explainingBox setText:[trans(@"This affects the minimum badge count for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
         badgeSetting = @"minimum";
-        if (badgerRetriveAppPref(appBundleID3,@"BadgeCountMinimum")) {
-            _numberField.text = badgerRetriveAppPref(appBundleID3,@"BadgeCountMinimum");
+        NSString *countMinimum = badgerRetriveAppPref(appBundleID3,@"BadgeCountMinimum");
+        if (countMinimum) {
+            _numberField.text = countMinimum;
         }
     } else if ([daCellTitle isEqualToString:trans(@"Badge Count Limit")]) {
         //RYellowGrad.png
@@ -68,20 +69,14 @@ NSString *appBundleID3;
         [_label setText:trans(@"Badge Count Limit")];
         [_explainingBox setText:trans(@"This affects the badge count limit for all applications, universally throughout the system, with the exception if you set a custom limit for a specific app/apps.")];
         badgeSetting = @"limit";
-        if (badgerRetriveUniversalPref(@"BadgeCountLimit")) {
-            _numberField.text = badgerRetriveUniversalPref(@"BadgeCountLimit");
+        NSString *countLimit = badgerRetriveUniversalPref(@"BadgeCountLimit");
+        if (countLimit) {
+            _numberField.text = countLimit;
         }
     } else if ([daCellTitle isEqualToString:trans(@"Badge Count Limit for App")]) {
+        /* NOT USED */
         //RGreenGrad.png
         [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"81FBB8").CGColor, (id)colorFromHexString(@"28C76F").CGColor, nil]];
-        _appLabel.hidden = 0;
-        _appLabel.text = [self appName];
-        [_label setText:@"Badge Count Limit"];
-        [_explainingBox setText:[trans(@"This affects the badge count limit for (APPNAME).") stringByReplacingOccurrencesOfString:@"(APPNAME)" withString:[self appName]]];
-        badgeSetting = @"limit";
-        if (badgerRetriveAppPref(appBundleID3,@"BadgeCountLimit")) {
-            _numberField.text = badgerRetriveAppPref(appBundleID3,@"BadgeCountLimit");
-        }
     } else if ([daCellTitle isEqualToString:trans(@"Badge Opacity")] || [daCellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
         _appLabel.hidden = 1;
         [_label setText:trans(@"Badge Opacity")];
@@ -94,14 +89,12 @@ NSString *appBundleID3;
         [slider setAlpha:0.5];
         [self.view addSubview:slider];
         id currentBadgeOpacity = badgerRetriveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity");
-        if (currentBadgeOpacity) {
-            _numberField.text = [NSString stringWithFormat:@"%@%%",currentBadgeOpacity];
-            _numberField.subviews[0].alpha = [currentBadgeOpacity floatValue] / 100;
-            [slider setValue:[currentBadgeOpacity integerValue]];
-        } else {
-            _numberField.text = @"100%";
-            [slider setValue:100];
+        if (!currentBadgeOpacity) {
+            currentBadgeOpacity = @"100";
         }
+        _numberField.text = [NSString stringWithFormat:@"%@%%",currentBadgeOpacity];
+        _numberField.subviews[0].alpha = [currentBadgeOpacity floatValue] / 100;
+        [slider setValue:[currentBadgeOpacity integerValue]];
         if (appBundleID3) {
             //RRedGrad.png
             [betterBackGd setColors:[[NSArray alloc]initWithObjects:(id)colorFromHexString(@"FF4A3F").CGColor, (id)colorFromHexString(@"FF5185").CGColor, nil]];
@@ -116,17 +109,11 @@ NSString *appBundleID3;
         [_label setText:trans(@"Custom Badge Label")];
         [_explainingBox setText:trans(@"Set a custom label for notification badges.")];
         badgeSetting = @"label";
-        NSString *BadgeLabel;
-        if (badgeCount3) {
-            BadgeLabel = badgerRetriveUniversalCountPref(badgeCount3,@"BadgeLabel");
-        } else {
-            BadgeLabel = badgerRetriveUniversalPref(@"BadgeLabel");
+        NSString *BadgeLabel = badgerRetriveCurrentPref(badgeCount3,NULL,@"BadgeLabel");
+        if (!BadgeLabel) {
+            BadgeLabel = @"";
         }
-        if (BadgeLabel) {
-            _numberField.text = [NSString stringWithFormat:@"%@",BadgeLabel];
-        } else {
-            _numberField.text = @"";
-        }
+        _numberField.text = BadgeLabel;
         _numberField.placeholder = trans(@"Enter label...");
     } else if ([daCellTitle isEqualToString:trans(@"Badge Size")] || [daCellTitle isEqualToString:trans(@"Badge Size for App")]) {
         _appLabel.hidden = 1;
@@ -198,79 +185,51 @@ NSString *appBundleID3;
     // Pass the selected object to the new view controller.
 }
 */
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
     NSString *newText;
     if ([badgeSetting isEqualToString:@"label"]) {
         newText = textField.text;
     } else {
-    NSScanner *scanner = [NSScanner scannerWithString:textField.text];
-    NSCharacterSet *numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
-    [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
-    [scanner scanCharactersFromSet:numbers intoString:&newText];
-    }
-    if (newText.length < 1 && ![badgeSetting isEqualToString:@"label"]) {
-        if ([badgeSetting isEqualToString:@"minimum"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid minimum Count") message:trans(@"Your minimum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-            [alert addAction:confirmAction];
-            [self presentViewController:alert animated:YES completion:nil];
-            newText = @"1";
-        } else if ([badgeSetting isEqualToString:@"limit"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid maximum Count") message:trans(@"Your maximum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-            [alert addAction:confirmAction];
-            [self presentViewController:alert animated:YES completion:nil];
-            newText = @"None";
-        } else {
+        UIAlertController *alert;
+        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:nil];
+        NSCharacterSet *numbers = NSCharacterSet.decimalDigitCharacterSet;
+        newText = [textField.text stringByTrimmingCharactersInSet:numbers.invertedSet];
+        if (newText.length < 1) {
+            if ([badgeSetting isEqualToString:@"minimum"]) {
+                alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid minimum Count") message:trans(@"Your minimum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
+                newText = @"1";
+            } else if ([badgeSetting isEqualToString:@"limit"]) {
+                alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid maximum Count") message:trans(@"Your maximum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
+                newText = @"None";
+            } else {
+                newText = @"100";
+            }
+        }
+        if ([newText integerValue] < 0 && [badgeSetting isEqualToString:@"opacity"]) {
+            alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid opacity") message:trans(@"Your opacity has to be equal to or greater than 0%.") preferredStyle:UIAlertControllerStyleAlert];
+            newText = @"0";
+        } else if ([newText integerValue] > 100 && [badgeSetting isEqualToString:@"opacity"]) {
+            alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid opacity") message:trans(@"Your opacity has to be 100% or less.") preferredStyle:UIAlertControllerStyleAlert];
+            newText = @"100";
+        } else if ([newText integerValue] < 50 && [badgeSetting isEqualToString:@"size"]) {
+            alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid size") message:trans(@"Your size has to be equal to or greater than 50%.") preferredStyle:UIAlertControllerStyleAlert];
+            newText = @"50";
+        } else if ([newText integerValue] > 200 && [badgeSetting isEqualToString:@"size"]) {
+            alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid size") message:trans(@"Your size has to be 200% or less.") preferredStyle:UIAlertControllerStyleAlert];
             newText = @"100";
         }
-    }
-    if ([newText integerValue] < 0 && [badgeSetting isEqualToString:@"opacity"]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid opacity") message:trans(@"Your opacity has to be equal to or greater than 0%.") preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        }];
-        [alert addAction:confirmAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        newText = @"0";
-    } else if ([newText integerValue] > 100 && [badgeSetting isEqualToString:@"opacity"]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid opacity") message:trans(@"Your opacity has to be 100% or less.") preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        }];
-        [alert addAction:confirmAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        newText = @"100";
-    } else if ([newText integerValue] < 50 && [badgeSetting isEqualToString:@"size"]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid size") message:trans(@"Your size has to be equal to or greater than 50%.") preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        }];
-        [alert addAction:confirmAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        newText = @"50";
-    } else if ([newText integerValue] > 200 && [badgeSetting isEqualToString:@"size"]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid size") message:trans(@"Your size has to be 200% or less.") preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        }];
-        [alert addAction:confirmAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        newText = @"100";
-    }
-    if ([newText integerValue] < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"] && ![badgeSetting isEqualToString:@"label"]) {
-        if ([badgeSetting isEqualToString:@"minimum"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid minimum Count") message:trans(@"Your minimum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
+        if ([newText integerValue] < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"]) {
+            if ([badgeSetting isEqualToString:@"minimum"]) {
+                alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid minimum Count") message:trans(@"Your minimum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
+                newText = @"1";
+            } else {
+                alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid maximum Count") message:trans(@"Your maximum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
+                newText = @"None";
+            }
+        }
+        if (alert) {
             [alert addAction:confirmAction];
             [self presentViewController:alert animated:YES completion:nil];
-            newText = @"1";
-        } else {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:trans(@"Invalid maximum Count") message:trans(@"Your maximum has to be greater than 0.") preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:trans(@"Okay") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            }];
-            [alert addAction:confirmAction];
-            [self presentViewController:alert animated:YES completion:nil];
-            newText = @"None";
         }
     }
     if (![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"label"]) {
@@ -280,34 +239,28 @@ NSString *appBundleID3;
     }
     [textField resignFirstResponder];
     //save plist
-    if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum")]) {
+    if ([badgeSetting isEqualToString:@"minimum"]) {
         if ([newText isEqualToString:@"1"]) {
-            badgerRemoveUniversalPref(@"BadgeCountMinimum");
+            badgerRemoveCurrentPref(0, appBundleID3, @"BadgeCountMinimum");
         } else {
-            badgerSaveUniversalPref(@"BadgeCountMinimum", textField.text);
+            badgerSaveCurrentPref(0, appBundleID3, @"BadgeCountMinimum", newText);
         }
-    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Minimum for App")]) {
-        if ([newText isEqualToString:@"1"]) {
-            badgerRemoveAppPref(appBundleID3, @"BadgeCountMinimum");
-        } else {
-            badgerSaveAppPref(appBundleID3, @"BadgeCountMinimum", textField.text);
-        }
-    } else if ([daCellTitle isEqualToString:trans(@"Badge Count Limit")] || [daCellTitle isEqualToString:trans(@"Badge Count Limit for App")]) {
+    } else if ([badgeSetting isEqualToString:@"limit"]) {
         if ([newText isEqualToString:@"None"]) {
             badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeCountLimit");
         } else {
-            badgerSaveCurrentPref(badgeCount3, appBundleID3, @"BadgeCountLimit", textField.text);
+            badgerSaveCurrentPref(badgeCount3, appBundleID3, @"BadgeCountLimit", newText);
         }
-    } else if ([daCellTitle isEqualToString:trans(@"Badge Opacity")] || [daCellTitle isEqualToString:trans(@"Badge Opacity for App")]) {
+    } else if ([badgeSetting isEqualToString:@"opacity"]) {
         if ([newText isEqualToString:@"100"]) {
             badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity");
         } else {
             badgerSaveCurrentPref(badgeCount3,appBundleID3, @"BadgeOpacity", newText);
         }
         [slider setValue:[newText integerValue] animated:YES];
-    } else if ([daCellTitle isEqualToString:trans(@"Custom Badge Label")]) {
+    } else if ([badgeSetting isEqualToString:@"label"]) {
         badgerSaveCurrentPref(badgeCount3, NULL, @"BadgeLabel", newText);
-    } else if ([daCellTitle isEqualToString:trans(@"Badge Size")] || [daCellTitle isEqualToString:trans(@"Badge Size for App")]) {
+    } else if ([badgeSetting isEqualToString:@"size"]) {
         if ([newText isEqualToString:@"100"]) {
             badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize");
         } else {
@@ -317,91 +270,91 @@ NSString *appBundleID3;
     }
     return YES;
 }
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
     NSString *newText;
     if ([badgeSetting isEqualToString:@"label"]) {
         newText = textField.text;
     } else {
-    NSScanner *scanner = [NSScanner scannerWithString:textField.text];
-    NSCharacterSet *numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
-    [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
-    [scanner scanCharactersFromSet:numbers intoString:&newText];
-    }
-    if ([newText isEqualToString:@""] && ![badgeSetting isEqualToString:@"label"]) {
-        if ([badgeSetting isEqualToString:@"minimum"]) {
-            newText = @"1";
-        } else if ([badgeSetting isEqualToString:@"limit"]) {
-            newText = @"None";
-        } else {
-            newText = @"100";
+        NSCharacterSet *numbers = NSCharacterSet.decimalDigitCharacterSet;
+        newText = [textField.text stringByTrimmingCharactersInSet:numbers.invertedSet];
+        if ([newText isEqualToString:@""]) {
+            if ([badgeSetting isEqualToString:@"minimum"]) {
+                newText = @"1";
+            } else if ([badgeSetting isEqualToString:@"limit"]) {
+                newText = @"None";
+            } else {
+                newText = @"100";
+            }
         }
     }
     long integerValue = [newText integerValue];
-    if (integerValue < 0 && [badgeSetting isEqualToString:@"opacity"]) {
-        newText = @"0";
-    } else if (integerValue > 100 && [badgeSetting isEqualToString:@"opacity"]) {
-        newText = @"100";
-    } else if (integerValue < 50 && [badgeSetting isEqualToString:@"size"]) {
-        newText = @"50";
-    } else if (integerValue > 200 && [badgeSetting isEqualToString:@"size"]) {
-        newText = @"100";
-    }
-    if (integerValue < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"] && ![badgeSetting isEqualToString:@"label"]) {
-        if ([badgeSetting isEqualToString:@"minimum"]) {
-            newText = @"1";
-        } else {
-            newText = @"None";
-        }
-    }
-    if (![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"label"]) {
-        textField.text = [@(integerValue) stringValue];
-    } else {
-        textField.text = newText;
-    }
-    [textField becomeFirstResponder];
-}
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    NSString *newText;
-    if ([badgeSetting isEqualToString:@"label"]) {
-        newText = textField.text;
-    } else {
-    NSScanner *scanner = [NSScanner scannerWithString:textField.text];
-    NSCharacterSet *numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
-    [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
-    [scanner scanCharactersFromSet:numbers intoString:&newText];
-    }
-    if ([newText isEqualToString:@""] && ![badgeSetting isEqualToString:@"label"]) {
-        if ([badgeSetting isEqualToString:@"minimum"]) {
-            newText = @"1";
-        } else if ([badgeSetting isEqualToString:@"limit"]) {
-            newText = @"None";
-        } else {
+    /* Opacity / Size caps */
+    if ([badgeSetting isEqualToString:@"opacity"]) {
+        if (integerValue < 0) {
+            newText = @"0";
+        } else if (integerValue > 100) {
             newText = @"100";
         }
-    }
-    if ([newText integerValue] < 0 && [badgeSetting isEqualToString:@"opacity"]) {
-        newText = @"0";
-    } else if ([newText integerValue] > 100 && [badgeSetting isEqualToString:@"opacity"]) {
-        newText = @"100";
-    } else if ([newText integerValue] < 50 && [badgeSetting isEqualToString:@"size"]) {
-        newText = @"50";
-    } else if ([newText integerValue] > 200 && [badgeSetting isEqualToString:@"size"]) {
-        newText = @"100";
-    }
-    if ([newText integerValue] < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"opacity"] && ![badgeSetting isEqualToString:@"size"] && ![badgeSetting isEqualToString:@"label"]) {
+    } else if ([badgeSetting isEqualToString:@"size"]) {
+        if (integerValue < 50) {
+            newText = @"50";
+        } else if (integerValue > 200) {
+            newText = @"100";
+        }
+    } else if (integerValue < 1 && ![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"label"]) {
         if ([badgeSetting isEqualToString:@"minimum"]) {
             newText = @"1";
         } else {
             newText = @"None";
         }
     }
-    if (![newText isEqualToString:@"None"] && ![badgeSetting isEqualToString:@"label"]) {
-        textField.text = [@([newText integerValue]) stringValue];
-    } else {
+    /* yes, this if statement is not needed, but if i remove it, fucks up compile optimizations so i have to keep it. */
+    if (integerValue) {
         textField.text = newText;
     }
-    if ([badgeSetting isEqualToString:@"opacity"] || [badgeSetting isEqualToString:@"size"]) {
-        textField.text = [NSString stringWithFormat:@"%@%%",textField.text];
+    textField.text = newText;
+    [textField becomeFirstResponder];
+}
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    if (![badgeSetting isEqualToString:@"label"]) {
+        NSString *newText;
+        NSCharacterSet *numbers = NSCharacterSet.decimalDigitCharacterSet;
+        newText = [textField.text stringByTrimmingCharactersInSet:numbers.invertedSet];
+        if ([newText isEqualToString:@""]) {
+            if ([badgeSetting isEqualToString:@"minimum"]) {
+                newText = @"1";
+            } else if ([badgeSetting isEqualToString:@"limit"]) {
+                newText = @"None";
+            } else {
+                newText = @"100";
+            }
+        }
+        long integerValue = [newText integerValue];
+        /* Opacity / Size caps */
+        if ([badgeSetting isEqualToString:@"opacity"]) {
+            if (integerValue < 0) {
+                newText = @"0";
+            } else if (integerValue > 100) {
+                newText = @"100";
+            }
+        } else if ([badgeSetting isEqualToString:@"size"]) {
+            if (integerValue < 50) {
+                newText = @"50";
+            } else if (integerValue > 200) {
+                newText = @"100";
+            }
+        } else if (integerValue < 1 && ![newText isEqualToString:@"None"]) {
+            if ([badgeSetting isEqualToString:@"minimum"]) {
+                newText = @"1";
+            } else {
+                newText = @"None";
+            }
+        }
+        textField.text = newText;
+        if ([badgeSetting isEqualToString:@"opacity"] || [badgeSetting isEqualToString:@"size"]) {
+            textField.text = [NSString stringWithFormat:@"%@%%",textField.text];
+        }
     }
     [textField resignFirstResponder];
 }

@@ -11,6 +11,8 @@
 @interface ViewController : UIViewController  <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate>
 NSString *cellTitleFromRow(long row);
 UIImage *cellImageFromRow(long row);
-//UIColor *basedCellColorFromRow(long row);
+UIColor *basedCellColorFromRow(long row);
 //UIColor *frenchCellColorFromRow(long row);
 @end
+
+void updateTopNotchCoverSize(UIView *topNotchCover, UIViewController *self);

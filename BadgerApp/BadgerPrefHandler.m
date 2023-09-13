@@ -65,15 +65,19 @@ void badgerRemoveAppPref(NSString *prefApp, NSString *prefKey) {
     [badgerPlist writeToFile:preferencesDirectory atomically:YES];
 }
 
+void badgerResetPrefPlist(void) {
+    badgerPlist = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSMutableDictionary alloc]init],@"DefaultConfig", nil],@"UniversalConfiguration",[[NSMutableDictionary alloc]init],@"AppConfiguration",@BADGER_CONFIG_FORMAT_VERSION,@"BadgerConfigFormatVersion",@BADGER_MINIMUM_COMPATIBILITY_VERSION,@"BadgerMinimumCompatibilityVersion",@BADGER_DISPLAY_VERSION_FOR_MINIMUM_COMPATIBILITY_VERSION,@"BadgerDiplayVersionForMinimumCompatibilityVersion",@YES,@"BadgerCheckCompatibility", nil];
+    NSError* error=nil;
+    NSPropertyListFormat format=NSPropertyListXMLFormat_v1_0; //NSPropertyListBinaryFormat_v1_0
+    NSData* data =  [NSPropertyListSerialization dataWithPropertyList:badgerPlist format:format options:NSPropertyListImmutable error:&error];
+    [data writeToFile:preferencesDirectory atomically:YES];
+}
+
 /* it is highly important to call this first to initialize badgerPlist */
 void badgerSetUpPrefPlist(void){
     badgerPlist = [[NSMutableDictionary alloc]initWithContentsOfFile:preferencesDirectory];
     if (!badgerPlist) {
-        badgerPlist = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSMutableDictionary alloc]init],@"DefaultConfig", nil],@"UniversalConfiguration",[[NSMutableDictionary alloc]init],@"AppConfiguration",@BADGER_CONFIG_FORMAT_VERSION,@"BadgerConfigFormatVersion",@BADGER_MINIMUM_COMPATIBILITY_VERSION,@"BadgerMinimumCompatibilityVersion",@BADGER_DISPLAY_VERSION_FOR_MINIMUM_COMPATIBILITY_VERSION,@"BadgerDiplayVersionForMinimumCompatibilityVersion",@YES,@"BadgerCheckCompatibility", nil];
-        NSError* error=nil;
-        NSPropertyListFormat format=NSPropertyListXMLFormat_v1_0; //NSPropertyListBinaryFormat_v1_0
-        NSData* data =  [NSPropertyListSerialization dataWithPropertyList:badgerPlist format:format options:NSPropertyListImmutable error:&error];
-        [data writeToFile:preferencesDirectory atomically:YES];
+        badgerResetPrefPlist();
     }
     uniConfig = badgerPlist[@"UniversalConfiguration"];
 }
