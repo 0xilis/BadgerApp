@@ -359,18 +359,19 @@ NSString *appBundleID3;
     [textField resignFirstResponder];
 }
 -(void)sliderChange:(id)sender {
-    _numberField.text = [NSString stringWithFormat:@"%d%%",(int)[slider value]];
+    int sliderValue = (int)[slider value];
+    _numberField.text = [NSString stringWithFormat:@"%d%%",sliderValue];
     if ([badgeSetting isEqualToString:@"opacity"]) {
-        if ((int)[slider value] == 100) {
+        if (sliderValue == 100) {
             badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity");
         } else {
-            badgerSaveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity",[NSString stringWithFormat:@"%d",(int)[slider value]]);
+            badgerSaveCurrentPref(badgeCount3,appBundleID3,@"BadgeOpacity",[NSString stringWithFormat:@"%d",sliderValue]);
         }
     } else if ([badgeSetting isEqualToString:@"size"]) {
-        if ((int)[slider value] == 100) {
+        if (sliderValue == 100) {
             badgerRemoveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize");
         } else {
-            badgerSaveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize",[NSString stringWithFormat:@"%d",(int)[slider value]]);
+            badgerSaveCurrentPref(badgeCount3,appBundleID3,@"BadgeSize",[NSString stringWithFormat:@"%d",sliderValue]);
         }
     }
     _numberField.subviews[0].alpha = slider.value / 100;
