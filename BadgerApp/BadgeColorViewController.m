@@ -197,7 +197,8 @@ NSString *appBundleID;
     UILabel *label = (id)view;
     if (!label) {
         NSString *objAtIndex = [colorsToPick objectAtIndex:row];
-        label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [pickerView rowSizeForComponent:component].width, [pickerView rowSizeForComponent:component].height)];
+        CGSize rowSize = [pickerView rowSizeForComponent:component];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, rowSize.width, rowSize.height)];
         label.textAlignment = NSTextAlignmentCenter;
         if ([daCellTitle isEqualToString:trans(@"Badge Color")] || [daCellTitle isEqualToString:trans(@"Badge Color for App")] || [daCellTitle isEqualToString:trans(@"Badge Label Color")] || [daCellTitle isEqualToString:trans(@"Badge Label Color for App")]) {
             label.textColor = [self matchingLabelColor:objAtIndex];
@@ -324,7 +325,6 @@ NSString *appBundleID;
 }
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
     if ([urls firstObject]) {
-        //badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeFontPath");
         badgerRemoveCurrentPref(badgeCount,appBundleID, @"BadgeFont");
         NSString *filePath;
         if (badgeCount) {
@@ -376,56 +376,97 @@ __attribute__((always_inline)) UIColor *getLastObjectFromDictionary(void) {
     UIColor *redColor;
     /* This results in mov x0, x0. This instruction is not needed so we could remove it to save an instruction, but I have no idea how to do this in a way the compiler would understand */
 #if __aarch64__
-    asm volatile (
+    /*asm volatile (
         "mov %0, x0\n\t"
+        : "=r" (redColor)
+    );*/
+    /* nevermind, turns out as long as we just declare inline asm, it won't add the extra instruction, and the compiler won't mess up any other code and re-use x0. this saves less than a nanosecond but idfk I hated that extra instruction so much so glad to see its gone */
+    asm volatile (
+        "\n\t"
         : "=r" (redColor)
     );
 #endif
     return redColor;
 }
 
--(UIColor*)matchingLabelColor:(NSString*)color {
+__attribute__((always_inline)) Class iHopeThisShitWorks(void) {
     /*
-     * This makes all colors and then puts then in the NSDictionary. However, for some, ex Default (Red) and Red, we don't need to create two objects, we just need to create one and can have both point to the same, saving one objc_msgSend call. However, to my knowledge, there is no way to signify to use the same object pointer as another object in the dictionary in Objective-C. If we try to make a UIColor representing a redColor outside of the dictionary and have these keys point to the same obj it either recreates the object for the pointer or since the variable is not part of the NSDictionary creation messes up compiler optimizations, IDK which one but it does seem that it makes the binary larger and we don't want that. So, instead, we inline some arm64 asm. This works since when it's getting the next object, the x0 register still has the result of the previous obj_msgSend call for the last object. Because of this, we can just re-use x0 and have it work fine. This has the side affect of adding two not needed mov x0, x0 instructions but I don't know how to remove these easily. This, in return, saves of 5 instructions, but if you factor in the work obj_msgSend does and how we call it 2 times less, it's more like 45. This is a micro-optimization but I don't care at this point, I spent 2 hours on this I'm keeping it.
+     * Needs to be changed each time annoyingly. This gets the UIColor class without needing the extra objc_msgSend that [UIColor class] does.
      */
+    Class uicolorClass;
 #if __aarch64__
-    NSDictionary *colorList = @{
-        @"Default (Red)" : [UIColor redColor],
-        @"Red" : getLastObjectFromDictionary(),
-        @"Pink" : [UIColor systemPinkColor],
-        @"Orange" : [UIColor orangeColor],
-        @"Yellow" : [UIColor yellowColor],
-        @"Green" : [UIColor greenColor],
-        @"Blue" : [UIColor blueColor],
-        @"Purple" : [UIColor purpleColor],
-        @"Magenta" : [UIColor magentaColor],
-        @"Teal" : [UIColor systemTealColor],
-        @"Brown" : [UIColor brownColor],
-        @"Default (White)" : [UIColor whiteColor],
-        @"White" : getLastObjectFromDictionary(),
-        @"Gray" : [UIColor grayColor],
-    };
-#else
-    NSDictionary *colorList = @{
-        @"Default (Red)" : [UIColor redColor],
-        @"Red" : [UIColor redColor],
-        @"Pink" : [UIColor systemPinkColor],
-        @"Orange" : [UIColor orangeColor],
-        @"Yellow" : [UIColor yellowColor],
-        @"Green" : [UIColor greenColor],
-        @"Blue" : [UIColor blueColor],
-        @"Purple" : [UIColor purpleColor],
-        @"Magenta" : [UIColor magentaColor],
-        @"Teal" : [UIColor systemTealColor],
-        @"Brown" : [UIColor brownColor],
-        @"Default (White)" : [UIColor whiteColor],
-        @"White" : [UIColor whiteColor],
-        @"Gray" : [UIColor grayColor],
-    };
+    asm volatile (
+        "ldr %0, 0x113cc\n\t"
+        : "=r" (uicolorClass)
+    );
 #endif
-    UIColor *retColor = colorList[color];
-    if (retColor) {
-        return retColor;
+    
+    //0x11404 _OBJC_CLASS_$_UIAlertAction (three above UIColor)
+    //0x113fc _OBJC_CLASS_$_UIAlertController (two above UIColor)
+    //0x113f4 OBJC_CLASS_$_UIBarButtonItem (one above UIColor)
+    //0x113cc UICOLOR class FINALLY
+    //0x113dc _OBJC_CLASS_$_UISearchController (below UIColor, above UIStoryboard)
+    //0x113ec _OBJC_CLASS_$_UIStoryboard (A LOT below UIColor)
+    return uicolorClass;
+}
+
+
+-(UIColor*)matchingLabelColor:(NSString*)color {
+    NSArray *colorStrings = @[
+        @"Default (Red)",
+        @"Red",
+        @"Pink",
+        @"Orange",
+        @"Yellow",
+        @"Green",
+        @"Blue",
+        @"Purple",
+        @"Magenta",
+        @"Teal",
+        @"Brown",
+        @"Default (White)",
+        @"White",
+        @"Gray",
+    ];
+    unsigned long colorIndex = [colorStrings indexOfObject:color];
+    if (colorIndex != NSNotFound) {
+        SEL sel_arr[] = {@selector(redColor), @selector(redColor), @selector(redColor), @selector(systemPinkColor), @selector(orangeColor), @selector(yellowColor), @selector(greenColor), @selector(blueColor), @selector(purpleColor), @selector(magentaColor), @selector(systemTealColor),@selector(brownColor),@selector(whiteColor),@selector(whiteColor),@selector(grayColor)};
+        id (*objc_msgSendTyped)(id self, SEL _cmd, ...) = (void*)objc_msgSend;
+        /*
+         * TODO: I absolutely cannot stand this.
+         * [UIColor class] will result in the compiler getting the class for UIColor...
+         * which is what we need; but THEN calling the class method
+         * to get the class - despite we already have it so we generate
+         * an extra objc_msgSend which we don't need. I have no idea how
+         * to get the pure class though without doing this though :(.
+         * Except - hardcoding the pointer which is ugly and needs to be changed
+         * each time. :P.
+         */
+        #define HARDCODE_UICOLOR_CLASS_PTR 1
+        #if __aarch64__ && HARDCODE_UICOLOR_CLASS_PTR
+        /*
+         ldr        x8, =aGraycolor ; "grayColor",@selector(grayColor)
+         stp        x9, x8, [sp, #0x68]
+         ldr        x8, =_OBJC_CLASS_$_UIColor ; _OBJC_CLASS_$_UIColor
+         add        x9, sp, #0x8
+         ldr        x1, [x9, x0, lsl #3] ; argument "selector" for method imp___stubs__objc_msgSend
+         mov        x0, x8       ; argument "instance" for method imp___stubs__objc_msgSend
+         */
+        return objc_msgSendTyped(iHopeThisShitWorks(), sel_arr[colorIndex]);
+        #else
+        /*
+         ldr        x8, =aGraycolor ; "grayColor",@selector(grayColor)
+         stp        x9, x8, [sp, #0x68]
+         nop
+         ldr        x0, =_OBJC_CLASS_$_UIColor ; argument "instance" for method imp___stubs__objc_msgSend, _OBJC_CLASS_$_UIColor
+         nop
+         ldr        x1, =aClass  ; argument "selector" for method imp___stubs__objc_msgSend, "class",@selector(class)
+         bl         imp___stubs__objc_msgSend ; objc_msgSend
+         add        x8, sp, #0x8
+         ldr        x1, [x8, x21, lsl #3] ;
+         */
+        return objc_msgSendTyped([UIColor class], sel_arr[colorIndex]);
+        #endif
     }
     if ([color isEqualToString:@"Custom"]) {
         id currentBadgeColor;
